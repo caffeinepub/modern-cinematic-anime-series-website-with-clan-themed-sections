@@ -1,0 +1,69 @@
+{
+  "kind": "build_request",
+  "title": "Add episode video player for released episodes with unreleased messaging",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-48",
+      "text": "Update the public Episodes section UI (frontend/src/components/sections/EpisodesSection.tsx and related episode components) to allow a visitor to open a video-player view for an episode when that episode’s status is \"Released\"; if the episode is not released, the UI must clearly tell the visitor that the episode has not been released yet.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "add a video player for people to be able to watch the RELEASED episode. If the episode isn't released, they will be told that the episode hasn't been released yet"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In the Episodes section, each episode provides a clear affordance (e.g., a \"Watch\" button or clickable card action) to attempt to watch the episode.",
+        "If an episode’s status is \"Released\", activating the watch affordance opens an on-page player experience (e.g., a modal/dialog or dedicated expandable panel) that attempts to play the episode using the episode’s stored video URL.",
+        "If an episode’s status is not \"Released\", activating the watch affordance does not open the player; instead it shows a clear English message indicating the episode has not been released yet.",
+        "The released/unreleased gating is driven by the episode status coming from backend episode data (decoded via the existing episode metadata convention), not hard-coded episode numbers.",
+        "If a \"Released\" episode has no video URL configured, the player experience shows a clear English message indicating that the video is not available yet (and does not render a broken player).",
+        "The new player UI matches the existing cinematic dark styling (card/border/glow language) and remains usable on mobile and desktop."
+      ]
+    },
+    {
+      "id": "REQ-49",
+      "text": "Extend the frontend episode view model used by the public Episodes section so it preserves backend episode fields needed for playback (at minimum: videoUrl), and pass those fields through to the episode card/player UI without breaking existing EpisodeCard rendering.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "add a video player for people to be able to watch the RELEASED episode. If the episode isn't released, they will be told that the episode hasn't been released yet"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The public Episodes section continues to render episode number, title, summary, and status as before.",
+        "The transformed episode data used for rendering includes the backend episode’s videoUrl (and can support thumbnailUrl if already available) so the player can use it.",
+        "No TypeScript errors are introduced by extending the episode data shape, and existing episode UI still compiles and runs."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under frontend/src/components/ui (read-only UI primitives); compose existing UI components instead.",
+    "Keep all user-facing text in English."
+  ],
+  "nonGoals": [
+    "Implementing DRM, paywalls, subscriptions, or user accounts beyond existing Internet Identity support.",
+    "Adding real-time streaming infrastructure or uploading/storing video files in the canister.",
+    "Changing the admin Episodes management workflow beyond what is necessary for public playback UI."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

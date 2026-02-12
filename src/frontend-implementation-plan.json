@@ -1,0 +1,67 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Episode watch affordance with released-only video player and unreleased messaging",
+  "requirements": [
+    {
+      "id": "REQ-48",
+      "summary": "Add a released-only Watch affordance in the public Episodes section that opens an on-page video player for released episodes and shows clear unreleased/unavailable messaging otherwise.",
+      "acceptanceCriteria": [
+        "In the Episodes section, each episode provides a clear affordance (e.g., a \"Watch\" button or clickable card action) to attempt to watch the episode.",
+        "If an episode’s status is \"Released\", activating the watch affordance opens an on-page player experience (e.g., a modal/dialog or dedicated expandable panel) that attempts to play the episode using the episode’s stored video URL.",
+        "If an episode’s status is not \"Released\", activating the watch affordance does not open the player; instead it shows a clear English message indicating the episode has not been released yet.",
+        "The released/unreleased gating is driven by the episode status coming from backend episode data (decoded via the existing episode metadata convention), not hard-coded episode numbers.",
+        "If a \"Released\" episode has no video URL configured, the player experience shows a clear English message indicating that the video is not available yet (and does not render a broken player).",
+        "The new player UI matches the existing cinematic dark styling (card/border/glow language) and remains usable on mobile and desktop."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/EpisodesSection.tsx",
+          "operation": "modify",
+          "description": "Add watch interaction state (selected episode + messaging) and wire EpisodeCard actions so: (1) status !== \"Released\" shows an English \"not released yet\" message without opening a player; (2) status === \"Released\" opens an on-page player experience using the episode videoUrl; (3) status === \"Released\" but missing/empty videoUrl opens the player experience with an English \"video is not available yet\" message and no broken player. Keep cinematic dark styling and mobile/desktop usability. (If using shadcn-ui Dialog/Alert primitives, compose existing components and do not edit frontend/src/components/ui; verify the component's usage instructions before implementing.)"
+        },
+        {
+          "path": "frontend/src/components/episodes/EpisodeCard.tsx",
+          "operation": "modify",
+          "description": "Add a clear \"Watch\" affordance on each episode card and support a callback prop (e.g., onWatch(episode)) while preserving existing number/title/summary/status rendering and styling. Ensure the affordance is accessible and visually consistent with the cinematic dark card/border/glow language. (If composing shadcn-ui Button, do not edit frontend/src/components/ui; verify the component's usage instructions before implementing.)"
+        },
+        {
+          "path": "frontend/src/components/episodes/EpisodePlayerDialog.tsx",
+          "operation": "create",
+          "description": "Create an on-page player component (prefer a modal/dialog) that displays the selected episode title/number and either (a) an HTML5 video player with controls when a valid video URL exists, or (b) a clear English message when the video URL is missing/unavailable. Style to match existing dark cinematic UI and ensure responsive layout. Use shadcn-ui dialog components if already present in the codebase; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "If needed, add minimal global utility styling to support a responsive video container/aspect ratio that matches the existing cinematic dark theme (without touching frontend/src/components/ui). Keep changes small and consistent with existing glow/border tokens."
+        }
+      ]
+    },
+    {
+      "id": "REQ-49",
+      "summary": "Extend the public Episodes view model to preserve playback fields (at minimum videoUrl) from backend data and pass them through to card/player UI without breaking existing rendering.",
+      "acceptanceCriteria": [
+        "The public Episodes section continues to render episode number, title, summary, and status as before.",
+        "The transformed episode data used for rendering includes the backend episode’s videoUrl (and can support thumbnailUrl if already available) so the player can use it.",
+        "No TypeScript errors are introduced by extending the episode data shape, and existing episode UI still compiles and runs."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/data/episodes.ts",
+          "operation": "modify",
+          "description": "Extend the Episode interface used by the public Episodes UI to include playback-related fields (at minimum videoUrl; optionally thumbnailUrl) in a backward-compatible way (e.g., optional properties) so existing static episode data and EpisodeCard rendering continue to compile."
+        },
+        {
+          "path": "frontend/src/components/sections/EpisodesSection.tsx",
+          "operation": "modify",
+          "description": "Update the backend-to-UI transformation so the episode view model includes videoUrl (and thumbnailUrl if available) from backend episode data, while continuing to decode status/number via decodeEpisodeMetadata and preserve the existing number/title/summary/status rendering behavior."
+        },
+        {
+          "path": "frontend/src/components/episodes/EpisodeCard.tsx",
+          "operation": "modify",
+          "description": "Adjust typing/props as needed so EpisodeCard can receive the extended Episode shape (including videoUrl/thumbnailUrl) without breaking existing UI; the card should remain focused on display plus the watch affordance, delegating playback to the player component."
+        }
+      ]
+    }
+  ]
+}

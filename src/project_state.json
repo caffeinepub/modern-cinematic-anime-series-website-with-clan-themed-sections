@@ -1,0 +1,539 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 33,
+  "summary": "Build a modern anime streaming/promo-style website for \"Whispers Of The White Moon\" with dark cinematic styling, glowing accents, smooth transitions/parallax, content sections (Characters, Episodes, Gallery, News/Updates, Clans), and a secure admin dashboard for the site owner to manage all anime content.",
+  "architectural_notes": [
+    "Visual direction: anime streaming/promo-site feel with dark theme (navy/black/deep purple) and glowing accents (moon blue, fiery gold).",
+    "Animation direction: smooth fade transitions; implement parallax scrolling where performant and appropriate (with reduced-motion support).",
+    "Update/extend site information architecture to include top-level sections for Characters, Episodes, Gallery, and News/Updates (in addition to Home/Story/Clans) accessible via the top navigation.",
+    "Lean into official anime promotion-site presentation: dramatic hero section, layered background/overlay depth, prominent glowing UI highlights, and smooth scroll-linked/reveal animations (with reduced-motion support).",
+    "Add a secure admin/auth layer and an owner-only admin dashboard for managing site content (episodes, characters, news posts, gallery images, clans), styled consistently with the main dark theme.",
+    "Admin dashboard should support role-based access control (RBAC) with permissions by role, including team member account administration.",
+    "Homepage should include a dedicated \"Series Overview\" subsection within the About/Story area, featuring the provided narrative overview text.",
+    "Public Episodes UI should conditionally render an embedded video player for episodes marked Released; otherwise show a clear \"not released yet\" message/state."
+  ],
+  "known_issues": [
+    "User reports the Gallery “+” upload button is not visible (likely due to not being authenticated as an admin)."
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-cohesive-modern-visual-theme-for-the-anime-series-website-that-feels-cinematic-mysterious-slightly-dark-but-still-magical-using-glowing-accents-clean-anime-style-typography-layout-and-a-consistent-color-system-that-differentiates-the-clans-moon-sun-fire-water-lightning-earth-balance-without-using-blue-purple-as-the-primary-palette-unless-needed-as-accents",
+      "title": "Create a cohesive, modern visual theme for the anime series website that feels cinematic, mysterious, slightly dark but still magical, using glowing accents, clean anime-style typography/layout, and a consistent color system that differentiates the clans (Moon, Sun, Fire, Water, Lightning, Earth, Balance) without using blue/purple as the primary palette unless needed as accents.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-core-site-structure-as-a-responsive-single-page-marketing-website-with-clear-sections-for-header-navigation-hero-series-title-tagline-primary-call-to-action-about-story-overview-clans-moon-sun-fire-water-lightning-earth-balance-with-power-descriptions-and-footer-with-social-links-placeholders",
+      "title": "Implement the core site structure as a responsive, single-page marketing website with clear sections for: Header navigation, Hero (series title + tagline + primary call-to-action), About/Story overview, Clans (Moon, Sun, Fire, Water, Lightning, Earth, Balance) with power descriptions, and Footer with social/links placeholders.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-smooth-performant-animations-that-support-the-cinematic-magical-tone-section-reveal-on-scroll-subtle-glow-pulsing-on-accents-and-interactive-hover-focus-states-for-clan-cards-and-primary-buttons-with-reduced-motion-support",
+      "title": "Add smooth, performant animations that support the cinematic/magical tone: section reveal on scroll, subtle glow pulsing on accents, and interactive hover/focus states for clan cards and primary buttons (with reduced-motion support).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-reusable-ui-components-for-clan-presentation-e-g-clancard-clanbadge-that-encapsulate-clan-name-element-power-motif-accent-color-and-description-and-render-them-from-a-single-data-source-to-avoid-duplication",
+      "title": "Create reusable UI components for clan presentation (e.g., ClanCard/ClanBadge) that encapsulate clan name, element/power motif, accent color, and description, and render them from a single data source to avoid duplication.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-required-static-image-assets-generated-to-the-frontend-and-integrate-them-into-the-layout-a-cinematic-hero-background-and-seven-minimal-glowing-clan-sigils-icons-that-match-the-site-s-tone",
+      "title": "Add required static image assets (generated) to the frontend and integrate them into the layout: a cinematic hero background, and seven minimal glowing clan sigils/icons that match the site’s tone.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-global-visual-theme-to-use-dark-navy-black-deep-purple-backgrounds-with-glowing-moon-blue-and-fiery-gold-accent-colors-ensuring-the-overall-look-matches-an-anime-streaming-promotion-site",
+      "title": "Update the global visual theme to use dark navy/black/deep purple backgrounds with glowing moon-blue and fiery-gold accent colors, ensuring the overall look matches an anime streaming/promotion site.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-refine-existing-animations-to-emphasize-smooth-fade-transitions-across-major-sections-and-interactive-elements-while-keeping-performance-high-and-respecting-reduced-motion-preferences",
+      "title": "Refine existing animations to emphasize smooth fade transitions across major sections and interactive elements while keeping performance high and respecting reduced-motion preferences.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-subtle-parallax-scrolling-effect-if-feasible-to-the-hero-background-and-or-hero-overlay-layers-to-enhance-cinematic-depth-with-automatic-disablement-under-reduced-motion",
+      "title": "Add a subtle parallax scrolling effect (if feasible) to the hero background and/or hero overlay layers to enhance cinematic depth, with automatic disablement under reduced-motion.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-existing-top-headernav-navigation-to-include-the-following-sections-as-clickable-items-in-both-desktop-and-mobile-menus-home-story-characters-clans-episodes-gallery-news-updates",
+      "title": "Update the existing top HeaderNav navigation to include the following sections as clickable items in both desktop and mobile menus: Home, Story, Characters, Clans, Episodes, Gallery, News / Updates.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-page-sections-placeholders-are-acceptable-corresponding-to-the-new-navigation-destinations-so-that-headernav-scrolling-targets-exist-characters-episodes-gallery-and-news-updates-each-section-must-have-a-stable-dom-id-that-matches-the-headernav-scroll-targets",
+      "title": "Add page sections (placeholders are acceptable) corresponding to the new navigation destinations so that HeaderNav scrolling targets exist: Characters, Episodes, Gallery, and News / Updates. Each section must have a stable DOM id that matches the HeaderNav scroll targets.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-website-name-to-whispers-of-the-white-moon-everywhere-it-appears-in-user-facing-ui-including-1-the-browser-tab-page-title-in-frontend-index-html-2-the-headernav-brand-label-3-the-hero-section-main-heading-and-4-the-footer-brand-copyright-text",
+      "title": "Update the website name to \"Whispers Of The White Moon\" everywhere it appears in user-facing UI, including: (1) the browser tab/page title in frontend/index.html, (2) the HeaderNav brand label, (3) the Hero section main heading, and (4) the Footer brand/copyright text.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-any-remaining-hard-coded-occurrences-of-the-previous-site-name-e-g-elemental-clans-in-the-frontend-codebase-with-whispers-of-the-white-moon-to-ensure-naming-consistency-across-all-sections-and-components",
+      "title": "Replace any remaining hard-coded occurrences of the previous site name (e.g., \"Elemental Clans\") in the frontend codebase with \"Whispers Of The White Moon\" to ensure naming consistency across all sections and components.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-placeholder-characters-section-frontend-src-components-sections-characterssection-tsx-with-a-character-grid-that-renders-profile-cards-for-exactly-these-characters-harusuke-moon-clan-warrior-kazeyori-moon-clan-aurelian-sun-clan-antagonist-valerion-season-2-villain-mysterious-strategist-sankei-fire-clan-protagonist-haruna-earth-clan-protagonist-mizuki-water-clan-protagonist-kazei-wind-clan-protagonist-volt-lightning-clan-protagonist",
+      "title": "Replace the current placeholder Characters section (frontend/src/components/sections/CharactersSection.tsx) with a character grid that renders profile cards for exactly these characters: Harusuke (Moon Clan warrior), Kazeyori (Moon Clan), Aurelian (Sun Clan antagonist), Valerion (Season 2 villain, mysterious strategist), Sankei (Fire Clan protagonist), Haruna (Earth Clan protagonist), Mizuki (Water Clan protagonist), Kazei (Wind Clan protagonist), Volt (Lightning Clan protagonist).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-each-character-card-must-include-1-a-portrait-image-placeholder-non-broken-non-empty-visual-placeholder-2-clan-affiliation-3-personality-description-4-power-summary-and-5-role-in-story-all-user-facing-text-must-be-in-english",
+      "title": "Each character card must include: (1) a portrait image placeholder (non-broken, non-empty visual placeholder), (2) clan affiliation, (3) personality description, (4) power summary, and (5) role in story; all user-facing text must be in English.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-characters-section-using-reusable-data-driven-components-e-g-a-charactercard-component-and-a-single-characters-data-source-to-avoid-duplication-and-to-keep-styling-consistent-with-existing-clan-section-components-glow-accents-borders-hover-states-and-reduced-motion-safe-reveal-behavior",
+      "title": "Implement the Characters section using reusable, data-driven components (e.g., a CharacterCard component and a single characters data source) to avoid duplication and to keep styling consistent with existing clan/section components (glow accents, borders, hover states, and reduced-motion-safe reveal behavior).",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-placeholder-episodes-section-frontend-src-components-sections-episodessection-tsx-with-a-season-1-episode-tracker-layout-that-lists-episodes-with-episode-number-episode-title-a-short-summary-and-a-release-status-e-g-released-coming-soon",
+      "title": "Replace the current placeholder Episodes section (frontend/src/components/sections/EpisodesSection.tsx) with a Season 1 episode tracker layout that lists episodes with: episode number, episode title, a short summary, and a release status (e.g., Released / Coming Soon).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-episodes-section-using-reusable-data-driven-components-by-adding-a-single-season-1-episodes-data-source-e-g-frontend-src-data-episodes-ts-and-an-episodecard-or-equivalent-component-avoiding-hard-coded-repeated-markup-in-the-section",
+      "title": "Implement the Episodes section using reusable, data-driven components by adding a single Season 1 episodes data source (e.g., frontend/src/data/episodes.ts) and an EpisodeCard (or equivalent) component, avoiding hard-coded repeated markup in the section.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-placeholder-gallery-section-frontend-src-components-sections-gallerysection-tsx-with-an-image-gallery-that-includes-categories-for-concept-art-fight-scenes-and-character-designs-rendered-as-clickable-thumbnails-that-open-a-full-view-lightbox-modal",
+      "title": "Replace the current placeholder Gallery section (frontend/src/components/sections/GallerySection.tsx) with an image gallery that includes categories for concept art, fight scenes, and character designs, rendered as clickable thumbnails that open a full-view lightbox/modal.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-placeholder-news-updates-section-frontend-src-components-sections-newsupdatessection-tsx-with-a-news-dev-log-feed-that-displays-posts-about-animation-progress-updates-and-announcements-and-includes-a-ui-for-the-creator-to-publish-new-posts",
+      "title": "Replace the current placeholder News / Updates section (frontend/src/components/sections/NewsUpdatesSection.tsx) with a News / Dev Log feed that displays posts about animation progress, updates, and announcements, and includes a UI for the creator to publish new posts.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-backend-storage-and-api-for-news-dev-log-posts-in-backend-main-mo-and-add-react-query-hooks-frontend-src-hooks-usequeries-ts-or-other-non-immutable-frontend-files-to-fetch-and-create-posts-using-the-existing-actor-setup",
+      "title": "Implement the backend storage and API for News / Dev Log posts in backend/main.mo, and add React Query hooks (frontend/src/hooks/useQueries.ts or other non-immutable frontend files) to fetch and create posts using the existing actor setup.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-admin-dashboard-ui-that-is-only-accessible-to-authenticated-admins-and-allows-the-website-owner-to-manage-anime-content-episodes-characters-news-updates-posts-gallery-images-and-clan-information",
+      "title": "Add an admin dashboard UI that is only accessible to authenticated admins and allows the website owner to manage anime content: Episodes, Characters, News / Updates posts, Gallery images, and Clan information.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-admin-dashboard-navigation-and-access-entry-points-in-the-existing-site-ui-including-an-admin-entry-point-that-is-only-visible-to-admin-users",
+      "title": "Implement admin dashboard navigation and access entry points in the existing site UI, including an 'Admin' entry point that is only visible to admin users.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-style-the-admin-dashboard-with-a-modern-dark-theme-that-matches-the-existing-website-s-cinematic-dark-styling-using-the-same-design-tokens-background-card-border-glow-and-component-language-as-the-rest-of-the-site",
+      "title": "Style the admin dashboard with a modern dark theme that matches the existing website’s cinematic dark styling, using the same design tokens (background/card/border/glow) and component language as the rest of the site.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-react-query-hooks-to-fetch-and-mutate-episodes-characters-clans-and-gallery-items-via-the-backend-actor-following-the-existing-hook-patterns-used-for-news-posts-and-admin-checks",
+      "title": "Add React Query hooks to fetch and mutate Episodes, Characters, Clans, and Gallery items via the backend actor, following the existing hook patterns used for news posts and admin checks.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-admin-dashboard-content-management-ui-with-forms-and-list-views-for-each-content-type-episodes-characters-clans-gallery-news-that-allow-an-admin-to-create-edit-and-delete-entries",
+      "title": "Build the admin dashboard content management UI with forms and list views for each content type (Episodes, Characters, Clans, Gallery, News) that allow an admin to create, edit, and delete entries.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-public-facing-marketing-site-sections-characters-episodes-clans-gallery-news-updates-to-read-their-content-from-backend-queries-with-sensible-loading-and-error-states-so-that-admin-dashboard-edits-are-reflected-on-the-main-site",
+      "title": "Update the public-facing marketing site sections (Characters, Episodes, Clans, Gallery, News / Updates) to read their content from backend queries (with sensible loading and error states), so that admin dashboard edits are reflected on the main site.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-admin-episodes-management-ui-to-allow-admins-to-create-and-edit-an-episode-with-fields-episode-title-summary-release-status-thumbnail-image-url-and-video-link-url-and-ensure-delete-still-works",
+      "title": "Update the admin Episodes management UI to allow admins to create and edit an episode with fields: episode title, summary, release status, thumbnail image URL, and video link URL; and ensure delete still works.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-admin-gallery-management-ui-frontend-src-components-admin-panels-galleryadminpanel-tsx-to-support-uploading-an-image-file-from-the-user-s-device-as-an-alternative-to-manually-entering-an-image-url-while-keeping-the-existing-create-edit-delete-and-category-controls-concept-art-fight-scenes-character-designs",
+      "title": "Update the admin Gallery management UI (frontend/src/components/admin/panels/GalleryAdminPanel.tsx) to support uploading an image file from the user’s device as an alternative to manually entering an Image URL, while keeping the existing create/edit/delete and category controls (Concept Art, Fight Scenes, Character Designs).",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-client-side-validation-and-user-feedback-for-gallery-image-uploads-in-the-admin-gallery-panel-including-allowed-file-types-and-a-maximum-file-size-using-clear-english-error-messages-consistent-with-existing-form-error-patterns",
+      "title": "Add client-side validation and user feedback for gallery image uploads in the admin Gallery panel, including allowed file types and a maximum file size, using clear English error messages consistent with existing form error patterns.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-admin-owner-only-button-next-to-the-public-gallery-section-heading-in-frontend-src-components-sections-gallerysection-tsx-that-is-only-visible-when-the-user-is-authenticated-and-is-an-admin-using-the-existing-useinternetidentity-useiscalleradmin-hooks-pattern-used-in-headernav",
+      "title": "Add an admin/owner-only “+” button next to the public Gallery section heading in frontend/src/components/sections/GallerySection.tsx that is only visible when the user is authenticated and is an admin (using the existing useInternetIdentity + useIsCallerAdmin hooks pattern used in HeaderNav).",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-admin-owner-clicks-the-gallery-button-open-an-upload-ui-modal-dialog-that-supports-both-a-selecting-an-image-file-via-file-picker-and-b-drag-and-drop-of-an-image-file-onto-a-visible-drop-area-use-the-existing-frontend-src-utils-galleryimageupload-ts-validation-png-jpeg-webp-max-5mb-and-show-clear-english-validation-errors-in-the-ui",
+      "title": "When the admin/owner clicks the Gallery “+” button, open an upload UI (modal/dialog) that supports both (a) selecting an image file via file picker and (b) drag-and-drop of an image file onto a visible drop area. Use the existing frontend/src/utils/galleryImageUpload.ts validation (PNG/JPEG/WebP, max 5MB) and show clear English validation errors in the UI.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-on-successful-file-selection-and-optional-metadata-entry-allow-the-admin-owner-to-submit-the-upload-to-create-a-new-gallery-item-using-the-existing-backend-mutation-hook-usecreategalleryitem-frontend-src-hooks-usequeries-ts-ensure-the-new-item-appears-in-the-public-gallery-grid-after-creation-by-invalidating-refetching-the-existing-galleryitems-query",
+      "title": "On successful file selection (and optional metadata entry), allow the admin/owner to submit the upload to create a new gallery item using the existing backend mutation hook useCreateGalleryItem (frontend/src/hooks/useQueries.ts). Ensure the new item appears in the public Gallery grid after creation by invalidating/refetching the existing galleryItems query.",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-uploaded-image-file-bestest-png-to-the-frontend-as-a-static-asset-and-update-the-static-gallery-fallback-data-frontend-src-data-gallery-ts-so-that-it-contains-only-one-gallery-item-referencing-that-asset-do-not-include-any-other-gallery-images-in-the-static-fallback",
+      "title": "Add the uploaded image file \"bestest.png\" to the frontend as a static asset and update the static gallery fallback data (frontend/src/data/gallery.ts) so that it contains only one gallery item referencing that asset. Do not include any other gallery images in the static fallback.",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-public-gallery-ui-so-that-it-does-not-show-empty-irrelevant-category-tabs-when-the-gallery-contains-only-the-single-seeded-image-the-gallery-view-should-present-the-single-image-cleanly-without-suggesting-multiple-categories-that-have-no-items",
+      "title": "Update the public Gallery UI so that it does not show empty/irrelevant category tabs when the gallery contains only the single seeded image; the Gallery view should present the single image cleanly without suggesting multiple categories that have no items.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-admin-dashboard-ui-frontend-to-include-a-new-scripts-management-area-integrated-into-the-existing-admin-dashboard-layout-allowing-authorized-users-to-create-edit-and-delete-scripts-using-react-query-hooks-that-call-the-new-backend-scripts-apis",
+      "title": "Extend the admin dashboard UI (frontend) to include a new \"Scripts\" management area, integrated into the existing admin dashboard layout, allowing authorized users to create, edit, and delete scripts using React Query hooks that call the new backend Scripts APIs.",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-admin-dashboard-team-or-team-members-management-area-that-allows-the-owner-to-view-team-member-accounts-and-manage-role-based-permissions-grant-change-revoke-roles-and-any-supported-activate-deactivate-controls-this-ui-must-use-react-query-hooks-wired-to-the-new-backend-team-role-management-apis-and-show-clear-english-success-error-feedback",
+      "title": "Add an admin dashboard \"Team\" (or \"Team Members\") management area that allows the owner to view team member accounts and manage role-based permissions (grant/change/revoke roles, and any supported activate/deactivate controls). This UI must use React Query hooks wired to the new backend team/role management APIs and show clear English success/error feedback.",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-homepage-about-story-section-frontend-src-components-sections-aboutsection-tsx-section-id-about-to-include-a-clearly-labeled-series-overview-block-for-whispers-of-the-white-moon-using-the-exact-overview-text-provided-by-the-user-the-content-must-be-readable-scannable-support-multiple-paragraphs-line-breaks-and-must-preserve-the-existing-cinematic-styling-and-reveal-on-scroll-reduced-motion-behavior-already-used-in-the-section",
+      "title": "Update the Homepage About/Story section (frontend/src/components/sections/AboutSection.tsx, section id=\"about\") to include a clearly labeled \"Series Overview\" block for \"Whispers of the White Moon\" using the exact overview text provided by the user. The content must be readable/scannable (support multiple paragraphs/line breaks) and must preserve the existing cinematic styling and reveal-on-scroll / reduced-motion behavior already used in the section.",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-balance-clan-description-in-the-frontend-static-clans-data-source-frontend-src-data-clans-ts-by-replacing-the-existing-balance-clan-description-with-the-exact-two-paragraph-english-text-provided-by-the-user-preserving-the-paragraph-break-blank-line-between-paragraphs",
+      "title": "Update the Balance Clan description in the frontend static clans data source (frontend/src/data/clans.ts) by replacing the existing Balance Clan description with the exact two-paragraph English text provided by the user, preserving the paragraph break (blank line) between paragraphs.",
+      "reqIds": [
+        "REQ-46"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-public-episodes-section-ui-frontend-src-components-sections-episodessection-tsx-and-related-episode-components-to-allow-a-visitor-to-open-a-video-player-view-for-an-episode-when-that-episode-s-status-is-released-if-the-episode-is-not-released-the-ui-must-clearly-tell-the-visitor-that-the-episode-has-not-been-released-yet",
+      "title": "Update the public Episodes section UI (frontend/src/components/sections/EpisodesSection.tsx and related episode components) to allow a visitor to open a video-player view for an episode when that episode’s status is \"Released\"; if the episode is not released, the UI must clearly tell the visitor that the episode has not been released yet.",
+      "reqIds": [
+        "REQ-48"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-frontend-episode-view-model-used-by-the-public-episodes-section-so-it-preserves-backend-episode-fields-needed-for-playback-at-minimum-videourl-and-pass-those-fields-through-to-the-episode-card-player-ui-without-breaking-existing-episodecard-rendering",
+      "title": "Extend the frontend episode view model used by the public Episodes section so it preserves backend episode fields needed for playback (at minimum: videoUrl), and pass those fields through to the episode card/player UI without breaking existing EpisodeCard rendering.",
+      "reqIds": [
+        "REQ-49"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Design and build a modern anime series website with cinematic, mysterious (slightly dark but magical) styling and clan-themed sections (Moon, Sun, Fire, Water, Lightning, Earth, Balance), including glowing accents, smooth animations, and a clean anime-style layout.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Adopt a dark theme using navy, black, and deep purple backgrounds with glowing moon-blue and fiery-gold accent colors; overall feel should resemble an anime streaming/promotion site.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Include smooth fade transitions and, if feasible, parallax scrolling effects to enhance the cinematic feel.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add a top navigation bar with links to: Home, Story, Characters, Clans, Episodes, Gallery, and News/Updates.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Create a Characters section/page with profile cards for Harusuke, Kazeyori, Aurelian, Valerion, Sankei, Haruna, Mizuki, Kazei, and Volt; each card includes a portrait image placeholder, clan affiliation, personality description, power summary, and role in story.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Create an Episodes section/page with an episode tracker layout for Season 1, listing episodes with titles, short summaries, and release status.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Create a Gallery section/page showcasing concept art, fight scenes, and character designs, using clickable thumbnails that expand into a full-view lightbox/modal.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Create a News / Dev Log section/page where the creator can post animation progress, updates, and announcements about new episodes or seasons.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Adjust the site to feel like an official anime promotion site by emphasizing a dramatic hero section with layered backgrounds, glowing UI highlights, and smooth scrolling animations.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Create a secure admin dashboard (modern dark theme matching the main site) that allows the website owner to manage anime content: episodes, characters, news/updates posts, gallery images, and clan information.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Add backend data models and APIs in the existing single Motoko actor to support CRUD management for Episodes, Characters, Clans, and Gallery items, with admin-only write access and public read access for the marketing site.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Extend backend news management to support admin dashboard operations beyond creation (at minimum: delete and edit existing News / Updates posts), enforcing admin-only write access.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Persist admin-managed content in the backend so that Episodes, Characters, Clans, Gallery items, and News posts remain available after canister upgrades.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Add admin dashboard episode management controls (create/edit/update/delete) with episode fields: title, summary, release status, thumbnail image, and video link.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Extend the backend Episode data model and CRUD APIs to support an episode thumbnail image URL, in addition to the existing title, summary/description, release status, and video link.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Ensure episode thumbnail image URL and video link URL changes made in the admin dashboard are persisted across canister upgrades via the existing migration approach (only if needed due to the state schema change).",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Add admin Gallery management tool with image upload controls, deletion, and categorization into Concept Art, Fight Scenes, and Character Designs.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Add an admin/owner-only “+” button next to the public Gallery section; clicking it opens an upload UI that supports selecting an image file and drag-and-drop upload.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-25",
+      "summary": "Provide an admin-assignment mechanism so the owner can grant admin privileges to the account associated with whispersofthemoon1@gmail.com (e.g., via an admin allowlist/registry or admin-management UI), enabling access to admin-only controls like the Gallery “+” button.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Reset the Gallery by deleting all existing gallery items and then add/seed the Gallery with a specified image provided by the user.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Reset the backend Gallery content by deleting all existing gallery items in canister state and seeding exactly one new gallery item that uses the user-uploaded image file \"bestest.png\" as its imageUrl.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "Extend the admin dashboard to include management tools for \"Scripts\" content (create/edit/delete) in addition to existing content types.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-29",
+      "summary": "Add admin dashboard tools to manage team member accounts (e.g., create/edit/deactivate users and assign roles/permissions for role-based access control).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-30",
+      "summary": "Add a new backend content type named \"Scripts\" with persistent storage and access-controlled CRUD APIs in the existing single Motoko actor (backend/main.mo). Scripts must support create, list, update, and delete operations, and these operations must be protected by role-based permissions (not publicly writable).",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-31",
+      "summary": "Implement backend role-based permissions for team member accounts so the site owner can manage roles/permissions for other principals. Add APIs to: (1) list team members and their roles, (2) grant a role to a principal, (3) revoke/change a role for a principal, and (4) optionally deactivate/reactivate a team member account. Ensure only the owner (or highest-privilege role) can manage team member accounts and roles.",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-32",
+      "summary": "Add a \"Series Overview\" block to the Homepage (About/Story section) and include the provided overview text for \"Whispers of the White Moon\".",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "Update the Balance Clan description text (public Clans section and any related data source) to the new provided two-paragraph description about the Balance Clan’s former power, downfall, and lingering legends.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-35",
+      "summary": "Ensure the Balance Clan description is also updated for backend-provided clan data so that the public Clans section shows the new text even when clans are loaded from the backend canister (e.g., by patching existing stored clan records whose name is \"Balance Clan\" during upgrade or initialization without changing the schema).",
+      "reqIds": [
+        "REQ-47"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-36",
+      "summary": "Add an Episodes video player experience: allow users to watch an episode via an embedded video player when the episode status is RELEASED; if not released, show a clear message that the episode hasn’t been released yet.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Whispers Of The White Moon",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
