@@ -1,96 +1,58 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T17:43:40.618Z",
+  "generatedAt": "2026-02-13T18:34:13.484Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 6,
+    "total": 3,
     "implemented": 3,
     "items": [
       {
-        "id": "REQ-88",
-        "summary": "Update the backend Character model in backend/main.mo to persist a character portrait image reference (e.g., portraitUrl as Text) and expose it via getAllCharacters/getCharacterById.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-89",
-        "summary": "Extend backend Character CRUD APIs in backend/main.mo so admins can create/update a character with an optional portrait image reference (portraitUrl). Enforce the existing admin-only authorization checks for these mutations.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-90",
-        "summary": "If adding a portrait field changes stable state schema, add/update backend/migration.mo following the project’s conditional migration policy so existing stored characters are preserved and the new portrait field initializes safely (e.g., empty string or null).",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-91",
-        "summary": "Update React Query character hooks/types in frontend/src/hooks/useQueries.ts to support reading/writing the new character portrait field when creating and editing characters in the admin UI.",
+        "id": "REQ-100",
+        "summary": "Add a new public-facing page section with stable DOM id \"donation\" that displays the donation/support content for \"Whispers Of The White Moon\" using the exact English text provided by the user (including the Cash App handle \"$WOTWM\"). The section must match the site’s existing cinematic dark styling, include a prominent section title \"Donation\", and use the existing reveal-on-scroll / reduced-motion-safe animation behavior used in other sections.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/backend.d.ts"
+          "frontend/src/components/sections/DonationSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/backend.d.ts"
+          "frontend/src/components/sections/DonationSection.tsx"
         ]
       },
       {
-        "id": "REQ-92",
-        "summary": "Enhance the Characters admin panel (frontend/src/components/admin/panels/CharactersAdminPanel.tsx) to allow admins to upload/select a character portrait image when creating or editing a character, with client-side validation enforcing a 20MB max file size and allowed image types (PNG/JPEG/WebP) using the existing frontend/src/utils/galleryImageUpload.ts validation utility.",
+        "id": "REQ-101",
+        "summary": "Update the site’s primary navigation (HeaderNav) to include a new clickable item labeled \"Donation\" that smooth-scrolls to the \"#donation\" section in both desktop and mobile menus, without breaking existing scroll targets.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
-          "frontend/src/utils/galleryImageUpload.ts"
+          "frontend/src/components/sections/HeaderNav.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
-          "frontend/src/utils/galleryImageUpload.ts"
+          "frontend/src/components/sections/HeaderNav.tsx"
         ]
       },
       {
-        "id": "REQ-93",
-        "summary": "Update the public Characters section data mapping (frontend/src/components/sections/CharactersSection.tsx) and character card rendering (frontend/src/components/characters/CharacterCard.tsx) so that if a character portrait image is available from backend data, it is displayed in place of the current placeholder icon; otherwise keep the existing placeholder behavior.",
+        "id": "REQ-102",
+        "summary": "Insert the new Donation section into the main site page flow in frontend/src/App.tsx so it appears as part of the public homepage content (and also in Pro mode, since Pro mode renders the normal public site UI). Place it in a sensible location near the end of the page (e.g., before the Footer), while preserving existing section order and behavior.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/sections/CharactersSection.tsx",
-          "frontend/src/data/characters.ts",
-          "frontend/src/components/characters/CharacterCard.tsx"
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/sections/CharactersSection.tsx",
-          "frontend/src/data/characters.ts",
-          "frontend/src/components/characters/CharacterCard.tsx"
+          "frontend/src/App.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
-    "frontend/src/components/characters/CharacterCard.tsx",
-    "frontend/src/components/sections/CharactersSection.tsx",
-    "frontend/src/data/characters.ts",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/utils/galleryImageUpload.ts",
+    "frontend/src/App.tsx",
+    "frontend/src/components/sections/DonationSection.tsx",
+    "frontend/src/components/sections/HeaderNav.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

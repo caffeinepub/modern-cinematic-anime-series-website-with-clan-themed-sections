@@ -1,116 +1,73 @@
 {
   "kind": "build_request",
-  "title": "Allow admin to upload character portrait images (max 20MB) in Characters admin panel",
+  "title": "Add Donation tab/section with Cash App instructions",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-88",
-      "text": "Update the backend Character model in backend/main.mo to persist a character portrait image reference (e.g., portraitUrl as Text) and expose it via getAllCharacters/getCharacterById.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "recent-messages-3"
-        ],
-        "quotes": [
-          "when admin is making a character in the admin panel.....alow admin to add an image of the character 20mb max"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend Character records include a persisted portraitUrl (or equivalent) field returned by character query APIs.",
-        "Existing Character CRUD continues to work, with portraitUrl preserved on updates when provided."
-      ]
-    },
-    {
-      "id": "REQ-89",
-      "text": "Extend backend Character CRUD APIs in backend/main.mo so admins can create/update a character with an optional portrait image reference (portraitUrl). Enforce the existing admin-only authorization checks for these mutations.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "recent-messages-3"
-        ],
-        "quotes": [
-          "alow admin to add an image of the character 20mb max"
-        ]
-      },
-      "acceptanceCriteria": [
-        "createCharacter and updateCharacter accept an additional optional portraitUrl parameter (or equivalent) and store it on the Character record.",
-        "Non-admin callers attempting to create/update a character (including the portrait field) are rejected with the existing unauthorized behavior.",
-        "Character delete and list operations still behave as before."
-      ]
-    },
-    {
-      "id": "REQ-90",
-      "text": "If adding a portrait field changes stable state schema, add/update backend/migration.mo following the project’s conditional migration policy so existing stored characters are preserved and the new portrait field initializes safely (e.g., empty string or null).",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "recent-messages-3"
-        ]
-      },
-      "acceptanceCriteria": [
-        "After upgrade, existing characters are still present.",
-        "The new character portrait field is initialized to a safe default for pre-existing character records.",
-        "Migration logic runs only on upgrade (not on fresh install), consistent with the conditional migration policy."
-      ]
-    },
-    {
-      "id": "REQ-91",
-      "text": "Update React Query character hooks/types in frontend/src/hooks/useQueries.ts to support reading/writing the new character portrait field when creating and editing characters in the admin UI.",
+      "id": "REQ-100",
+      "text": "Add a new public-facing page section with stable DOM id \"donation\" that displays the donation/support content for \"Whispers Of The White Moon\" using the exact English text provided by the user (including the Cash App handle \"$WOTWM\"). The section must match the site’s existing cinematic dark styling, include a prominent section title \"Donation\", and use the existing reveal-on-scroll / reduced-motion-safe animation behavior used in other sections.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-3"
-        ]
-      },
-      "acceptanceCriteria": [
-        "useCreateCharacter and useUpdateCharacter send the portrait field to the backend when provided.",
-        "Characters fetched via useGetAllCharacters include the portrait field in the returned type and data flow (no TypeScript errors).",
-        "Character list invalidation/refetch still occurs after create/update/delete as before."
-      ]
-    },
-    {
-      "id": "REQ-92",
-      "text": "Enhance the Characters admin panel (frontend/src/components/admin/panels/CharactersAdminPanel.tsx) to allow admins to upload/select a character portrait image when creating or editing a character, with client-side validation enforcing a 20MB max file size and allowed image types (PNG/JPEG/WebP) using the existing frontend/src/utils/galleryImageUpload.ts validation utility.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages-3"
+          "msg-user-1"
         ],
         "quotes": [
-          "alow admin to add an image of the character 20mb max"
+          "make a donation tab \n\n🌙 Support Whispers Of The White Moon\n\nHelp bring the story, animation, and characters to life.\nEvery donation helps support development, voice acting, art, and future episodes.\n\n🔥 Donate Via Cash App\n\n💵 Send support to:\n$WOTWM"
         ]
       },
       "acceptanceCriteria": [
-        "Create and Edit character dialogs include a clearly labeled portrait upload control (file picker).",
-        "Selecting an invalid file type shows a clear English validation error: only PNG/JPEG/WebP allowed.",
-        "Selecting a file larger than 20MB shows a clear English validation error indicating the 20MB limit.",
-        "Selecting a valid image shows a non-broken preview in the dialog and includes the portrait data in the create/update mutation payload.",
-        "Admins can remove/clear the selected portrait before saving (reverting to no portrait)."
+        "A new section is rendered on the public site with id=\"donation\".",
+        "The section shows a visible heading/title: \"Donation\".",
+        "The donation body content matches the user-provided text verbatim (including \"$WOTWM\").",
+        "The section styling is consistent with existing sections (dark cinematic background, readable typography, spacing).",
+        "Animations respect prefers-reduced-motion (no mandatory motion effects when reduced motion is enabled)."
       ]
     },
     {
-      "id": "REQ-93",
-      "text": "Update the public Characters section data mapping (frontend/src/components/sections/CharactersSection.tsx) and character card rendering (frontend/src/components/characters/CharacterCard.tsx) so that if a character portrait image is available from backend data, it is displayed in place of the current placeholder icon; otherwise keep the existing placeholder behavior.",
+      "id": "REQ-101",
+      "text": "Update the site’s primary navigation (HeaderNav) to include a new clickable item labeled \"Donation\" that smooth-scrolls to the \"#donation\" section in both desktop and mobile menus, without breaking existing scroll targets.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-3"
+          "msg-user-1"
+        ],
+        "quotes": [
+          "make a donation tab"
         ]
       },
       "acceptanceCriteria": [
-        "When a backend character has a portrait image set, the character card renders it as the portrait (not the placeholder icon).",
-        "When a backend character does not have a portrait image set, the existing placeholder icon remains visible and the card layout does not break.",
-        "No console errors occur during rendering for either case."
+        "Header navigation includes a \"Donation\" item on desktop.",
+        "Mobile menu includes a \"Donation\" item.",
+        "Clicking \"Donation\" smoothly scrolls to the section with id=\"donation\".",
+        "All existing nav items (Story, Characters, Clans, Episodes, Gallery, News) still work and scroll correctly."
+      ]
+    },
+    {
+      "id": "REQ-102",
+      "text": "Insert the new Donation section into the main site page flow in frontend/src/App.tsx so it appears as part of the public homepage content (and also in Pro mode, since Pro mode renders the normal public site UI). Place it in a sensible location near the end of the page (e.g., before the Footer), while preserving existing section order and behavior.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Donation section renders in the normal (non-admin) view.",
+        "Donation section renders in Pro mode view as well.",
+        "No existing sections disappear or lose their current ids/scroll behavior after inserting the Donation section."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files in frontend/immutablePaths (compose existing UI components instead).",
-    "Keep all Motoko logic in the single actor in backend/main.mo; only use backend/migration.mo if a state upgrade is required."
+    "Do not edit any files under frontend/src/components/ui (read-only Shadcn components).",
+    "Do not edit immutable hook files (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
+    "Do not add any backend changes for donations; this is a static informational section only.",
+    "All user-facing text must be in English."
   ],
   "nonGoals": [
-    "Adding third-party image hosting or external storage services.",
-    "Adding real-time image processing beyond the existing data-url conversion/validation pattern."
+    "Do not implement payment processing, checkout, or any third-party donation API integrations.",
+    "Do not store donation data or donor information on the backend.",
+    "Do not add authentication requirements for viewing the Donation section."
   ],
   "imageRequirements": {
     "required": [],

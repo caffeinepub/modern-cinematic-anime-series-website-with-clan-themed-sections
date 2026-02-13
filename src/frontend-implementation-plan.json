@@ -1,75 +1,56 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Admin character portrait upload + public portrait rendering",
+  "title": "Donation section + navigation link (static Cash App instructions)",
   "requirements": [
     {
-      "id": "REQ-91",
-      "summary": "Update character React Query hooks/types to read/write the new portraitUrl field for create/edit flows",
+      "id": "REQ-100",
+      "summary": "Create a new public Donation section with id=\"donation\", cinematic dark styling, and reveal-on-scroll / reduced-motion-safe animation, using the user-provided text verbatim (including \"$WOTWM\").",
       "acceptanceCriteria": [
-        "useCreateCharacter and useUpdateCharacter send the portrait field to the backend when provided.",
-        "Characters fetched via useGetAllCharacters include the portrait field in the returned type and data flow (no TypeScript errors).",
-        "Character list invalidation/refetch still occurs after create/update/delete as before."
+        "A new section is rendered on the public site with id=\"donation\".",
+        "The section shows a visible heading/title: \"Donation\".",
+        "The donation body content matches the user-provided text verbatim (including \"$WOTWM\").",
+        "The section styling is consistent with existing sections (dark cinematic background, readable typography, spacing).",
+        "Animations respect prefers-reduced-motion (no mandatory motion effects when reduced motion is enabled)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Extend useCreateCharacter/useUpdateCharacter mutation inputs to include portraitUrl (string) and pass it through to backend createCharacter/updateCharacter; keep existing query invalidation behavior unchanged."
-        },
-        {
-          "path": "frontend/src/backend.d.ts",
-          "operation": "modify",
-          "description": "Align frontend typing expectations for Character portraitUrl usage in admin/public UI (ensure Character includes portraitUrl as a string and the create/update signatures are compatible with supplying it)."
+          "path": "frontend/src/components/sections/DonationSection.tsx",
+          "operation": "create",
+          "description": "Add a new <DonationSection /> component that renders a <section> with stable id=\"donation\", a prominent \"Donation\" title, and the exact user-provided donation/support text (including the Cash App handle \"$WOTWM\"). Match existing cinematic dark section patterns (layered background, container spacing, readable typography) and use the existing useRevealOnScroll + usePrefersReducedMotion behavior to ensure reveal animations are reduced-motion-safe. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-92",
-      "summary": "Add portrait image upload (20MB max; PNG/JPEG/WebP) with preview and clear/remove to the Characters admin create/edit dialogs",
+      "id": "REQ-101",
+      "summary": "Add a \"Donation\" item to HeaderNav that smooth-scrolls to #donation in both desktop and mobile menus while preserving existing scroll targets.",
       "acceptanceCriteria": [
-        "Create and Edit character dialogs include a clearly labeled portrait upload control (file picker).",
-        "Selecting an invalid file type shows a clear English validation error: only PNG/JPEG/WebP allowed.",
-        "Selecting a file larger than 20MB shows a clear English validation error indicating the 20MB limit.",
-        "Selecting a valid image shows a non-broken preview in the dialog and includes the portrait data in the create/update mutation payload.",
-        "Admins can remove/clear the selected portrait before saving (reverting to no portrait)."
+        "Header navigation includes a \"Donation\" item on desktop.",
+        "Mobile menu includes a \"Donation\" item.",
+        "Clicking \"Donation\" smoothly scrolls to the section with id=\"donation\".",
+        "All existing nav items (Story, Characters, Clans, Episodes, Gallery, News) still work and scroll correctly."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
+          "path": "frontend/src/components/sections/HeaderNav.tsx",
           "operation": "modify",
-          "description": "Enhance create/edit dialogs to include a 'Portrait Image (Max 20MB)' file input (accept PNG/JPEG/WebP), client-side validation + data-url conversion via validateAndConvertImage from frontend/src/utils/galleryImageUpload.ts (Verify the component's usage instructions before implementing.); show preview, allow clearing the selected portrait, and include portraitUrl in create/update mutation payload (send empty string when cleared)."
-        },
-        {
-          "path": "frontend/src/utils/galleryImageUpload.ts",
-          "operation": "modify",
-          "description": "Ensure the existing validation utility can be used for character portraits with a 20MB limit and allowed MIME types; keep its behavior compatible with CharactersAdminPanel while allowing the panel to present the exact required error strings."
+          "description": "Extend the existing navLinks list to include a new item { href: '#donation', label: 'Donation' } and ensure the existing scrollToSection helper continues to smooth-scroll correctly for both desktop and mobile menus without changing existing targets. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-93",
-      "summary": "Render character portrait on public character cards when portraitUrl is available, otherwise keep placeholder icon behavior",
+      "id": "REQ-102",
+      "summary": "Wire the Donation section into the homepage flow in App.tsx for both normal public view and Pro mode, near the end of the page before the Footer.",
       "acceptanceCriteria": [
-        "When a backend character has a portrait image set, the character card renders it as the portrait (not the placeholder icon).",
-        "When a backend character does not have a portrait image set, the existing placeholder icon remains visible and the card layout does not break.",
-        "No console errors occur during rendering for either case."
+        "Donation section renders in the normal (non-admin) view.",
+        "Donation section renders in Pro mode view as well.",
+        "No existing sections disappear or lose their current ids/scroll behavior after inserting the Donation section."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/sections/CharactersSection.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Include portraitUrl from backend character data in the mapped CharacterCard view model so CharacterCard can conditionally render the portrait."
-        },
-        {
-          "path": "frontend/src/data/characters.ts",
-          "operation": "modify",
-          "description": "Extend the frontend Character type used by CharacterCard to include an optional portraitUrl field while keeping existing static character data valid."
-        },
-        {
-          "path": "frontend/src/components/characters/CharacterCard.tsx",
-          "operation": "modify",
-          "description": "Update the card portrait area to render an <img> when portraitUrl is present (with safe fallback to the existing User placeholder icon if missing or image load fails), preserving existing layout and avoiding console errors."
+          "description": "Import and render <DonationSection /> in the main homepage section list and in the Pro mode section list, placing it near the end of the page (e.g., after NewsUpdatesSection and before <Footer />) while preserving existing section order, ids, and behavior. Verify the component's usage instructions before implementing."
         }
       ]
     }

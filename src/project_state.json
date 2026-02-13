@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 59,
+  "projectStateVersion": 67,
   "summary": "Build a modern anime streaming/promo-style website for \"Whispers Of The White Moon\" with dark cinematic styling, glowing accents, smooth transitions/parallax, content sections (Characters, Episodes, Gallery, News/Updates, Clans), and a secure admin dashboard for the site owner to manage all anime content.",
   "architectural_notes": [
     "Visual direction: anime streaming/promo-site feel with dark theme (navy/black/deep purple) and glowing accents (moon blue, fiery gold).",
@@ -18,7 +18,8 @@
     "User reports the Gallery “+” upload button is not visible (likely due to not being authenticated as an admin).",
     "Build/deployment failed due to a configuration error (Caffeine platform error).",
     "Build/generation process intermittently fails with \"couldn't generate your application\" / \"AI couldn't handle that request\" errors.",
-    "Pro mode: admin cannot edit presentation text after clicking the \"Pro\" tab (editing UI/flow not working or missing)."
+    "Pro mode: admin cannot edit presentation text after clicking the \"Pro\" tab (editing UI/flow not working or missing).",
+    "Public Gallery is showing the wrong image (fallback/seeded image) instead of the user-uploaded image; user requested it be removed."
   ],
   "isFixRequest": false,
   "existing_features": [
@@ -581,6 +582,78 @@
         "REQ-93"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-remove-the-character-portrait-image-upload-capability-from-the-admin-dashboard-characters-management-ui-so-admins-no-longer-see-or-interact-with-any-portrait-upload-preview-clear-controls-when-creating-or-editing-a-character",
+      "title": "Remove the character portrait image upload capability from the Admin Dashboard Characters management UI so admins no longer see or interact with any portrait upload/preview/clear controls when creating or editing a character.",
+      "reqIds": [
+        "REQ-94"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-admin-only-button-next-to-the-public-characters-section-heading-matching-the-gallery-section-button-pattern-same-visibility-rules-and-similar-styling-and-use-it-to-open-a-create-character-dialog-from-the-public-characters-section",
+      "title": "Add an admin-only “+” button next to the public Characters section heading, matching the Gallery section “+” button pattern (same visibility rules and similar styling), and use it to open a “Create Character” dialog from the public Characters section.",
+      "reqIds": [
+        "REQ-95"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-user-uploaded-image-file-harusukevs-aurelian-png-to-the-frontend-as-a-static-asset-do-not-route-it-through-the-backend-and-ensure-it-can-be-referenced-by-the-gallery-ui-via-a-stable-public-path-e-g-under-frontend-public-assets",
+      "title": "Add the user-uploaded image file \"harusukevs aurelian.png\" to the frontend as a static asset (do not route it through the backend) and ensure it can be referenced by the Gallery UI via a stable public path (e.g., under frontend/public/assets/).",
+      "reqIds": [
+        "REQ-96"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-static-gallery-fallback-data-frontend-src-data-gallery-ts-to-include-a-new-gallery-item-that-references-the-uploaded-image-harusukevs-aurelian-png-so-that-it-appears-under-the-public-gallery-section-when-no-backend-gallery-items-are-available",
+      "title": "Update the static Gallery fallback data (frontend/src/data/gallery.ts) to include a new gallery item that references the uploaded image \"harusukevs aurelian.png\" so that it appears under the public Gallery section when no backend gallery items are available.",
+      "reqIds": [
+        "REQ-97"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-incorrect-static-fallback-seeded-gallery-images-so-they-no-longer-appear-on-the-public-site-when-no-backend-gallery-items-exist-specifically-update-the-static-gallery-fallback-data-in-frontend-src-data-gallery-ts-to-remove-the-entries-referencing-assets-bestest-png-and-assets-generated-harusukevs-aurelian-dim-1536x896-png",
+      "title": "Remove the incorrect static fallback/seeded Gallery images so they no longer appear on the public site when no backend Gallery items exist. Specifically, update the static Gallery fallback data in frontend/src/data/gallery.ts to remove the entries referencing '/assets/bestest.png' and '/assets/generated/harusukevs-aurelian.dim_1536x896.png'.",
+      "reqIds": [
+        "REQ-98"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-explicit-empty-state-ui-to-the-public-gallery-section-so-that-when-there-are-no-backend-gallery-items-and-the-static-fallback-list-is-empty-the-section-shows-a-clear-english-message-instead-of-an-empty-grid-lightbox-implement-this-in-frontend-src-components-sections-gallerysection-tsx-without-breaking-existing-loading-error-behavior-or-admin-upload-controls",
+      "title": "Add an explicit empty-state UI to the public Gallery section so that when there are no backend Gallery items and the static fallback list is empty, the section shows a clear English message instead of an empty grid/lightbox. Implement this in frontend/src/components/sections/GallerySection.tsx without breaking existing loading/error behavior or admin upload controls.",
+      "reqIds": [
+        "REQ-99"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-public-facing-page-section-with-stable-dom-id-donation-that-displays-the-donation-support-content-for-whispers-of-the-white-moon-using-the-exact-english-text-provided-by-the-user-including-the-cash-app-handle-wotwm-the-section-must-match-the-site-s-existing-cinematic-dark-styling-include-a-prominent-section-title-donation-and-use-the-existing-reveal-on-scroll-reduced-motion-safe-animation-behavior-used-in-other-sections",
+      "title": "Add a new public-facing page section with stable DOM id \"donation\" that displays the donation/support content for \"Whispers Of The White Moon\" using the exact English text provided by the user (including the Cash App handle \"$WOTWM\"). The section must match the site’s existing cinematic dark styling, include a prominent section title \"Donation\", and use the existing reveal-on-scroll / reduced-motion-safe animation behavior used in other sections.",
+      "reqIds": [
+        "REQ-100"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-site-s-primary-navigation-headernav-to-include-a-new-clickable-item-labeled-donation-that-smooth-scrolls-to-the-donation-section-in-both-desktop-and-mobile-menus-without-breaking-existing-scroll-targets",
+      "title": "Update the site’s primary navigation (HeaderNav) to include a new clickable item labeled \"Donation\" that smooth-scrolls to the \"#donation\" section in both desktop and mobile menus, without breaking existing scroll targets.",
+      "reqIds": [
+        "REQ-101"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-insert-the-new-donation-section-into-the-main-site-page-flow-in-frontend-src-app-tsx-so-it-appears-as-part-of-the-public-homepage-content-and-also-in-pro-mode-since-pro-mode-renders-the-normal-public-site-ui-place-it-in-a-sensible-location-near-the-end-of-the-page-e-g-before-the-footer-while-preserving-existing-section-order-and-behavior",
+      "title": "Insert the new Donation section into the main site page flow in frontend/src/App.tsx so it appears as part of the public homepage content (and also in Pro mode, since Pro mode renders the normal public site UI). Place it in a sensible location near the end of the page (e.g., before the Footer), while preserving existing section order and behavior.",
+      "reqIds": [
+        "REQ-102"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -839,12 +912,6 @@
       "status": "pending"
     },
     {
-      "id": "AR-46",
-      "summary": "In the admin Characters management panel, allow admins to upload a character portrait image (max 20 MB) when adding/editing characters.",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
       "id": "AR-47",
       "summary": "Improve the Episodes admin panel: support thumbnail image upload, release date selection, runtime field, visibility status (Draft/Scheduled/Public), tagging which characters appear per episode, an episode summary text box, and drag-and-drop episode reordering (skip any items already implemented).",
       "reqIds": [],
@@ -952,6 +1019,30 @@
       "reqIds": [
         "REQ-90"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-62",
+      "summary": "Add an admin/owner-only “+” button next to the public Characters section heading (similar to the Gallery “+” button) that is only visible to authenticated admins; clicking it should open the character create/upload flow.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-63",
+      "summary": "Add the user-provided image to the Gallery section (i.e., upload/seed it so it appears under Gallery on the public site).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-64",
+      "summary": "Remove the incorrect image currently showing in the public Gallery (static fallback/seeded image) so it no longer appears on the site.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-65",
+      "summary": "Add a new \"Donation\" tab/section to the site that displays a support message for \"Whispers Of The White Moon\" and includes Cash App donation instructions (\"Donate Via Cash App\" and \"$WOTWM\").",
+      "reqIds": [],
       "status": "pending"
     }
   ],

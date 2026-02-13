@@ -24,7 +24,8 @@ export function HeaderNav() {
     { href: '#clans', label: 'Clans' },
     { href: '#episodes', label: 'Episodes' },
     { href: '#gallery', label: 'Gallery' },
-    { href: '#news', label: 'News' }
+    { href: '#news', label: 'News' },
+    { href: '#donation', label: 'Donation' }
   ];
 
   const scrollToSection = (href: string) => {

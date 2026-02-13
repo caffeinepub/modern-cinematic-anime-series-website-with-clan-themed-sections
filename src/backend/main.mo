@@ -11,10 +11,10 @@ import AccessControl "authorization/access-control";
 import BlobStorage "blob-storage/Storage";
 import MixinStorage "blob-storage/Mixin";
 import MixinAuthorization "authorization/MixinAuthorization";
-import Migration "migration";
+
 
 // Specify the migration function to run on upgrade by the with clause
-(with migration = Migration.run)
+
 actor {
   include MixinStorage();
 

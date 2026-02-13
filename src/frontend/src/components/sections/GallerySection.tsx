@@ -8,7 +8,7 @@ import { GalleryUploadDialog } from '../gallery/GalleryUploadDialog';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 import { Alert, AlertDescription } from '../ui/alert';
-import { AlertCircle, Plus } from 'lucide-react';
+import { AlertCircle, Plus, ImageOff } from 'lucide-react';
 import { decodeGalleryMetadata } from '../../utils/adminContentAdapters';
 import { galleryItems as staticGalleryItems } from '../../data/gallery';
 
@@ -46,6 +46,7 @@ export function GallerySection() {
   };
 
   const showAdminButton = identity && isAdmin;
+  const isEmpty = galleryItems.length === 0;
 
   return (
     <section
@@ -87,6 +88,11 @@ export function GallerySection() {
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>Failed to load gallery: {error.message}</AlertDescription>
           </Alert>
+        ) : isEmpty ? (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <ImageOff className="w-16 h-16 text-muted-foreground/50 mb-4" />
+            <p className="text-lg text-muted-foreground">No gallery images yet.</p>
+          </div>
         ) : (
           <>
             <GalleryGrid items={galleryItems} onImageClick={handleImageClick} />

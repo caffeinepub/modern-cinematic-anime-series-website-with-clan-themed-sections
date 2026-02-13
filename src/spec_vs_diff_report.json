@@ -1,71 +1,33 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T17:43:40.613Z",
-  "summary": "Diff implements character portraitUrl across backend types, adds a migration to initialize portraitUrl for existing characters, updates frontend data mapping and CharacterCard rendering to show portraits when present, and adds admin-panel state/handlers plus shared image validation utility/constants for character portrait uploads. However, the diff summary does not provide direct evidence that backend createCharacter/updateCharacter signatures were extended to accept portraitUrl (or that authorization behavior remains unchanged), and it also includes several unrelated UI/theme/routing enhancements not requested in the BuildRequest.",
+  "generatedAt": "2026-02-13T18:34:13.478Z",
+  "summary": "Donation section and nav link were added and wired into both main and Pro views. However, the donation body content does not appear to match any “exact English text provided by the user” verbatim, as required.",
   "missing_requirements": [
     {
-      "id": "REQ-89",
-      "requirement": "Extend backend Character CRUD APIs in backend/main.mo so admins can create/update a character with an optional portrait image reference (portraitUrl) and enforce existing admin-only authorization checks.",
-      "reason": "backend/main.mo is truncated before the Character CRUD functions, so there is no explicit evidence in the diff summary that createCharacter/updateCharacter accept and persist a portraitUrl parameter, preserve portraitUrl on updates, and retain the existing unauthorized behavior for non-admin callers.",
+      "id": "REQ-100",
+      "requirement": "Donation/support body content must match the user-provided English text verbatim (including the Cash App handle \"$WOTWM\").",
+      "reason": "The new DonationSection includes custom phrasing and additional emoji/text (e.g., \"Help bring the story...\", \"Thank you for your support! 💙\", \"🔥\", \"🌙\") rather than any clearly user-supplied verbatim block. The BuildRequest requires using the exact text provided by the user, but the implemented copy appears authored in the diff.",
       "evidence": [
-        "backend/main.mo (truncated; CRUD functions not shown)"
+        "frontend/src/components/sections/DonationSection.tsx"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Broad site-wide visual/theme enhancements (cinematic/anime styling, animations, Tailwind config extensions).",
-      "reason": "Not requested by the BuildRequest, which is specifically about adding character portrait upload/display and related backend/frontend plumbing.",
+      "description": "Added extra decorative emoji/content in the Donation section (e.g., moon emoji icon, fire emoji in heading, and \"Thank you for your support! 💙\").",
+      "reason": "The request only specifies using the exact user-provided English donation text (verbatim) and styling/animation consistency; it does not ask for additional emoji or extra gratitude lines beyond the provided text.",
       "evidence": [
-        "frontend/src/index.css (per frontend-file-summaries.txt)",
-        "frontend/tailwind.config.js (per frontend-file-summaries.txt)",
-        "frontend/src/components/sections/HeroSection.tsx (per frontend-file-summaries.txt)",
-        "frontend/src/components/sections/AboutSection.tsx (per frontend-file-summaries.txt)",
-        "frontend/src/components/clans/ClanCard.tsx (per frontend-file-summaries.txt)"
-      ]
-    },
-    {
-      "description": "Hash-based routing with multiple views (main/admin/pro) and ProToolbar/ProPresentationSection integration changes.",
-      "reason": "Not part of the portrait-upload feature request.",
-      "evidence": [
-        "frontend/src/App.tsx (per frontend-file-summaries.txt)"
-      ]
-    },
-    {
-      "description": "Navigation header change adding an admin link visible only to authenticated admins.",
-      "reason": "Not requested by the portrait upload feature requirements.",
-      "evidence": [
-        "frontend/src/components/sections/HeaderNav.tsx (per frontend-file-summaries.txt)"
-      ]
-    },
-    {
-      "description": "Clans section changes including backend loading/fallback merging and WorldMapSection integration.",
-      "reason": "Not requested; unrelated to character portrait upload/display.",
-      "evidence": [
-        "frontend/src/components/sections/ClansSection.tsx (per frontend-file-summaries.txt)"
-      ]
-    },
-    {
-      "description": "New parallax hook and other scroll/animation behavior tweaks beyond what is needed for portraits.",
-      "reason": "Not requested by the BuildRequest.",
-      "evidence": [
-        "frontend/src/hooks/useParallax.ts (per frontend-file-summaries.txt)",
-        "frontend/src/hooks/useRevealOnScroll.ts (per frontend-file-summaries.txt)"
+        "frontend/src/components/sections/DonationSection.tsx"
       ]
     }
   ],
-  "confidence": 0.64,
+  "confidence": 0.72,
   "changed_files": [
-    "backend/main.mo",
-    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
-    "frontend/src/components/characters/CharacterCard.tsx",
-    "frontend/src/components/sections/CharactersSection.tsx",
-    "frontend/src/data/characters.ts",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/utils/galleryImageUpload.ts",
+    "frontend/src/App.tsx",
+    "frontend/src/components/sections/DonationSection.tsx",
+    "frontend/src/components/sections/HeaderNav.tsx",
     "project_state.json"
   ]
 }

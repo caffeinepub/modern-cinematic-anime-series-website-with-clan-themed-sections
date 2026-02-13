@@ -1,65 +1,83 @@
-import { useRevealOnScroll } from '../../hooks/useRevealOnScroll';
+import { useState } from 'react';
 import { useGetAllCharacters } from '../../hooks/useQueries';
+import { useInternetIdentity } from '../../hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '../../hooks/useQueries';
 import { CharacterCard } from '../characters/CharacterCard';
+import { CreateCharacterDialog } from '../characters/CreateCharacterDialog';
+import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 import { Alert, AlertDescription } from '../ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Plus } from 'lucide-react';
 import { decodeCharacterMetadata } from '../../utils/adminContentAdapters';
+import { useRevealOnScroll } from '../../hooks/useRevealOnScroll';
 
 export function CharactersSection() {
-  const { ref, isVisible } = useRevealOnScroll();
-  const { data: backendCharacters = [], isLoading, error } = useGetAllCharacters();
+  const { data: characters = [], isLoading, error } = useGetAllCharacters();
+  const { identity } = useInternetIdentity();
+  const { data: isAdmin = false } = useIsCallerAdmin();
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const { ref: sectionRef, isVisible } = useRevealOnScroll();
 
-  // Transform backend characters to match the expected format
-  const characters = backendCharacters.map((char) => {
-    const { bio, metadata } = decodeCharacterMetadata(char.bio);
+  const isAuthenticated = !!identity;
+  const showAdminButton = isAuthenticated && isAdmin;
+
+  const transformedCharacters = characters.map((character) => {
+    const { bio, metadata } = decodeCharacterMetadata(character.bio);
     return {
-      id: char.id.toString(),
-      name: char.name,
+      id: character.id.toString(),
+      name: character.name,
       clan: metadata.clan || 'Unknown Clan',
-      personality: metadata.personality || bio,
+      personality: metadata.personality || '',
       power: metadata.power || '',
-      role: char.role,
-      portraitUrl: char.portraitUrl || '',
+      role: character.role,
+      portraitUrl: character.portraitUrl || undefined,
     };
   });
 
   return (
     <section
       id="characters"
-      ref={ref}
-      className={`py-24 px-4 bg-gradient-to-b from-background via-background/95 to-background ${
-        isVisible ? 'animate-fade-up' : 'opacity-0'
-      }`}
+      ref={sectionRef}
+      className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-background via-background/95 to-background"
     >
-      <div className="container mx-auto max-w-7xl">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-6">
-          <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-            Characters
-          </span>
-        </h2>
-        <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto mb-16">
-          Meet the legendary warriors, mystics, and leaders who shape the destiny of Whispers Of The White Moon.
-        </p>
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,oklch(var(--primary)/0.08),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,oklch(var(--accent)/0.06),transparent_50%)]" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-16 space-y-4">
+          <div className="flex items-center justify-center gap-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-glow">Characters</h2>
+            {showAdminButton && (
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-8 w-8 rounded-full"
+                onClick={() => setIsCreateDialogOpen(true)}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Meet the heroes and villains of Whispers Of The White Moon
+          </p>
+        </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="h-64 w-full" />
+              <Skeleton key={i} className="h-96 w-full" />
             ))}
           </div>
         ) : error ? (
-          <Alert variant="destructive">
+          <Alert variant="destructive" className="max-w-2xl mx-auto">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>Failed to load characters: {error.message}</AlertDescription>
           </Alert>
-        ) : characters.length === 0 ? (
-          <div className="text-center text-muted-foreground py-12">
-            No characters available yet.
-          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {characters.map((character, index) => (
+            {transformedCharacters.map((character, index) => (
               <CharacterCard
                 key={character.id}
                 character={character}
@@ -70,6 +88,8 @@ export function CharactersSection() {
           </div>
         )}
       </div>
+
+      <CreateCharacterDialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} />
     </section>
   );
 }

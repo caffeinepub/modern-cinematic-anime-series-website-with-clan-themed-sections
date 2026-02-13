@@ -2,10 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-react-query-character-hooks-types-in-frontend-src-hooks-usequeries-ts-to-support-reading-writing-the-new-character-portrait-field-when-creating-and-editing-characters-in-the-admin-ui",
-      "featureTitle": "Update React Query character hooks/types in frontend/src/hooks/useQueries.ts to support reading/writing the new character portrait field when creating and editing characters in the admin UI.",
+      "featureId": "feature-add-a-new-public-facing-page-section-with-stable-dom-id-donation-that-displays-the-donation-support-content-for-whispers-of-the-white-moon-using-the-exact-english-text-provided-by-the-user-including-the-cash-app-handle-wotwm-the-section-must-match-the-site-s-existing-cinematic-dark-styling-include-a-prominent-section-title-donation-and-use-the-existing-reveal-on-scroll-reduced-motion-safe-animation-behavior-used-in-other-sections",
+      "featureTitle": "Add a new public-facing page section with stable DOM id \"donation\" that displays the donation/support content for \"Whispers Of The White Moon\" using the exact English text provided by the user (including the Cash App handle \"$WOTWM\"). The section must match the site’s existing cinematic dark styling, include a prominent section title \"Donation\", and use the existing reveal-on-scroll / reduced-motion-safe animation behavior used in other sections.",
       "files": [
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/sections/DonationSection.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -17,16 +17,15 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-91"
+        "REQ-100"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-enhance-the-characters-admin-panel-frontend-src-components-admin-panels-charactersadminpanel-tsx-to-allow-admins-to-upload-select-a-character-portrait-image-when-creating-or-editing-a-character-with-client-side-validation-enforcing-a-20mb-max-file-size-and-allowed-image-types-png-jpeg-webp-using-the-existing-frontend-src-utils-galleryimageupload-ts-validation-utility",
-      "featureTitle": "Enhance the Characters admin panel (frontend/src/components/admin/panels/CharactersAdminPanel.tsx) to allow admins to upload/select a character portrait image when creating or editing a character, with client-side validation enforcing a 20MB max file size and allowed image types (PNG/JPEG/WebP) using the existing frontend/src/utils/galleryImageUpload.ts validation utility.",
+      "featureId": "feature-update-the-site-s-primary-navigation-headernav-to-include-a-new-clickable-item-labeled-donation-that-smooth-scrolls-to-the-donation-section-in-both-desktop-and-mobile-menus-without-breaking-existing-scroll-targets",
+      "featureTitle": "Update the site’s primary navigation (HeaderNav) to include a new clickable item labeled \"Donation\" that smooth-scrolls to the \"#donation\" section in both desktop and mobile menus, without breaking existing scroll targets.",
       "files": [
-        "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
-        "frontend/src/utils/galleryImageUpload.ts"
+        "frontend/src/components/sections/HeaderNav.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -38,17 +37,15 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-92"
+        "REQ-101"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-the-public-characters-section-data-mapping-frontend-src-components-sections-characterssection-tsx-and-character-card-rendering-frontend-src-components-characters-charactercard-tsx-so-that-if-a-character-portrait-image-is-available-from-backend-data-it-is-displayed-in-place-of-the-current-placeholder-icon-otherwise-keep-the-existing-placeholder-behavior",
-      "featureTitle": "Update the public Characters section data mapping (frontend/src/components/sections/CharactersSection.tsx) and character card rendering (frontend/src/components/characters/CharacterCard.tsx) so that if a character portrait image is available from backend data, it is displayed in place of the current placeholder icon; otherwise keep the existing placeholder behavior.",
+      "featureId": "feature-insert-the-new-donation-section-into-the-main-site-page-flow-in-frontend-src-app-tsx-so-it-appears-as-part-of-the-public-homepage-content-and-also-in-pro-mode-since-pro-mode-renders-the-normal-public-site-ui-place-it-in-a-sensible-location-near-the-end-of-the-page-e-g-before-the-footer-while-preserving-existing-section-order-and-behavior",
+      "featureTitle": "Insert the new Donation section into the main site page flow in frontend/src/App.tsx so it appears as part of the public homepage content (and also in Pro mode, since Pro mode renders the normal public site UI). Place it in a sensible location near the end of the page (e.g., before the Footer), while preserving existing section order and behavior.",
       "files": [
-        "frontend/src/components/characters/CharacterCard.tsx",
-        "frontend/src/components/sections/CharactersSection.tsx",
-        "frontend/src/data/characters.ts"
+        "frontend/src/App.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -60,7 +57,7 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-93"
+        "REQ-102"
       ],
       "confidence": "high"
     }

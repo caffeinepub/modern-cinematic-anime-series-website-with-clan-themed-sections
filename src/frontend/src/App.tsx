@@ -7,6 +7,7 @@ import { ClansSection } from './components/sections/ClansSection';
 import { EpisodesSection } from './components/sections/EpisodesSection';
 import { GallerySection } from './components/sections/GallerySection';
 import { NewsUpdatesSection } from './components/sections/NewsUpdatesSection';
+import { DonationSection } from './components/sections/DonationSection';
 import { Footer } from './components/sections/Footer';
 import { AdminAccessGate } from './components/admin/AdminAccessGate';
 import { ProModeGate } from './components/pro/ProModeGate';
@@ -56,6 +57,7 @@ function App() {
             <EpisodesSection />
             <GallerySection />
             <NewsUpdatesSection />
+            <DonationSection />
           </main>
           <Footer />
         </div>
@@ -75,6 +77,7 @@ function App() {
         <EpisodesSection />
         <GallerySection />
         <NewsUpdatesSection />
+        <DonationSection />
       </main>
       <Footer />
     </div>
