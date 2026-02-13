@@ -26,11 +26,21 @@ export interface Clan {
 }
 export interface Episode {
   'id' : bigint,
+  'taggedCharacterIds' : Array<bigint>,
+  'writingComplete' : boolean,
   'title' : string,
   'thumbnailUrl' : string,
+  'order' : bigint,
   'description' : string,
+  'released' : boolean,
+  'explicitReleaseDate' : bigint,
+  'animationComplete' : boolean,
+  'voiceActingComplete' : boolean,
+  'storyboardComplete' : boolean,
+  'visibility' : Visibility,
   'videoUrl' : string,
-  'releaseDate' : bigint,
+  'editingComplete' : boolean,
+  'runtime' : [] | [bigint],
 }
 export type ExternalBlob = Uint8Array;
 export interface GalleryItem {
@@ -60,6 +70,9 @@ export interface UserProfile { 'name' : string }
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
   { 'guest' : null };
+export type Visibility = { 'scheduled' : null } |
+  { 'publicVisibility' : null } |
+  { 'draft' : null };
 export interface _CaffeineStorageCreateCertificateResult {
   'method' : string,
   'blob_hash' : string,
@@ -96,7 +109,21 @@ export interface _SERVICE {
   >,
   'createClan' : ActorMethod<[string, string], undefined>,
   'createEpisode' : ActorMethod<
-    [string, string, string, string, bigint],
+    [
+      string,
+      string,
+      string,
+      string,
+      bigint,
+      [] | [bigint],
+      Visibility,
+      Array<bigint>,
+      boolean,
+      boolean,
+      boolean,
+      boolean,
+      boolean,
+    ],
     undefined
   >,
   'createGalleryItem' : ActorMethod<
@@ -132,6 +159,7 @@ export interface _SERVICE {
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'listTeamMembers' : ActorMethod<[], Array<[Principal, UserRole]>>,
   'removeMemberFromClan' : ActorMethod<[bigint, bigint], undefined>,
+  'reorderEpisodes' : ActorMethod<[Array<bigint>], undefined>,
   'revokeRole' : ActorMethod<[Principal], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'updateCharacter' : ActorMethod<
@@ -140,7 +168,22 @@ export interface _SERVICE {
   >,
   'updateClan' : ActorMethod<[bigint, string, string], undefined>,
   'updateEpisode' : ActorMethod<
-    [bigint, string, string, string, string, bigint],
+    [
+      bigint,
+      string,
+      string,
+      string,
+      string,
+      bigint,
+      [] | [bigint],
+      Visibility,
+      Array<bigint>,
+      boolean,
+      boolean,
+      boolean,
+      boolean,
+      boolean,
+    ],
     undefined
   >,
   'updateGalleryItem' : ActorMethod<

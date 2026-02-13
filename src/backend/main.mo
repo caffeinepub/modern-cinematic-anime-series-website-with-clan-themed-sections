@@ -3,15 +3,19 @@ import Map "mo:core/Map";
 import Text "mo:core/Text";
 import Time "mo:core/Time";
 import Int "mo:core/Int";
+import Array "mo:core/Array";
 import Runtime "mo:core/Runtime";
 import Principal "mo:core/Principal";
+import Migration "migration";
 
 import AccessControl "authorization/access-control";
 import BlobStorage "blob-storage/Storage";
 import MixinStorage "blob-storage/Mixin";
 import MixinAuthorization "authorization/MixinAuthorization";
 
-
+// Use non-authorized version of with migration for iterative development
+// Swap to correct one import Migration "migration"; (with migration = Migration.run)
+(with migration = Migration.run)
 actor {
   include MixinStorage();
 
@@ -51,13 +55,29 @@ actor {
     name : Text;
   };
 
+  public type Visibility = {
+    #draft;
+    #scheduled;
+    #publicVisibility;
+  };
+
   public type Episode = {
     id : Nat;
     title : Text;
     description : Text;
     videoUrl : Text;
     thumbnailUrl : Text;
-    releaseDate : Int;
+    explicitReleaseDate : Int;
+    runtime : ?Nat;
+    visibility : Visibility;
+    taggedCharacterIds : [Nat];
+    order : Nat;
+    writingComplete : Bool;
+    storyboardComplete : Bool;
+    voiceActingComplete : Bool;
+    animationComplete : Bool;
+    editingComplete : Bool;
+    released : Bool;
   };
 
   public type Character = {
@@ -126,26 +146,67 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Episodes Management
-  public shared ({ caller }) func createEpisode(title : Text, description : Text, videoUrl : Text, thumbnailUrl : Text, releaseDate : Int) : async () {
+  // Episodes Management (with production progress)
+  public shared ({ caller }) func createEpisode(
+    title : Text,
+    description : Text,
+    videoUrl : Text,
+    thumbnailUrl : Text,
+    explicitReleaseDate : Int,
+    runtime : ?Nat,
+    visibility : Visibility,
+    taggedCharacterIds : [Nat],
+    writingComplete : Bool,
+    storyboardComplete : Bool,
+    voiceActingComplete : Bool,
+    animationComplete : Bool,
+    editingComplete : Bool,
+  ) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can create episodes");
     };
 
-    let newEpisode = {
+    let order = episodes.size();
+
+    let newEpisode : Episode = {
       id = nextEpisodeId;
       title;
       description;
       videoUrl;
       thumbnailUrl;
-      releaseDate;
+      explicitReleaseDate;
+      runtime;
+      visibility;
+      taggedCharacterIds;
+      order;
+      writingComplete;
+      storyboardComplete;
+      voiceActingComplete;
+      animationComplete;
+      editingComplete;
+      released = visibility == #publicVisibility;
     };
 
     episodes.add(newEpisode);
     nextEpisodeId += 1;
   };
 
-  public shared ({ caller }) func updateEpisode(id : Nat, title : Text, description : Text, videoUrl : Text, thumbnailUrl : Text, releaseDate : Int) : async () {
+  public shared ({ caller }) func updateEpisode(
+    id : Nat,
+    title : Text,
+    description : Text,
+    videoUrl : Text,
+    thumbnailUrl : Text,
+    explicitReleaseDate : Int,
+    runtime : ?Nat,
+    visibility : Visibility,
+    taggedCharacterIds : [Nat],
+    writingComplete : Bool,
+    storyboardComplete : Bool,
+    voiceActingComplete : Bool,
+    animationComplete : Bool,
+    editingComplete : Bool,
+  ) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can update episodes");
     };
@@ -159,7 +220,17 @@ actor {
             description;
             videoUrl;
             thumbnailUrl;
-            releaseDate;
+            explicitReleaseDate;
+            runtime;
+            visibility;
+            taggedCharacterIds;
+            order = ep.order;
+            writingComplete;
+            storyboardComplete;
+            voiceActingComplete;
+            animationComplete;
+            editingComplete;
+            released = visibility == #publicVisibility;
           };
         } else {
           ep;
@@ -184,6 +255,26 @@ actor {
 
   public query ({ caller }) func getEpisodeById(id : Nat) : async ?Episode {
     episodes.find(func(ep) { ep.id == id });
+  };
+
+  public shared({ caller }) func reorderEpisodes(newOrder : [Nat]) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can reorder episodes");
+    };
+
+    let episodesArray = episodes.toArray();
+    let reorderedEpisodes = episodesArray.map(
+      func(ep) {
+        let index = newOrder.findIndex(func(id) { id == ep.id });
+        switch (index) {
+          case (null) { ep };
+          case (?newPos) { { ep with order = newPos } };
+        };
+      }
+    );
+
+    episodes.clear();
+    episodes.addAll(reorderedEpisodes.values());
   };
 
   // Characters Management
@@ -523,7 +614,6 @@ actor {
 
   // Team Member Management (New)
   public query ({ caller }) func listTeamMembers() : async [(Principal, AccessControl.UserRole)] {
-    // This function is currently a stub as team members are not yet implemented.
     [];
   };
 

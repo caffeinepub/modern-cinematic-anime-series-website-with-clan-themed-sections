@@ -74,7 +74,7 @@ export function NewsUpdatesSection() {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-4xl md:text-5xl font-bold">
             <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-              News & Updates
+              News
             </span>
           </h2>
           <LoginButton />

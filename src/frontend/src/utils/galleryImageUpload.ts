@@ -1,7 +1,8 @@
-// Validation utility for gallery image uploads
+// Validation utility for image uploads (gallery and episodes)
 
 const ALLOWED_MIME_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE_GALLERY = 5 * 1024 * 1024; // 5MB for gallery
+const MAX_FILE_SIZE_EPISODE = 20 * 1024 * 1024; // 20MB for episodes
 
 export interface ValidationResult {
   success: boolean;
@@ -12,9 +13,13 @@ export interface ValidationResult {
 /**
  * Validates an image file and converts it to a data URL if valid
  * @param file - The file to validate
+ * @param maxSize - Maximum file size in bytes (default: 5MB)
  * @returns Promise with validation result
  */
-export async function validateAndConvertImage(file: File): Promise<ValidationResult> {
+export async function validateAndConvertImage(
+  file: File,
+  maxSize: number = MAX_FILE_SIZE_GALLERY
+): Promise<ValidationResult> {
   // Check file type
   if (!ALLOWED_MIME_TYPES.includes(file.type)) {
     return {
@@ -24,8 +29,8 @@ export async function validateAndConvertImage(file: File): Promise<ValidationRes
   }
 
   // Check file size
-  if (file.size > MAX_FILE_SIZE) {
-    const sizeMB = (MAX_FILE_SIZE / (1024 * 1024)).toFixed(0);
+  if (file.size > maxSize) {
+    const sizeMB = (maxSize / (1024 * 1024)).toFixed(0);
     return {
       success: false,
       error: `File size exceeds ${sizeMB}MB. Please choose a smaller image.`,
@@ -64,3 +69,7 @@ function fileToDataUrl(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
+
+// Export constants for use in components
+export const EPISODE_MAX_FILE_SIZE = MAX_FILE_SIZE_EPISODE;
+export const GALLERY_MAX_FILE_SIZE = MAX_FILE_SIZE_GALLERY;

@@ -50,7 +50,7 @@ export function EpisodesSection() {
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-6">
             <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-              Season 1 Episodes
+              Episodes
             </span>
           </h2>
           <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto mb-12">
@@ -85,7 +85,9 @@ export function EpisodesSection() {
       <EpisodePlayerDialog
         episode={selectedEpisode}
         open={!!selectedEpisode}
-        onOpenChange={(open) => !open && setSelectedEpisode(null)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedEpisode(null);
+        }}
       />
     </>
   );

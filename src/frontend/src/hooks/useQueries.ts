@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import { NewsPost, UserProfile, UserRole, Episode, Character, Clan, GalleryItem, Script } from '../backend';
+import { NewsPost, UserProfile, UserRole, Episode, Character, Clan, GalleryItem, Script, Visibility } from '../backend';
 import { Principal } from '@dfinity/principal';
 
 // User Profile Queries
@@ -85,9 +85,37 @@ export function useCreateEpisode() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { title: string; description: string; videoUrl: string; thumbnailUrl: string; releaseDate: bigint }) => {
+    mutationFn: async (data: {
+      title: string;
+      description: string;
+      videoUrl: string;
+      thumbnailUrl: string;
+      explicitReleaseDate: bigint;
+      runtime: bigint | null;
+      visibility: Visibility;
+      taggedCharacterIds: bigint[];
+      writingComplete?: boolean;
+      storyboardComplete?: boolean;
+      voiceActingComplete?: boolean;
+      animationComplete?: boolean;
+      editingComplete?: boolean;
+    }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.createEpisode(data.title, data.description, data.videoUrl, data.thumbnailUrl, data.releaseDate);
+      return actor.createEpisode(
+        data.title,
+        data.description,
+        data.videoUrl,
+        data.thumbnailUrl,
+        data.explicitReleaseDate,
+        data.runtime,
+        data.visibility,
+        data.taggedCharacterIds,
+        data.writingComplete ?? false,
+        data.storyboardComplete ?? false,
+        data.voiceActingComplete ?? false,
+        data.animationComplete ?? false,
+        data.editingComplete ?? false
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['episodes'] });
@@ -100,9 +128,39 @@ export function useUpdateEpisode() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { id: bigint; title: string; description: string; videoUrl: string; thumbnailUrl: string; releaseDate: bigint }) => {
+    mutationFn: async (data: {
+      id: bigint;
+      title: string;
+      description: string;
+      videoUrl: string;
+      thumbnailUrl: string;
+      explicitReleaseDate: bigint;
+      runtime: bigint | null;
+      visibility: Visibility;
+      taggedCharacterIds: bigint[];
+      writingComplete: boolean;
+      storyboardComplete: boolean;
+      voiceActingComplete: boolean;
+      animationComplete: boolean;
+      editingComplete: boolean;
+    }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateEpisode(data.id, data.title, data.description, data.videoUrl, data.thumbnailUrl, data.releaseDate);
+      return actor.updateEpisode(
+        data.id,
+        data.title,
+        data.description,
+        data.videoUrl,
+        data.thumbnailUrl,
+        data.explicitReleaseDate,
+        data.runtime,
+        data.visibility,
+        data.taggedCharacterIds,
+        data.writingComplete,
+        data.storyboardComplete,
+        data.voiceActingComplete,
+        data.animationComplete,
+        data.editingComplete
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['episodes'] });
@@ -118,6 +176,21 @@ export function useDeleteEpisode() {
     mutationFn: async (id: bigint) => {
       if (!actor) throw new Error('Actor not available');
       return actor.deleteEpisode(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['episodes'] });
+    },
+  });
+}
+
+export function useReorderEpisodes() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newOrder: bigint[]) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.reorderEpisodes(newOrder);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['episodes'] });

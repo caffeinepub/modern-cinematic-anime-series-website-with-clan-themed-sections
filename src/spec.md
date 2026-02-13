@@ -1,10 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Reorder the existing homepage sections to match the required vertical sequence while keeping all current section ids and header navigation scroll targets working.
+**Goal:** Enhance the Episodes admin panel to support richer episode metadata, thumbnail uploads, and persistent drag-and-drop ordering.
 
 **Planned changes:**
-- Reposition the existing homepage sections so the top-to-bottom order is: Hero, Story/About, Characters, Clans, Episodes, Gallery, News / Updates.
-- Verify and preserve the existing section DOM ids and Header navigation scroll targets: #hero, #about, #characters, #clans, #episodes, #gallery, #news.
+- Extend the backend Episode model and CRUD APIs to store admin-managed fields: runtime (minutes), visibility (Draft/Scheduled/Public), admin-set release date, tagged character IDs, and a persisted sort/order value.
+- Add conditional state migration (only if needed) to preserve existing episodes and initialize new fields with deterministic defaults.
+- Update frontend query hooks and types so create/update/read operations include the new episode fields and continue to invalidate/refetch the episodes list after mutations (including reordering).
+- Enhance the Episodes admin create/edit UI to add: thumbnail file upload with preview (stored in thumbnailUrl), release date selector, runtime input, visibility selector, and character tagging multi-select sourced from the characters list; keep the existing summary as a large textarea with clear English validation errors.
+- Implement (or verify existing) drag-and-drop reordering in the Episodes admin list and persist the order via the backend sort/order field.
 
-**User-visible outcome:** On the main (non-admin) homepage, sections appear in the specified order and the Header navigation links still scroll to the correct sections.
+**User-visible outcome:** Admins can upload episode thumbnails, set release dates and runtime, control visibility (Draft/Scheduled/Public), tag appearing characters, edit episode summaries, and reorder episodes via drag-and-drop with the order preserved after refresh.

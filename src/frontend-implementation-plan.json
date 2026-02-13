@@ -1,26 +1,71 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Reorder homepage sections to Story → Characters → Clans → Episodes → Gallery → News",
+  "title": "Enhance Episodes admin panel: scheduling fields, visibility, character tags, thumbnail upload, and drag-and-drop ordering (frontend)",
   "requirements": [
     {
-      "id": "REQ-50",
-      "summary": "Ensure the main homepage sections render in the required vertical order while preserving all existing section DOM ids used by header navigation scrolling.",
+      "id": "REQ-65",
+      "summary": "Update episodes React Query hooks/types to read/write runtime, visibility, explicit release date, tagged character IDs, and persisted ordering; keep invalidation working.",
       "acceptanceCriteria": [
-        "On the main (non-admin) view, the rendered section order from top to bottom is: Hero, Story/About, Characters, Clans, Episodes, Gallery, News / Updates.",
-        "Clicking HeaderNav items (Story, Characters, Clans, Episodes, Gallery, News) scrolls to the correct section and the section ids remain unchanged (#about, #characters, #clans, #episodes, #gallery, #news).",
-        "No new sections are added and no section content is removed; this change is layout/order only."
+        "useCreateEpisode and useUpdateEpisode accept and pass through the new episode fields to the backend actor calls.",
+        "The Episode type used by the admin panel includes the new fields without TypeScript errors.",
+        "The existing ['episodes'] query is invalidated/refetched after create/update/delete and after any reorder operation."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Reorder the existing homepage section component render sequence in <main> to match: Hero → About (Story) → Characters → Clans → Episodes → Gallery → News, without changing any section component implementations or their DOM ids."
+          "description": "Update the episodes mutations to match the current backend actor method signatures and Episode fields: pass explicitReleaseDate, runtime (bigint|null), visibility, taggedCharacterIds, and production progress booleans; add a dedicated reorder hook that calls the backend reorder capability and invalidates the ['episodes'] query on success."
+        }
+      ]
+    },
+    {
+      "id": "REQ-66",
+      "summary": "Enhance Episodes admin create/edit UI to support thumbnail file upload with preview, explicit release date selection, runtime minutes, visibility status, and character tagging multi-select (English validation).",
+      "acceptanceCriteria": [
+        "Create Episode and Edit Episode dialogs include controls for: thumbnail file upload, release date selection, runtime minutes input, visibility selection (Draft/Scheduled/Public), and character tagging multi-select.",
+        "Thumbnail upload produces a non-empty preview and stores the resulting value in thumbnailUrl (e.g., a data URL), similar to how the Gallery admin upload works.",
+        "If an invalid file is selected, the UI shows a clear English error message and does not submit.",
+        "The admin can select zero or more characters for an episode; saving persists the selection and reopening the edit dialog shows the previously selected characters.",
+        "The existing Summary textarea remains available and is used as the episode summary text box."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx",
+          "operation": "modify",
+          "description": "Add create/edit form fields for explicit release date (date/time selector mapped to bigint), runtime minutes (number), visibility (Draft/Scheduled/Public), and tagged character IDs (multi-select populated from the characters list); keep Summary as a large textarea; use existing shadcn-ui form controls (Dialog, Select, Input, Textarea, etc.) for consistent UI. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/components/sections/HeaderNav.tsx",
+          "path": "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx",
           "operation": "modify",
-          "description": "Verify the existing nav link targets remain mapped to the unchanged section ids (#hero, #about, #characters, #clans, #episodes, #gallery, #news) and keep the navigation list aligned with the updated section order (layout/order only; no new links required)."
+          "description": "Add thumbnail image file upload alongside the existing thumbnail URL input: validate type/size, convert to data URL, show a preview, and store the resulting value into thumbnailUrl; display clear English validation errors and prevent submit when invalid. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/galleryImageUpload.ts",
+          "operation": "modify",
+          "description": "Generalize or reuse the existing image validation/conversion utility so Episodes thumbnail upload can share the same rules and error messaging style as Gallery uploads (type/size validation and FileReader -> data URL conversion)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-67",
+      "summary": "Add drag-and-drop episode reordering in the admin list and persist/reload order using the backend reorder capability.",
+      "acceptanceCriteria": [
+        "The Episodes admin list supports drag-and-drop reordering via a clear handle/interaction.",
+        "After reordering, the new order is persisted to the backend and the episodes list re-renders in the saved order on subsequent loads.",
+        "Reordering does not break editing, deleting, or production progress toggles.",
+        "If drag-and-drop was already implemented, it continues to work and persistence is verified."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx",
+          "operation": "modify",
+          "description": "Render the episodes list in persisted order (using the Episode order/sort field) and add drag-and-drop reordering with a visible handle; on drop, call the reorder mutation and then refetch/invalidate ['episodes'] to confirm persisted ordering; ensure edit/delete/progress toggles continue to function after reordering. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Ensure the reorder mutation hook is used by the Episodes admin panel and invalidates/refetches the ['episodes'] query after a successful reorder so the list reloads in the saved order."
         }
       ]
     }

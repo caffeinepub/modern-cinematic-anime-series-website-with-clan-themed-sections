@@ -1,5 +1,6 @@
 import { useGetAllClans } from '../../hooks/useQueries';
 import { ClanCard } from '../clans/ClanCard';
+import { WorldMapSection } from './WorldMapSection';
 import { useRevealOnScroll } from '../../hooks/useRevealOnScroll';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { Skeleton } from '../ui/skeleton';
@@ -46,7 +47,7 @@ export function ClansSection() {
         >
           <h2 className={`text-5xl md:text-7xl font-black mb-8 ${!prefersReducedMotion ? 'text-glow' : ''}`}>
             <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              The Seven Clans
+              Clans
             </span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
@@ -77,6 +78,11 @@ export function ClansSection() {
             ))}
           </div>
         )}
+
+        {/* World Map Section integrated within Clans */}
+        <div className="mt-32">
+          <WorldMapSection />
+        </div>
       </div>
     </section>
   );

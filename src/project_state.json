@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 35,
+  "projectStateVersion": 45,
   "summary": "Build a modern anime streaming/promo-style website for \"Whispers Of The White Moon\" with dark cinematic styling, glowing accents, smooth transitions/parallax, content sections (Characters, Episodes, Gallery, News/Updates, Clans), and a secure admin dashboard for the site owner to manage all anime content.",
   "architectural_notes": [
     "Visual direction: anime streaming/promo-site feel with dark theme (navy/black/deep purple) and glowing accents (moon blue, fiery gold).",
@@ -11,10 +11,13 @@
     "Admin dashboard should support role-based access control (RBAC) with permissions by role, including team member account administration.",
     "Homepage should include a dedicated \"Series Overview\" subsection within the About/Story area, featuring the provided narrative overview text.",
     "Public Episodes UI should conditionally render an embedded video player for episodes marked Released; otherwise show a clear \"not released yet\" message/state.",
-    "Homepage layout: ensure existing sections (Story, Characters, Clans, Episodes, Gallery, News/Updates) can be reordered to match the intended page flow while keeping stable section DOM ids for nav scrolling."
+    "Homepage layout: ensure existing sections (Story, Characters, Clans, Episodes, Gallery, News/Updates) can be reordered to match the intended page flow while keeping stable section DOM ids for nav scrolling.",
+    "Homepage UX: add clear, prominent section title headings for each main section (Hero/Series title, Story, Characters, Clans, Episodes, Gallery, News) so users see the section name as they scroll."
   ],
   "known_issues": [
-    "User reports the Gallery “+” upload button is not visible (likely due to not being authenticated as an admin)."
+    "User reports the Gallery “+” upload button is not visible (likely due to not being authenticated as an admin).",
+    "Build/deployment failed due to a configuration error (Caffeine platform error).",
+    "Build/generation process intermittently fails with \"couldn't generate your application\" / \"AI couldn't handle that request\" errors."
   ],
   "isFixRequest": false,
   "existing_features": [
@@ -337,6 +340,102 @@
         "REQ-49"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-frontend-react-query-episode-hooks-and-types-so-the-admin-ui-can-read-and-write-episode-production-progress-fields-via-the-backend-actor-following-the-existing-usequeries-ts-patterns-for-episodes",
+      "title": "Update the frontend React Query episode hooks and types so the admin UI can read and write episode production progress fields via the backend actor, following the existing useQueries.ts patterns for episodes.",
+      "reqIds": [
+        "REQ-54"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-episode-production-progress-tracker-ui-to-the-existing-episodes-admin-panel-frontend-src-components-admin-panels-episodesadminpanel-tsx-show-six-checkboxes-writing-storyboard-voice-acting-animation-editing-release-for-each-episode-that-admins-can-toggle-and-display-a-progress-bar-per-episode-based-on-the-percentage-of-completed-stages-completedstages-6",
+      "title": "Add an episode production progress tracker UI to the existing Episodes admin panel (frontend/src/components/admin/panels/EpisodesAdminPanel.tsx): show six checkboxes (Writing, Storyboard, Voice Acting, Animation, Editing, Release) for each episode that admins can toggle, and display a progress bar per episode based on the percentage of completed stages (completedStages/6).",
+      "reqIds": [
+        "REQ-55"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-public-homepage-sections-so-each-main-section-slide-displays-a-prominent-consistent-section-title-matching-the-headernav-labels-hero-shows-whispers-of-the-white-moon-about-section-shows-story-characters-section-shows-characters-clans-section-shows-clans-episodes-section-shows-episodes-gallery-section-shows-gallery-news-section-shows-news",
+      "title": "Update the public homepage sections so each main section/\"slide\" displays a prominent, consistent section title matching the HeaderNav labels: Hero shows \"Whispers Of The White Moon\"; About section shows \"Story\"; Characters section shows \"Characters\"; Clans section shows \"Clans\"; Episodes section shows \"Episodes\"; Gallery section shows \"Gallery\"; News section shows \"News\".",
+      "reqIds": [
+        "REQ-56"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-interactive-world-map-experience-that-visually-shows-clan-territories-and-important-locations-where-clicking-a-location-opens-lore-information-in-a-modal-dialog",
+      "title": "Add an interactive “World Map” experience that visually shows clan territories and important locations, where clicking a location opens lore information in a modal/dialog.",
+      "reqIds": [
+        "REQ-57"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-the-world-map-into-the-existing-homepage-layout-without-changing-the-existing-headernav-links-scroll-targets-place-it-as-a-sub-section-within-the-existing-clans-section-or-immediately-adjacent-to-it-while-preserving-the-current-clans-section-id-and-existing-layout-animations",
+      "title": "Integrate the World Map into the existing homepage layout without changing the existing HeaderNav links/scroll targets; place it as a sub-section within the existing Clans section or immediately adjacent to it while preserving the current #clans section id and existing layout/animations.",
+      "reqIds": [
+        "REQ-58"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-single-data-driven-source-for-map-locations-name-coordinates-on-the-image-associated-clan-region-if-applicable-and-lore-text-and-render-markers-from-that-data-no-repeated-hard-coded-marker-jsx",
+      "title": "Create a single, data-driven source for map locations (name, coordinates on the image, associated clan/region if applicable, and lore text) and render markers from that data (no repeated hard-coded marker JSX).",
+      "reqIds": [
+        "REQ-59"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-user-uploaded-world-map-image-to-the-frontend-as-a-static-asset-and-use-it-as-the-rendered-map-background-do-not-route-it-through-the-backend",
+      "title": "Add the user-uploaded world map image to the frontend as a static asset and use it as the rendered map background (do not route it through the backend).",
+      "reqIds": [
+        "REQ-60"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-world-map-interaction-so-each-location-uses-a-precise-custom-shaped-clickable-hotspot-that-matches-the-map-s-mountain-territory-outlines-traced-polygons-paths-instead-of-the-current-circular-pin-marker-buttons",
+      "title": "Update the World Map interaction so each location uses a precise custom-shaped clickable hotspot that matches the map’s mountain/territory outlines (traced polygons/paths) instead of the current circular pin marker buttons.",
+      "reqIds": [
+        "REQ-61"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-single-data-driven-map-locations-source-frontend-src-data-worldmaplocations-ts-to-include-the-traced-custom-shape-definition-for-each-location-and-render-hotspots-from-this-data-without-hard-coded-repeated-jsx-per-location",
+      "title": "Extend the single data-driven map locations source (frontend/src/data/worldMapLocations.ts) to include the traced custom shape definition for each location, and render hotspots from this data without hard-coded repeated JSX per location.",
+      "reqIds": [
+        "REQ-62"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-episodes-react-query-hooks-and-typescript-types-frontend-src-hooks-usequeries-ts-and-generated-backend-types-usage-so-the-admin-ui-can-read-write-the-new-episode-fields-runtimeminutes-visibility-releasedate-admin-set-tagged-character-ids-and-order-ensure-query-invalidation-continues-to-refresh-the-episodes-list-after-mutations",
+      "title": "Update the Episodes React Query hooks and TypeScript types (frontend/src/hooks/useQueries.ts and generated backend types usage) so the admin UI can read/write the new episode fields: runtimeMinutes, visibility, releaseDate (admin-set), tagged character IDs, and order. Ensure query invalidation continues to refresh the episodes list after mutations.",
+      "reqIds": [
+        "REQ-65"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-episodes-admin-panel-ui-frontend-src-components-admin-panels-episodesadminpanel-tsx-to-support-editing-the-requested-episode-fields-when-creating-and-editing-1-thumbnail-image-upload-from-device-in-addition-to-existing-url-input-2-release-date-selector-control-3-runtime-field-4-visibility-toggle-with-draft-scheduled-public-5-character-tagging-via-multi-select-populated-from-backend-characters-list-and-6-keep-the-episode-summary-textbox-already-present-but-ensure-it-remains-a-large-usable-text-area-all-user-facing-strings-must-be-in-english-and-validation-errors-must-be-clear",
+      "title": "Enhance the Episodes admin panel UI (frontend/src/components/admin/panels/EpisodesAdminPanel.tsx) to support editing the requested episode fields when creating and editing: (1) thumbnail image upload from device (in addition to existing URL input), (2) release date selector control, (3) runtime field, (4) visibility toggle with Draft/Scheduled/Public, (5) character tagging via multi-select (populated from backend characters list), and (6) keep the episode summary textbox (already present) but ensure it remains a large, usable text area. All user-facing strings must be in English and validation errors must be clear.",
+      "reqIds": [
+        "REQ-66"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-drag-and-drop-episode-reordering-in-the-episodes-admin-panel-list-frontend-src-components-admin-panels-episodesadminpanel-tsx-persist-the-new-order-to-the-backend-using-the-episode-order-sort-field-so-that-after-refresh-the-order-remains-if-drag-and-drop-reordering-already-exists-do-not-duplicate-it-instead-ensure-it-correctly-persists-and-reloads",
+      "title": "Implement drag-and-drop episode reordering in the Episodes admin panel list (frontend/src/components/admin/panels/EpisodesAdminPanel.tsx). Persist the new order to the backend using the episode order/sort field so that after refresh the order remains. If drag-and-drop reordering already exists, do not duplicate it; instead ensure it correctly persists and reloads.",
+      "reqIds": [
+        "REQ-67"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -543,6 +642,82 @@
       "summary": "Reposition the existing homepage content sections so they appear in this exact vertical order on the main page: Hero, Story (About section), Characters, Clans, Episodes, Gallery, News / Updates, and ensure the existing Header navigation scroll targets still land on the correct section DOM ids (#hero, #about, #characters, #clans, #episodes, #gallery, #news).",
       "reqIds": [
         "REQ-50"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-39",
+      "summary": "Add an episode production progress tracker inside the admin panel: per-episode checkboxes for writing, storyboard, voice acting, animation, editing, and release, plus progress bars showing completion per episode.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-40",
+      "summary": "Extend the backend Episode data model to persist per-episode production progress for the following stages as booleans: writing, storyboard, voice acting, animation, editing, and release.",
+      "reqIds": [
+        "REQ-51"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-41",
+      "summary": "Update backend episode create/update APIs to support setting and updating the six production progress fields, and enforce that only admins can mutate these fields (matching existing episode admin checks).",
+      "reqIds": [
+        "REQ-52"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-42",
+      "summary": "If the backend Episode schema change requires state migration, add a conditional backend state migration that preserves existing episodes and initializes the new production progress fields to false for all existing records.",
+      "reqIds": [
+        "REQ-53"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-43",
+      "summary": "Add prominent section title text/headings for each main homepage section/\"slide\": show \"Whispers of the White Moon\" on initial hero view, then display section titles like \"Story\", \"Characters\", \"Clans\", \"Episodes\", \"Gallery\", and \"News\" as the user scrolls into each section.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-44",
+      "summary": "Add an interactive world map showing clan territories and important locations; clicking a location opens lore information.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-45",
+      "summary": "Update the World Map hotspots to use precise custom-shaped click areas (e.g., traced polygons) that match the mountain/territory outlines instead of simple circular markers.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-46",
+      "summary": "In the admin Characters management panel, allow admins to upload a character portrait image (max 20 MB) when adding/editing characters.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-47",
+      "summary": "Improve the Episodes admin panel: support thumbnail image upload, release date selection, runtime field, visibility status (Draft/Scheduled/Public), tagging which characters appear per episode, an episode summary text box, and drag-and-drop episode reordering (skip any items already implemented).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-48",
+      "summary": "Extend the backend Episode data model and Episodes CRUD APIs in backend/main.mo to support the additional admin-managed episode fields: (1) runtime (in minutes), (2) visibility status with exactly these values: Draft, Scheduled, Public, (3) an explicit release date value that can be set by the admin (not auto-generated), (4) a list of character IDs tagged as appearing in the episode, and (5) an explicit sortable order field used for episode reordering. Ensure existing episode fields and production progress fields continue to work.",
+      "reqIds": [
+        "REQ-63"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-49",
+      "summary": "Add conditional state migration support (only if required by the schema change) so existing stored episodes are preserved after upgrade and the new episode fields are initialized to sensible defaults (e.g., runtime unset/0, visibility=Draft or Public per current behavior, tagged character IDs empty, order derived from existing episode number/id).",
+      "reqIds": [
+        "REQ-64"
       ],
       "status": "pending"
     }

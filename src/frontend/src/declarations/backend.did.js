@@ -24,6 +24,11 @@ export const UserRole = IDL.Variant({
   'user' : IDL.Null,
   'guest' : IDL.Null,
 });
+export const Visibility = IDL.Variant({
+  'scheduled' : IDL.Null,
+  'publicVisibility' : IDL.Null,
+  'draft' : IDL.Null,
+});
 export const Character = IDL.Record({
   'id' : IDL.Nat,
   'bio' : IDL.Text,
@@ -40,11 +45,21 @@ export const Clan = IDL.Record({
 });
 export const Episode = IDL.Record({
   'id' : IDL.Nat,
+  'taggedCharacterIds' : IDL.Vec(IDL.Nat),
+  'writingComplete' : IDL.Bool,
   'title' : IDL.Text,
   'thumbnailUrl' : IDL.Text,
+  'order' : IDL.Nat,
   'description' : IDL.Text,
+  'released' : IDL.Bool,
+  'explicitReleaseDate' : IDL.Int,
+  'animationComplete' : IDL.Bool,
+  'voiceActingComplete' : IDL.Bool,
+  'storyboardComplete' : IDL.Bool,
+  'visibility' : Visibility,
   'videoUrl' : IDL.Text,
-  'releaseDate' : IDL.Int,
+  'editingComplete' : IDL.Bool,
+  'runtime' : IDL.Opt(IDL.Nat),
 });
 export const GalleryItem = IDL.Record({
   'id' : IDL.Nat,
@@ -109,7 +124,21 @@ export const idlService = IDL.Service({
     ),
   'createClan' : IDL.Func([IDL.Text, IDL.Text], [], []),
   'createEpisode' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+      [
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Int,
+        IDL.Opt(IDL.Nat),
+        Visibility,
+        IDL.Vec(IDL.Nat),
+        IDL.Bool,
+        IDL.Bool,
+        IDL.Bool,
+        IDL.Bool,
+        IDL.Bool,
+      ],
       [],
       [],
     ),
@@ -155,6 +184,7 @@ export const idlService = IDL.Service({
       ['query'],
     ),
   'removeMemberFromClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
+  'reorderEpisodes' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
   'revokeRole' : IDL.Func([IDL.Principal], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'updateCharacter' : IDL.Func(
@@ -171,7 +201,22 @@ export const idlService = IDL.Service({
     ),
   'updateClan' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
   'updateEpisode' : IDL.Func(
-      [IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+      [
+        IDL.Nat,
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Int,
+        IDL.Opt(IDL.Nat),
+        Visibility,
+        IDL.Vec(IDL.Nat),
+        IDL.Bool,
+        IDL.Bool,
+        IDL.Bool,
+        IDL.Bool,
+        IDL.Bool,
+      ],
       [],
       [],
     ),
@@ -203,6 +248,11 @@ export const idlFactory = ({ IDL }) => {
     'user' : IDL.Null,
     'guest' : IDL.Null,
   });
+  const Visibility = IDL.Variant({
+    'scheduled' : IDL.Null,
+    'publicVisibility' : IDL.Null,
+    'draft' : IDL.Null,
+  });
   const Character = IDL.Record({
     'id' : IDL.Nat,
     'bio' : IDL.Text,
@@ -219,11 +269,21 @@ export const idlFactory = ({ IDL }) => {
   });
   const Episode = IDL.Record({
     'id' : IDL.Nat,
+    'taggedCharacterIds' : IDL.Vec(IDL.Nat),
+    'writingComplete' : IDL.Bool,
     'title' : IDL.Text,
     'thumbnailUrl' : IDL.Text,
+    'order' : IDL.Nat,
     'description' : IDL.Text,
+    'released' : IDL.Bool,
+    'explicitReleaseDate' : IDL.Int,
+    'animationComplete' : IDL.Bool,
+    'voiceActingComplete' : IDL.Bool,
+    'storyboardComplete' : IDL.Bool,
+    'visibility' : Visibility,
     'videoUrl' : IDL.Text,
-    'releaseDate' : IDL.Int,
+    'editingComplete' : IDL.Bool,
+    'runtime' : IDL.Opt(IDL.Nat),
   });
   const GalleryItem = IDL.Record({
     'id' : IDL.Nat,
@@ -288,7 +348,21 @@ export const idlFactory = ({ IDL }) => {
       ),
     'createClan' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'createEpisode' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+        [
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Int,
+          IDL.Opt(IDL.Nat),
+          Visibility,
+          IDL.Vec(IDL.Nat),
+          IDL.Bool,
+          IDL.Bool,
+          IDL.Bool,
+          IDL.Bool,
+          IDL.Bool,
+        ],
         [],
         [],
       ),
@@ -342,6 +416,7 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'removeMemberFromClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
+    'reorderEpisodes' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
     'revokeRole' : IDL.Func([IDL.Principal], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'updateCharacter' : IDL.Func(
@@ -358,7 +433,22 @@ export const idlFactory = ({ IDL }) => {
       ),
     'updateClan' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
     'updateEpisode' : IDL.Func(
-        [IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+        [
+          IDL.Nat,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Int,
+          IDL.Opt(IDL.Nat),
+          Visibility,
+          IDL.Vec(IDL.Nat),
+          IDL.Bool,
+          IDL.Bool,
+          IDL.Bool,
+          IDL.Bool,
+          IDL.Bool,
+        ],
         [],
         [],
       ),

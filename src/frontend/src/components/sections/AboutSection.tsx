@@ -41,7 +41,7 @@ export function AboutSection() {
         >
           <h2 className={`text-5xl md:text-7xl font-black mb-8 ${!prefersReducedMotion ? 'text-glow' : ''}`}>
             <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-              The Legend Begins
+              Story
             </span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium">

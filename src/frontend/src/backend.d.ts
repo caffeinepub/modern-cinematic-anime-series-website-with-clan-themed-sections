@@ -14,19 +14,44 @@ export class ExternalBlob {
     static fromBytes(blob: Uint8Array<ArrayBuffer>): ExternalBlob;
     withUploadProgress(onProgress: (percentage: number) => void): ExternalBlob;
 }
-export interface Episode {
+export interface NewsPost {
     id: bigint;
     title: string;
+    content: string;
+    author: string;
+    timestamp: bigint;
+}
+export interface Episode {
+    id: bigint;
+    taggedCharacterIds: Array<bigint>;
+    writingComplete: boolean;
+    title: string;
     thumbnailUrl: string;
+    order: bigint;
     description: string;
+    released: boolean;
+    explicitReleaseDate: bigint;
+    animationComplete: boolean;
+    voiceActingComplete: boolean;
+    storyboardComplete: boolean;
+    visibility: Visibility;
     videoUrl: string;
-    releaseDate: bigint;
+    editingComplete: boolean;
+    runtime?: bigint;
 }
 export interface Clan {
     id: bigint;
     members: Array<bigint>;
     name: string;
     description: string;
+}
+export interface Character {
+    id: bigint;
+    bio: string;
+    clanId?: bigint;
+    episodes: Array<bigint>;
+    name: string;
+    role: string;
 }
 export interface Script {
     id: bigint;
@@ -44,35 +69,25 @@ export interface GalleryItem {
     description: string;
     imageUrl: string;
 }
-export interface Character {
-    id: bigint;
-    bio: string;
-    clanId?: bigint;
-    episodes: Array<bigint>;
-    name: string;
-    role: string;
-}
 export interface UserProfile {
     name: string;
-}
-export interface NewsPost {
-    id: bigint;
-    title: string;
-    content: string;
-    author: string;
-    timestamp: bigint;
 }
 export enum UserRole {
     admin = "admin",
     user = "user",
     guest = "guest"
 }
+export enum Visibility {
+    scheduled = "scheduled",
+    publicVisibility = "publicVisibility",
+    draft = "draft"
+}
 export interface backendInterface {
     addMemberToClan(clanId: bigint, characterId: bigint): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     createCharacter(name: string, bio: string, role: string, clanId: bigint | null, episodes: Array<bigint>): Promise<void>;
     createClan(name: string, description: string): Promise<void>;
-    createEpisode(title: string, description: string, videoUrl: string, thumbnailUrl: string, releaseDate: bigint): Promise<void>;
+    createEpisode(title: string, description: string, videoUrl: string, thumbnailUrl: string, explicitReleaseDate: bigint, runtime: bigint | null, visibility: Visibility, taggedCharacterIds: Array<bigint>, writingComplete: boolean, storyboardComplete: boolean, voiceActingComplete: boolean, animationComplete: boolean, editingComplete: boolean): Promise<void>;
     createGalleryItem(title: string, imageUrl: string, description: string, creator: string): Promise<void>;
     createNewsPost(title: string, content: string): Promise<void>;
     createScript(title: string, content: string, creator: string): Promise<void>;
@@ -103,11 +118,12 @@ export interface backendInterface {
     isCallerAdmin(): Promise<boolean>;
     listTeamMembers(): Promise<Array<[Principal, UserRole]>>;
     removeMemberFromClan(clanId: bigint, characterId: bigint): Promise<void>;
+    reorderEpisodes(newOrder: Array<bigint>): Promise<void>;
     revokeRole(principal: Principal): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     updateCharacter(id: bigint, name: string, bio: string, role: string, clanId: bigint | null, episodes: Array<bigint>): Promise<void>;
     updateClan(id: bigint, name: string, description: string): Promise<void>;
-    updateEpisode(id: bigint, title: string, description: string, videoUrl: string, thumbnailUrl: string, releaseDate: bigint): Promise<void>;
+    updateEpisode(id: bigint, title: string, description: string, videoUrl: string, thumbnailUrl: string, explicitReleaseDate: bigint, runtime: bigint | null, visibility: Visibility, taggedCharacterIds: Array<bigint>, writingComplete: boolean, storyboardComplete: boolean, voiceActingComplete: boolean, animationComplete: boolean, editingComplete: boolean): Promise<void>;
     updateGalleryItem(id: bigint, title: string, imageUrl: string, description: string, creator: string): Promise<void>;
     updateNewsPost(id: bigint, title: string, content: string): Promise<void>;
     updateScript(id: bigint, title: string, content: string): Promise<void>;
