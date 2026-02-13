@@ -1,69 +1,40 @@
 {
   "kind": "build_request",
-  "title": "Add episode video player for released episodes with unreleased messaging",
+  "title": "Reorder homepage sections to the assigned Story → Characters → Clans → Episodes → Gallery → News order",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-48",
-      "text": "Update the public Episodes section UI (frontend/src/components/sections/EpisodesSection.tsx and related episode components) to allow a visitor to open a video-player view for an episode when that episode’s status is \"Released\"; if the episode is not released, the UI must clearly tell the visitor that the episode has not been released yet.",
+      "id": "REQ-50",
+      "text": "Reposition the existing homepage content sections so they appear in this exact vertical order on the main page: Hero, Story (About section), Characters, Clans, Episodes, Gallery, News / Updates, and ensure the existing Header navigation scroll targets still land on the correct section DOM ids (#hero, #about, #characters, #clans, #episodes, #gallery, #news).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-10",
+          "msg-11"
         ],
         "quotes": [
-          "add a video player for people to be able to watch the RELEASED episode. If the episode isn't released, they will be told that the episode hasn't been released yet"
+          "reposition existing sections so they appear in the correct order on the page",
+          "ok start"
         ]
       },
       "acceptanceCriteria": [
-        "In the Episodes section, each episode provides a clear affordance (e.g., a \"Watch\" button or clickable card action) to attempt to watch the episode.",
-        "If an episode’s status is \"Released\", activating the watch affordance opens an on-page player experience (e.g., a modal/dialog or dedicated expandable panel) that attempts to play the episode using the episode’s stored video URL.",
-        "If an episode’s status is not \"Released\", activating the watch affordance does not open the player; instead it shows a clear English message indicating the episode has not been released yet.",
-        "The released/unreleased gating is driven by the episode status coming from backend episode data (decoded via the existing episode metadata convention), not hard-coded episode numbers.",
-        "If a \"Released\" episode has no video URL configured, the player experience shows a clear English message indicating that the video is not available yet (and does not render a broken player).",
-        "The new player UI matches the existing cinematic dark styling (card/border/glow language) and remains usable on mobile and desktop."
-      ]
-    },
-    {
-      "id": "REQ-49",
-      "text": "Extend the frontend episode view model used by the public Episodes section so it preserves backend episode fields needed for playback (at minimum: videoUrl), and pass those fields through to the episode card/player UI without breaking existing EpisodeCard rendering.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-6"
-        ],
-        "quotes": [
-          "add a video player for people to be able to watch the RELEASED episode. If the episode isn't released, they will be told that the episode hasn't been released yet"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The public Episodes section continues to render episode number, title, summary, and status as before.",
-        "The transformed episode data used for rendering includes the backend episode’s videoUrl (and can support thumbnailUrl if already available) so the player can use it.",
-        "No TypeScript errors are introduced by extending the episode data shape, and existing episode UI still compiles and runs."
+        "On the main (non-admin) view, the rendered section order from top to bottom is: Hero, Story/About, Characters, Clans, Episodes, Gallery, News / Updates.",
+        "Clicking HeaderNav items (Story, Characters, Clans, Episodes, Gallery, News) scrolls to the correct section and the section ids remain unchanged (#about, #characters, #clans, #episodes, #gallery, #news).",
+        "No new sections are added and no section content is removed; this change is layout/order only."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under frontend/src/components/ui (read-only UI primitives); compose existing UI components instead.",
+    "Do not edit files under frontend/src/components/ui (read-only).",
+    "Do not modify frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, or frontend/src/main.tsx (immutable paths).",
     "Keep all user-facing text in English."
   ],
   "nonGoals": [
-    "Implementing DRM, paywalls, subscriptions, or user accounts beyond existing Internet Identity support.",
-    "Adding real-time streaming infrastructure or uploading/storing video files in the canister.",
-    "Changing the admin Episodes management workflow beyond what is necessary for public playback UI."
+    "Do not redesign section content, styling, or animations beyond what is required to reorder the sections.",
+    "Do not change backend canister logic or data models."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

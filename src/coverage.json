@@ -1,59 +1,31 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-12T19:25:47.078Z",
+  "generatedAt": "2026-02-13T13:42:01.265Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 1,
+    "implemented": 0,
     "items": [
       {
-        "id": "REQ-48",
-        "summary": "Update the public Episodes section UI (frontend/src/components/sections/EpisodesSection.tsx and related episode components) to allow a visitor to open a video-player view for an episode when that episode’s status is \"Released\"; if the episode is not released, the UI must clearly tell the visitor that the episode has not been released yet.",
-        "status": "implemented",
+        "id": "REQ-50",
+        "summary": "Reposition the existing homepage content sections so they appear in this exact vertical order on the main page: Hero, Story (About section), Characters, Clans, Episodes, Gallery, News / Updates, and ensure the existing Header navigation scroll targets still land on the correct section DOM ids (#hero, #about, #characters, #clans, #episodes, #gallery, #news).",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/components/sections/EpisodesSection.tsx",
-          "frontend/src/components/episodes/EpisodeCard.tsx",
-          "frontend/src/components/episodes/EpisodePlayerDialog.tsx",
-          "frontend/src/index.css"
+          "frontend/src/App.tsx",
+          "frontend/src/components/sections/HeaderNav.tsx"
         ],
-        "matchedFiles": [
-          "frontend/src/components/sections/EpisodesSection.tsx",
-          "frontend/src/components/episodes/EpisodeCard.tsx",
-          "frontend/src/components/episodes/EpisodePlayerDialog.tsx",
-          "frontend/src/index.css"
-        ]
-      },
-      {
-        "id": "REQ-49",
-        "summary": "Extend the frontend episode view model used by the public Episodes section so it preserves backend episode fields needed for playback (at minimum: videoUrl), and pass those fields through to the episode card/player UI without breaking existing EpisodeCard rendering.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/data/episodes.ts",
-          "frontend/src/components/sections/EpisodesSection.tsx",
-          "frontend/src/components/episodes/EpisodeCard.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/data/episodes.ts",
-          "frontend/src/components/sections/EpisodesSection.tsx",
-          "frontend/src/components/episodes/EpisodeCard.tsx"
-        ]
+        "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
     "feature_evidence.json",
-    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/episodes/EpisodeCard.tsx",
-    "frontend/src/components/episodes/EpisodePlayerDialog.tsx",
-    "frontend/src/components/sections/EpisodesSection.tsx",
-    "frontend/src/data/episodes.ts",
-    "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

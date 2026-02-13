@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 33,
+  "projectStateVersion": 35,
   "summary": "Build a modern anime streaming/promo-style website for \"Whispers Of The White Moon\" with dark cinematic styling, glowing accents, smooth transitions/parallax, content sections (Characters, Episodes, Gallery, News/Updates, Clans), and a secure admin dashboard for the site owner to manage all anime content.",
   "architectural_notes": [
     "Visual direction: anime streaming/promo-site feel with dark theme (navy/black/deep purple) and glowing accents (moon blue, fiery gold).",
@@ -10,7 +10,8 @@
     "Add a secure admin/auth layer and an owner-only admin dashboard for managing site content (episodes, characters, news posts, gallery images, clans), styled consistently with the main dark theme.",
     "Admin dashboard should support role-based access control (RBAC) with permissions by role, including team member account administration.",
     "Homepage should include a dedicated \"Series Overview\" subsection within the About/Story area, featuring the provided narrative overview text.",
-    "Public Episodes UI should conditionally render an embedded video player for episodes marked Released; otherwise show a clear \"not released yet\" message/state."
+    "Public Episodes UI should conditionally render an embedded video player for episodes marked Released; otherwise show a clear \"not released yet\" message/state.",
+    "Homepage layout: ensure existing sections (Story, Characters, Clans, Episodes, Gallery, News/Updates) can be reordered to match the intended page flow while keeping stable section DOM ids for nav scrolling."
   ],
   "known_issues": [
     "User reports the Gallery “+” upload button is not visible (likely due to not being authenticated as an admin)."
@@ -529,6 +530,20 @@
       "id": "AR-36",
       "summary": "Add an Episodes video player experience: allow users to watch an episode via an embedded video player when the episode status is RELEASED; if not released, show a clear message that the episode hasn’t been released yet.",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-37",
+      "summary": "Reposition existing homepage sections (Story, Characters, Clans, Episodes, Gallery, News) so they appear in the correct assigned order on the page (layout reorder only, not adding new sections).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-38",
+      "summary": "Reposition the existing homepage content sections so they appear in this exact vertical order on the main page: Hero, Story (About section), Characters, Clans, Episodes, Gallery, News / Updates, and ensure the existing Header navigation scroll targets still land on the correct section DOM ids (#hero, #about, #characters, #clans, #episodes, #gallery, #news).",
+      "reqIds": [
+        "REQ-50"
+      ],
       "status": "pending"
     }
   ],

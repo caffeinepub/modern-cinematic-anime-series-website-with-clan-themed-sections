@@ -1,34 +1,29 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-12T19:25:47.074Z",
-  "summary": "Implemented a watch affordance and an on-page modal player for released episodes, with clear messaging for unreleased episodes and for released episodes missing a video URL. Episode view model was extended to carry videoUrl/thumbnailUrl through to the card/player UI. Additionally, unrelated global styling/theme changes were introduced.",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-13T13:42:01.262Z",
+  "summary": "The diff does not implement the requested homepage section reordering. The only change is to `project_state.json`, which does not provide evidence of any frontend layout/DOM section order updates or preserved scroll target ids.",
+  "missing_requirements": [
     {
-      "description": "Global visual theme/glow/animation CSS enhancements unrelated to adding episode playback UI.",
-      "reason": "BuildRequest focuses on EpisodesSection UI behavior and episode view model fields for playback; it does not request broad site-wide theme/glow/animation updates.",
+      "id": "REQ-50",
+      "requirement": "Reposition the existing homepage content sections so they appear in this exact vertical order on the main page: Hero, Story/About, Characters, Clans, Episodes, Gallery, News/Updates; and ensure Header navigation scroll targets still land on the correct section DOM ids (#hero, #about, #characters, #clans, #episodes, #gallery, #news), with no sections added/removed.",
+      "reason": "No frontend source files were modified to reorder sections or verify/maintain the required section DOM ids and HeaderNav scroll behavior; only a project metadata file was changed.",
       "evidence": [
-        "frontend/src/index.css",
-        "frontend-file-summaries.txt"
-      ]
-    },
-    {
-      "description": "Changes/additions to the static season1Episodes data not required for public playback UI implementation.",
-      "reason": "REQ-48/REQ-49 are about public Episodes section playback/gating and passing through backend fields; updating static seed episode list is not requested.",
-      "evidence": [
-        "frontend/src/data/episodes.ts"
+        "project_state.json"
       ]
     }
   ],
-  "confidence": 0.78,
+  "hallucinated_features": [
+    {
+      "description": "Updated/maintained project metadata describing a broader anime streaming/promo-style site and feature list, unrelated to the requested homepage section reorder.",
+      "reason": "The BuildRequest only asks for reordering existing homepage sections and preserving scroll targets/ids; changing `project_state.json` content is not requested and does not implement the UI reorder.",
+      "evidence": [
+        "project_state.json"
+      ]
+    }
+  ],
+  "confidence": 0.86,
   "changed_files": [
-    "frontend-file-summaries.txt",
-    "frontend/src/components/episodes/EpisodeCard.tsx",
-    "frontend/src/components/episodes/EpisodePlayerDialog.tsx",
-    "frontend/src/components/sections/EpisodesSection.tsx",
-    "frontend/src/data/episodes.ts",
-    "frontend/src/index.css",
     "project_state.json"
   ]
 }
