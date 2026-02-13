@@ -5,6 +5,7 @@ export interface Character {
   personality: string;
   power: string;
   role: string;
+  portraitUrl?: string;
 }
 
 export const characters: Character[] = [

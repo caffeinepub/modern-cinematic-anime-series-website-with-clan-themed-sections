@@ -1,96 +1,25 @@
+import Array "mo:core/Array";
 import List "mo:core/List";
+import Map "mo:core/Map";
+import Text "mo:core/Text";
+import Time "mo:core/Time";
+import Principal "mo:core/Principal";
+
+import AccessControl "authorization/access-control";
+import BlobStorage "blob-storage/Storage";
 
 module {
-  public type OldActor = {
-    episodes : List.List<OldEpisode>;
-    nextEpisodeId : Nat;
-    characters : List.List<OldCharacter>;
-    nextCharacterId : Nat;
-    clans : List.List<OldClan>;
-    nextClanId : Nat;
-    galleryItems : List.List<OldGalleryItem>;
-    nextGalleryItemId : Nat;
-    newsPosts : List.List<OldNewsPost>;
-    nextNewsPostId : Nat;
-    scripts : List.List<OldScript>;
-    nextScriptId : Nat;
-    // Add other actor state as needed
-  };
-
-  public type OldEpisode = {
-    id : Nat;
-    title : Text;
-    description : Text;
-    videoUrl : Text;
-    thumbnailUrl : Text;
-    releaseDate : Int;
-    writingComplete : Bool;
-    storyboardComplete : Bool;
-    voiceActingComplete : Bool;
-    animationComplete : Bool;
-    editingComplete : Bool;
-    released : Bool;
-  };
-
-  public type OldCharacter = {
-    id : Nat;
+  type UserProfile = {
     name : Text;
-    bio : Text;
-    role : Text;
-    clanId : ?Nat;
-    episodes : [Nat];
   };
 
-  public type OldClan = {
-    id : Nat;
-    name : Text;
-    description : Text;
-    members : [Nat];
+  type Visibility = {
+    #draft;
+    #scheduled;
+    #publicVisibility;
   };
 
-  public type OldGalleryItem = {
-    id : Nat;
-    title : Text;
-    imageUrl : Text;
-    description : Text;
-    creator : Text;
-    date : Int;
-  };
-
-  public type OldNewsPost = {
-    id : Nat;
-    author : Text;
-    title : Text;
-    content : Text;
-    timestamp : Int;
-  };
-
-  public type OldScript = {
-    id : Nat;
-    title : Text;
-    content : Text;
-    creator : Text;
-    createdAt : Int;
-    updatedAt : Int;
-  };
-
-  public type NewActor = {
-    episodes : List.List<NewEpisode>;
-    nextEpisodeId : Nat;
-    characters : List.List<OldCharacter>;
-    nextCharacterId : Nat;
-    clans : List.List<OldClan>;
-    nextClanId : Nat;
-    galleryItems : List.List<OldGalleryItem>;
-    nextGalleryItemId : Nat;
-    newsPosts : List.List<OldNewsPost>;
-    nextNewsPostId : Nat;
-    scripts : List.List<OldScript>;
-    nextScriptId : Nat;
-    // Add other new actor state as needed
-  };
-
-  public type NewEpisode = {
+  type Episode = {
     id : Nat;
     title : Text;
     description : Text;
@@ -98,7 +27,7 @@ module {
     thumbnailUrl : Text;
     explicitReleaseDate : Int;
     runtime : ?Nat;
-    visibility : NewVisibility;
+    visibility : Visibility;
     taggedCharacterIds : [Nat];
     order : Nat;
     writingComplete : Bool;
@@ -109,39 +38,137 @@ module {
     released : Bool;
   };
 
-  public type NewVisibility = {
-    #draft;
-    #scheduled;
-    #publicVisibility;
+  type OldCharacter = {
+    id : Nat;
+    name : Text;
+    bio : Text;
+    role : Text;
+    clanId : ?Nat;
+    episodes : [Nat];
+  };
+
+  type NewCharacter = {
+    id : Nat;
+    name : Text;
+    bio : Text;
+    role : Text;
+    clanId : ?Nat;
+    episodes : [Nat];
+    portraitUrl : Text;
+  };
+
+  type Clan = {
+    id : Nat;
+    name : Text;
+    description : Text;
+    members : [Nat];
+  };
+
+  type GalleryItem = {
+    id : Nat;
+    title : Text;
+    imageUrl : Text;
+    description : Text;
+    creator : Text;
+    date : Int;
+  };
+
+  type NewsPost = {
+    id : Nat;
+    author : Text;
+    title : Text;
+    content : Text;
+    timestamp : Int;
+  };
+
+  type Script = {
+    id : Nat;
+    title : Text;
+    content : Text;
+    creator : Text;
+    createdAt : Int;
+    updatedAt : Int;
+  };
+
+  type BlockType = {
+    #title;
+    #text;
+    #image;
+    #data;
+    #section;
+    #list;
+    #episode;
+    #character;
+    #progress;
+  };
+
+  type ProBlockData = {
+    id : Text;
+    blockType : BlockType;
+    content : Text;
+    title : Text;
+    subTitle : ?Text;
+    position : Nat;
+    width : Nat;
+    height : Nat;
+    color : ?Text;
+    transparent : Bool;
+    episode : ?Nat;
+    meta : ?Text;
+    dataset : Text;
+    createdAt : Int;
+    updatedAt : Int;
+  };
+
+  type OldActor = {
+    userProfiles : Map.Map<Principal, UserProfile>;
+    episodes : List.List<Episode>;
+    nextEpisodeId : Nat;
+    characters : List.List<OldCharacter>;
+    nextCharacterId : Nat;
+    clans : List.List<Clan>;
+    nextClanId : Nat;
+    galleryItems : List.List<GalleryItem>;
+    nextGalleryItemId : Nat;
+    galleryImages : List.List<BlobStorage.ExternalBlob>;
+    newsPosts : List.List<NewsPost>;
+    nextNewsPostId : Nat;
+    scripts : List.List<Script>;
+    nextScriptId : Nat;
+    proBlocks : List.List<ProBlockData>;
+    proPresentation : Text;
+    accessControlState : AccessControl.AccessControlState;
+  };
+
+  type NewActor = {
+    userProfiles : Map.Map<Principal, UserProfile>;
+    episodes : List.List<Episode>;
+    nextEpisodeId : Nat;
+    characters : List.List<NewCharacter>;
+    nextCharacterId : Nat;
+    clans : List.List<Clan>;
+    nextClanId : Nat;
+    galleryItems : List.List<GalleryItem>;
+    nextGalleryItemId : Nat;
+    galleryImages : List.List<BlobStorage.ExternalBlob>;
+    newsPosts : List.List<NewsPost>;
+    nextNewsPostId : Nat;
+    scripts : List.List<Script>;
+    nextScriptId : Nat;
+    proBlocks : List.List<ProBlockData>;
+    proPresentation : Text;
+    accessControlState : AccessControl.AccessControlState;
   };
 
   public func run(old : OldActor) : NewActor {
-    let newEpisodes = old.episodes.map<OldEpisode, NewEpisode>(
-      func(oldEp) {
+    let newCharacters = old.characters.map<OldCharacter, NewCharacter>(
+      func(oldChar) {
         {
-          id = oldEp.id;
-          title = oldEp.title;
-          description = oldEp.description;
-          videoUrl = oldEp.videoUrl;
-          thumbnailUrl = oldEp.thumbnailUrl;
-          explicitReleaseDate = oldEp.releaseDate;
-          runtime = null;
-          visibility = if (oldEp.released) { #publicVisibility } else { #draft };
-          taggedCharacterIds = [];
-          order = oldEp.id;
-          writingComplete = oldEp.writingComplete;
-          storyboardComplete = oldEp.storyboardComplete;
-          voiceActingComplete = oldEp.voiceActingComplete;
-          animationComplete = oldEp.animationComplete;
-          editingComplete = oldEp.editingComplete;
-          released = oldEp.released;
+          oldChar with
+          portraitUrl = ""; // Initialize with an empty string
         };
       }
     );
-
-    {
-      old with
-      episodes = newEpisodes
-    };
+    { old with characters = newCharacters };
   };
 };

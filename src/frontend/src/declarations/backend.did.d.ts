@@ -10,6 +10,15 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export type BlockType = { 'title' : null } |
+  { 'character' : null } |
+  { 'data' : null } |
+  { 'list' : null } |
+  { 'text' : null } |
+  { 'section' : null } |
+  { 'progress' : null } |
+  { 'image' : null } |
+  { 'episode' : null };
 export interface Character {
   'id' : bigint,
   'bio' : string,
@@ -17,6 +26,7 @@ export interface Character {
   'episodes' : Array<bigint>,
   'name' : string,
   'role' : string,
+  'portraitUrl' : string,
 }
 export interface Clan {
   'id' : bigint,
@@ -57,6 +67,23 @@ export interface NewsPost {
   'content' : string,
   'author' : string,
   'timestamp' : bigint,
+}
+export interface ProBlockData {
+  'id' : string,
+  'height' : bigint,
+  'title' : string,
+  'dataset' : string,
+  'content' : string,
+  'transparent' : boolean,
+  'meta' : [] | [string],
+  'createdAt' : bigint,
+  'color' : [] | [string],
+  'blockType' : BlockType,
+  'updatedAt' : bigint,
+  'subTitle' : [] | [string],
+  'width' : bigint,
+  'position' : bigint,
+  'episode' : [] | [bigint],
 }
 export interface Script {
   'id' : bigint,
@@ -104,7 +131,7 @@ export interface _SERVICE {
   'addMemberToClan' : ActorMethod<[bigint, bigint], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'createCharacter' : ActorMethod<
-    [string, string, string, [] | [bigint], Array<bigint>],
+    [string, string, string, [] | [bigint], Array<bigint>, string],
     undefined
   >,
   'createClan' : ActorMethod<[string, string], undefined>,
@@ -137,12 +164,14 @@ export interface _SERVICE {
   'deleteEpisode' : ActorMethod<[bigint], undefined>,
   'deleteGalleryItem' : ActorMethod<[bigint], undefined>,
   'deleteNewsPost' : ActorMethod<[bigint], undefined>,
+  'deleteProBlock' : ActorMethod<[string], undefined>,
   'deleteScript' : ActorMethod<[bigint], undefined>,
   'getAllCharacters' : ActorMethod<[], Array<Character>>,
   'getAllClans' : ActorMethod<[], Array<Clan>>,
   'getAllEpisodes' : ActorMethod<[], Array<Episode>>,
   'getAllGalleryItems' : ActorMethod<[], Array<GalleryItem>>,
   'getAllNewsPosts' : ActorMethod<[], Array<NewsPost>>,
+  'getAllProBlocks' : ActorMethod<[], Array<ProBlockData>>,
   'getAllScripts' : ActorMethod<[], Array<Script>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
@@ -153,6 +182,7 @@ export interface _SERVICE {
   'getGalleryItemById' : ActorMethod<[bigint], [] | [GalleryItem]>,
   'getNewsPostById' : ActorMethod<[bigint], [] | [NewsPost]>,
   'getNewsPostsByAuthor' : ActorMethod<[string], Array<NewsPost>>,
+  'getProPresentation' : ActorMethod<[], string>,
   'getScriptById' : ActorMethod<[bigint], [] | [Script]>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'grantRole' : ActorMethod<[Principal, UserRole], undefined>,
@@ -160,10 +190,12 @@ export interface _SERVICE {
   'listTeamMembers' : ActorMethod<[], Array<[Principal, UserRole]>>,
   'removeMemberFromClan' : ActorMethod<[bigint, bigint], undefined>,
   'reorderEpisodes' : ActorMethod<[Array<bigint>], undefined>,
+  'reorderProBlocks' : ActorMethod<[Array<string>], undefined>,
   'revokeRole' : ActorMethod<[Principal], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'saveProBlock' : ActorMethod<[ProBlockData], undefined>,
   'updateCharacter' : ActorMethod<
-    [bigint, string, string, string, [] | [bigint], Array<bigint>],
+    [bigint, string, string, string, [] | [bigint], Array<bigint>, string],
     undefined
   >,
   'updateClan' : ActorMethod<[bigint, string, string], undefined>,
@@ -191,6 +223,8 @@ export interface _SERVICE {
     undefined
   >,
   'updateNewsPost' : ActorMethod<[bigint, string, string], undefined>,
+  'updateProBlock' : ActorMethod<[string, ProBlockData], undefined>,
+  'updateProPresentation' : ActorMethod<[string], undefined>,
   'updateScript' : ActorMethod<[bigint, string, string], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;

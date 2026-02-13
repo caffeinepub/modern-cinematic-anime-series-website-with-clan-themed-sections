@@ -66,6 +66,40 @@ export function useIsCallerAdmin() {
   });
 }
 
+// Pro Presentation Queries
+export function useGetProPresentation() {
+  const { actor, isFetching: actorFetching } = useActor();
+
+  return useQuery<string>({
+    queryKey: ['proPresentation'],
+    queryFn: async () => {
+      if (!actor) return '';
+      return actor.getProPresentation();
+    },
+    enabled: !!actor && !actorFetching,
+  });
+}
+
+export function useUpdateProPresentation() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (content: string) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateProPresentation(content);
+    },
+    onSuccess: () => {
+      // Invalidate all queries that might display Pro presentation content
+      queryClient.invalidateQueries({ queryKey: ['proPresentation'] });
+    },
+    onError: (error) => {
+      console.error('Pro presentation update failed:', error);
+      throw error;
+    },
+  });
+}
+
 // Episodes Queries
 export function useGetAllEpisodes() {
   const { actor, isFetching: actorFetching } = useActor();
@@ -85,7 +119,7 @@ export function useCreateEpisode() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: {
+    mutationFn: async (params: {
       title: string;
       description: string;
       videoUrl: string;
@@ -94,27 +128,27 @@ export function useCreateEpisode() {
       runtime: bigint | null;
       visibility: Visibility;
       taggedCharacterIds: bigint[];
-      writingComplete?: boolean;
-      storyboardComplete?: boolean;
-      voiceActingComplete?: boolean;
-      animationComplete?: boolean;
-      editingComplete?: boolean;
+      writingComplete: boolean;
+      storyboardComplete: boolean;
+      voiceActingComplete: boolean;
+      animationComplete: boolean;
+      editingComplete: boolean;
     }) => {
       if (!actor) throw new Error('Actor not available');
       return actor.createEpisode(
-        data.title,
-        data.description,
-        data.videoUrl,
-        data.thumbnailUrl,
-        data.explicitReleaseDate,
-        data.runtime,
-        data.visibility,
-        data.taggedCharacterIds,
-        data.writingComplete ?? false,
-        data.storyboardComplete ?? false,
-        data.voiceActingComplete ?? false,
-        data.animationComplete ?? false,
-        data.editingComplete ?? false
+        params.title,
+        params.description,
+        params.videoUrl,
+        params.thumbnailUrl,
+        params.explicitReleaseDate,
+        params.runtime,
+        params.visibility,
+        params.taggedCharacterIds,
+        params.writingComplete,
+        params.storyboardComplete,
+        params.voiceActingComplete,
+        params.animationComplete,
+        params.editingComplete
       );
     },
     onSuccess: () => {
@@ -128,7 +162,7 @@ export function useUpdateEpisode() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: {
+    mutationFn: async (params: {
       id: bigint;
       title: string;
       description: string;
@@ -146,20 +180,20 @@ export function useUpdateEpisode() {
     }) => {
       if (!actor) throw new Error('Actor not available');
       return actor.updateEpisode(
-        data.id,
-        data.title,
-        data.description,
-        data.videoUrl,
-        data.thumbnailUrl,
-        data.explicitReleaseDate,
-        data.runtime,
-        data.visibility,
-        data.taggedCharacterIds,
-        data.writingComplete,
-        data.storyboardComplete,
-        data.voiceActingComplete,
-        data.animationComplete,
-        data.editingComplete
+        params.id,
+        params.title,
+        params.description,
+        params.videoUrl,
+        params.thumbnailUrl,
+        params.explicitReleaseDate,
+        params.runtime,
+        params.visibility,
+        params.taggedCharacterIds,
+        params.writingComplete,
+        params.storyboardComplete,
+        params.voiceActingComplete,
+        params.animationComplete,
+        params.editingComplete
       );
     },
     onSuccess: () => {
@@ -217,9 +251,23 @@ export function useCreateCharacter() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { name: string; bio: string; role: string; clanId: bigint | null; episodes: bigint[] }) => {
+    mutationFn: async (params: {
+      name: string;
+      bio: string;
+      role: string;
+      clanId: bigint | null;
+      episodes: bigint[];
+      portraitUrl?: string;
+    }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.createCharacter(data.name, data.bio, data.role, data.clanId, data.episodes);
+      return actor.createCharacter(
+        params.name,
+        params.bio,
+        params.role,
+        params.clanId,
+        params.episodes,
+        params.portraitUrl || ''
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['characters'] });
@@ -232,9 +280,25 @@ export function useUpdateCharacter() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { id: bigint; name: string; bio: string; role: string; clanId: bigint | null; episodes: bigint[] }) => {
+    mutationFn: async (params: {
+      id: bigint;
+      name: string;
+      bio: string;
+      role: string;
+      clanId: bigint | null;
+      episodes: bigint[];
+      portraitUrl?: string;
+    }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateCharacter(data.id, data.name, data.bio, data.role, data.clanId, data.episodes);
+      return actor.updateCharacter(
+        params.id,
+        params.name,
+        params.bio,
+        params.role,
+        params.clanId,
+        params.episodes,
+        params.portraitUrl || ''
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['characters'] });
@@ -276,9 +340,9 @@ export function useCreateClan() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { name: string; description: string }) => {
+    mutationFn: async (params: { name: string; description: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.createClan(data.name, data.description);
+      return actor.createClan(params.name, params.description);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clans'] });
@@ -291,9 +355,9 @@ export function useUpdateClan() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { id: bigint; name: string; description: string }) => {
+    mutationFn: async (params: { id: bigint; name: string; description: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateClan(data.id, data.name, data.description);
+      return actor.updateClan(params.id, params.name, params.description);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clans'] });
@@ -316,7 +380,7 @@ export function useDeleteClan() {
   });
 }
 
-// Gallery Items Queries
+// Gallery Queries
 export function useGetAllGalleryItems() {
   const { actor, isFetching: actorFetching } = useActor();
 
@@ -335,9 +399,9 @@ export function useCreateGalleryItem() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { title: string; imageUrl: string; description: string; creator: string }) => {
+    mutationFn: async (params: { title: string; imageUrl: string; description: string; creator: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.createGalleryItem(data.title, data.imageUrl, data.description, data.creator);
+      return actor.createGalleryItem(params.title, params.imageUrl, params.description, params.creator);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['galleryItems'] });
@@ -350,9 +414,9 @@ export function useUpdateGalleryItem() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { id: bigint; title: string; imageUrl: string; description: string; creator: string }) => {
+    mutationFn: async (params: { id: bigint; title: string; imageUrl: string; description: string; creator: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateGalleryItem(data.id, data.title, data.imageUrl, data.description, data.creator);
+      return actor.updateGalleryItem(params.id, params.title, params.imageUrl, params.description, params.creator);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['galleryItems'] });
@@ -375,7 +439,7 @@ export function useDeleteGalleryItem() {
   });
 }
 
-// News Posts Queries
+// News Queries
 export function useGetAllNewsPosts() {
   const { actor, isFetching: actorFetching } = useActor();
 
@@ -394,9 +458,9 @@ export function useCreateNewsPost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { title: string; content: string }) => {
+    mutationFn: async (params: { title: string; content: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.createNewsPost(data.title, data.content);
+      return actor.createNewsPost(params.title, params.content);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['newsPosts'] });
@@ -409,9 +473,9 @@ export function useUpdateNewsPost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { id: bigint; title: string; content: string }) => {
+    mutationFn: async (params: { id: bigint; title: string; content: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateNewsPost(data.id, data.title, data.content);
+      return actor.updateNewsPost(params.id, params.title, params.content);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['newsPosts'] });
@@ -442,14 +506,7 @@ export function useGetAllScripts() {
     queryKey: ['scripts'],
     queryFn: async () => {
       if (!actor) return [];
-      try {
-        return await actor.getAllScripts();
-      } catch (err: any) {
-        if (err.message?.includes('Unauthorized')) {
-          return [];
-        }
-        throw err;
-      }
+      return actor.getAllScripts();
     },
     enabled: !!actor && !actorFetching,
   });
@@ -460,9 +517,9 @@ export function useCreateScript() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { title: string; content: string; creator: string }) => {
+    mutationFn: async (params: { title: string; content: string; creator: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.createScript(data.title, data.content, data.creator);
+      return actor.createScript(params.title, params.content, params.creator);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['scripts'] });
@@ -475,9 +532,9 @@ export function useUpdateScript() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { id: bigint; title: string; content: string }) => {
+    mutationFn: async (params: { id: bigint; title: string; content: string }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateScript(data.id, data.title, data.content);
+      return actor.updateScript(params.id, params.title, params.content);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['scripts'] });
@@ -500,22 +557,15 @@ export function useDeleteScript() {
   });
 }
 
-// Team Members Queries
+// Team Management Queries
 export function useListTeamMembers() {
   const { actor, isFetching: actorFetching } = useActor();
 
-  return useQuery<Array<[Principal, UserRole]>>({
+  return useQuery<[Principal, UserRole][]>({
     queryKey: ['teamMembers'],
     queryFn: async () => {
       if (!actor) return [];
-      try {
-        return await actor.listTeamMembers();
-      } catch (err: any) {
-        if (err.message?.includes('Unauthorized')) {
-          return [];
-        }
-        throw err;
-      }
+      return actor.listTeamMembers();
     },
     enabled: !!actor && !actorFetching,
   });
@@ -526,9 +576,9 @@ export function useGrantRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { principal: Principal; role: UserRole }) => {
+    mutationFn: async (params: { principal: Principal; role: UserRole }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.grantRole(data.principal, data.role);
+      return actor.grantRole(params.principal, params.role);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teamMembers'] });

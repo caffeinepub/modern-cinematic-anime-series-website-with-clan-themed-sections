@@ -20,6 +20,7 @@ export function CharactersSection() {
       personality: metadata.personality || bio,
       power: metadata.power || '',
       role: char.role,
+      portraitUrl: char.portraitUrl || '',
     };
   });
 

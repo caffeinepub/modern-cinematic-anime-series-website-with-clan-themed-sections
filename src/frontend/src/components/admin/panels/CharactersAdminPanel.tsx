@@ -8,9 +8,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { Alert, AlertDescription } from '../../ui/alert';
 import { Skeleton } from '../../ui/skeleton';
-import { Plus, Edit, Trash2, AlertCircle } from 'lucide-react';
+import { Plus, Edit, Trash2, AlertCircle, X, Upload } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { encodeCharacterMetadata, decodeCharacterMetadata } from '../../../utils/adminContentAdapters';
+import { validateAndConvertImage, CHARACTER_MAX_FILE_SIZE } from '../../../utils/galleryImageUpload';
 import type { Character } from '../../../backend';
 
 export function CharactersAdminPanel() {
@@ -30,7 +31,9 @@ export function CharactersAdminPanel() {
     personality: '',
     power: '',
     clan: '',
+    portraitUrl: '',
   });
+  const [portraitPreview, setPortraitPreview] = useState<string>('');
   const [formError, setFormError] = useState('');
 
   const resetForm = () => {
@@ -42,8 +45,31 @@ export function CharactersAdminPanel() {
       personality: '',
       power: '',
       clan: '',
+      portraitUrl: '',
     });
+    setPortraitPreview('');
     setFormError('');
+  };
+
+  const handlePortraitChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const result = await validateAndConvertImage(file, CHARACTER_MAX_FILE_SIZE);
+    
+    if (!result.success) {
+      setFormError(result.error || 'Failed to process image');
+      return;
+    }
+
+    setFormData({ ...formData, portraitUrl: result.dataUrl || '' });
+    setPortraitPreview(result.dataUrl || '');
+    setFormError('');
+  };
+
+  const clearPortrait = () => {
+    setFormData({ ...formData, portraitUrl: '' });
+    setPortraitPreview('');
   };
 
   const handleCreate = async () => {
@@ -65,6 +91,7 @@ export function CharactersAdminPanel() {
         role: formData.role,
         clanId: formData.clanId,
         episodes: [],
+        portraitUrl: formData.portraitUrl,
       });
 
       setIsCreateOpen(false);
@@ -94,6 +121,7 @@ export function CharactersAdminPanel() {
         role: formData.role,
         clanId: formData.clanId,
         episodes: editingCharacter.episodes,
+        portraitUrl: formData.portraitUrl,
       });
 
       setEditingCharacter(null);
@@ -123,7 +151,9 @@ export function CharactersAdminPanel() {
       personality: metadata.personality || '',
       power: metadata.power || '',
       clan: metadata.clan || '',
+      portraitUrl: character.portraitUrl || '',
     });
+    setPortraitPreview(character.portraitUrl || '');
     setEditingCharacter(character);
   };
 
@@ -176,6 +206,43 @@ export function CharactersAdminPanel() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Character name"
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="create-portrait">Portrait Image (Max 20MB)</Label>
+                <div className="space-y-2">
+                  {portraitPreview ? (
+                    <div className="relative inline-block">
+                      <img
+                        src={portraitPreview}
+                        alt="Portrait preview"
+                        className="w-32 h-32 object-cover rounded-lg border-2 border-border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                        onClick={clearPortrait}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="create-portrait"
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        onChange={handlePortraitChange}
+                        className="cursor-pointer"
+                      />
+                      <Upload className="w-4 h-4 text-muted-foreground" />
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Accepted formats: PNG, JPEG, WebP (max 20MB)
+                  </p>
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="create-clan-name">Clan Name (display)</Label>
@@ -269,9 +336,18 @@ export function CharactersAdminPanel() {
               <Card key={character.id.toString()}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle>{character.name}</CardTitle>
-                      <CardDescription>{metadata.clan || 'Unknown Clan'}</CardDescription>
+                    <div className="flex gap-4 items-start">
+                      {character.portraitUrl && (
+                        <img
+                          src={character.portraitUrl}
+                          alt={character.name}
+                          className="w-16 h-16 object-cover rounded-lg border-2 border-border"
+                        />
+                      )}
+                      <div>
+                        <CardTitle>{character.name}</CardTitle>
+                        <CardDescription>{metadata.clan || 'Unknown Clan'}</CardDescription>
+                      </div>
                     </div>
                     <div className="flex gap-2">
                       <Button variant="outline" size="sm" onClick={() => openEditDialog(character)}>
@@ -320,6 +396,43 @@ export function CharactersAdminPanel() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-portrait">Portrait Image (Max 20MB)</Label>
+              <div className="space-y-2">
+                {portraitPreview ? (
+                  <div className="relative inline-block">
+                    <img
+                      src={portraitPreview}
+                      alt="Portrait preview"
+                      className="w-32 h-32 object-cover rounded-lg border-2 border-border"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                      onClick={clearPortrait}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="edit-portrait"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      onChange={handlePortraitChange}
+                      className="cursor-pointer"
+                    />
+                    <Upload className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  Accepted formats: PNG, JPEG, WebP (max 20MB)
+                </p>
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="edit-clan-name">Clan Name (display)</Label>

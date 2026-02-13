@@ -6,15 +6,14 @@ import Int "mo:core/Int";
 import Array "mo:core/Array";
 import Runtime "mo:core/Runtime";
 import Principal "mo:core/Principal";
-import Migration "migration";
 
 import AccessControl "authorization/access-control";
 import BlobStorage "blob-storage/Storage";
 import MixinStorage "blob-storage/Mixin";
 import MixinAuthorization "authorization/MixinAuthorization";
+import Migration "migration";
 
-// Use non-authorized version of with migration for iterative development
-// Swap to correct one import Migration "migration"; (with migration = Migration.run)
+// Specify the migration function to run on upgrade by the with clause
 (with migration = Migration.run)
 actor {
   include MixinStorage();
@@ -51,7 +50,12 @@ actor {
   let scripts = List.empty<Script>();
   var nextScriptId = 0;
 
-  type UserProfile = {
+  // ProBlocks persistent store
+  let proBlocks = List.empty<ProBlockData>();
+
+  var proPresentation : Text = "";
+
+  public type UserProfile = {
     name : Text;
   };
 
@@ -87,6 +91,7 @@ actor {
     role : Text;
     clanId : ?Nat;
     episodes : [Nat];
+    portraitUrl : Text; // New field for character portrait URL
   };
 
   public type Clan = {
@@ -122,7 +127,121 @@ actor {
     updatedAt : Int;
   };
 
+  // Persistent ProBlocks Store
+  type BlockType = {
+    #title;
+    #text;
+    #image;
+    #data;
+    #section;
+    #list;
+    #episode;
+    #character;
+    #progress;
+  };
+
+  public type ProBlockData = {
+    id : Text;
+    blockType : BlockType;
+    content : Text;
+    title : Text;
+    subTitle : ?Text;
+    position : Nat;
+    width : Nat;
+    height : Nat;
+    color : ?Text;
+    transparent : Bool;
+    episode : ?Nat;
+    meta : ?Text;
+    dataset : Text;
+    createdAt : Int;
+    updatedAt : Int;
+  };
+
   include MixinAuthorization(accessControlState);
+
+  // Pro Presentation API
+  public query ({ caller }) func getProPresentation() : async Text {
+    proPresentation;
+  };
+
+  public shared ({ caller }) func updateProPresentation(content : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can update the Pro presentation");
+    };
+    proPresentation := content;
+  };
+
+  // Persistent ProBlocks API
+  public query ({ caller }) func getAllProBlocks() : async [ProBlockData] {
+    proBlocks.toArray();
+  };
+
+  public shared ({ caller }) func saveProBlock(block : ProBlockData) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can create pro blocks");
+    };
+
+    let currentTime = Time.now();
+
+    let updatedBlock = {
+      block with
+      createdAt = currentTime;
+      updatedAt = currentTime;
+    };
+
+    proBlocks.add(updatedBlock);
+  };
+
+  public shared ({ caller }) func updateProBlock(id : Text, block : ProBlockData) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can update pro blocks");
+    };
+
+    proBlocks.mapInPlace(
+      func(existingBlock) {
+        if (existingBlock.id == id) {
+          {
+            block with
+            createdAt = existingBlock.createdAt;
+            updatedAt = Time.now();
+          };
+        } else {
+          existingBlock;
+        };
+      }
+    );
+  };
+
+  public shared ({ caller }) func deleteProBlock(id : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can delete pro blocks");
+    };
+
+    let filtered = proBlocks.filter(func(block) { block.id != id });
+    proBlocks.clear();
+    proBlocks.addAll(filtered.values());
+  };
+
+  public shared ({ caller }) func reorderProBlocks(newOrder : [Text]) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can reorder pro blocks");
+    };
+
+    let proBlocksArray = proBlocks.toArray();
+    let reorderedProBlocks = proBlocksArray.map(
+      func(block) {
+        let index = newOrder.findIndex(func(id) { id == block.id });
+        switch (index) {
+          case (null) { block };
+          case (?newPos) { { block with position = newPos } };
+        };
+      }
+    );
+
+    proBlocks.clear();
+    proBlocks.addAll(reorderedProBlocks.values());
+  };
 
   // User Profile Management
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
@@ -257,7 +376,7 @@ actor {
     episodes.find(func(ep) { ep.id == id });
   };
 
-  public shared({ caller }) func reorderEpisodes(newOrder : [Nat]) : async () {
+  public shared ({ caller }) func reorderEpisodes(newOrder : [Nat]) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can reorder episodes");
     };
@@ -278,7 +397,7 @@ actor {
   };
 
   // Characters Management
-  public shared ({ caller }) func createCharacter(name : Text, bio : Text, role : Text, clanId : ?Nat, episodes : [Nat]) : async () {
+  public shared ({ caller }) func createCharacter(name : Text, bio : Text, role : Text, clanId : ?Nat, episodes : [Nat], portraitUrl : Text) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can create characters");
     };
@@ -290,13 +409,14 @@ actor {
       role;
       clanId;
       episodes;
+      portraitUrl;
     };
 
     characters.add(newCharacter);
     nextCharacterId += 1;
   };
 
-  public shared ({ caller }) func updateCharacter(id : Nat, name : Text, bio : Text, role : Text, clanId : ?Nat, episodes : [Nat]) : async () {
+  public shared ({ caller }) func updateCharacter(id : Nat, name : Text, bio : Text, role : Text, clanId : ?Nat, episodes : [Nat], portraitUrl : Text) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can update characters");
     };
@@ -311,6 +431,7 @@ actor {
             role;
             clanId;
             episodes;
+            portraitUrl;
           };
         } else {
           ch;

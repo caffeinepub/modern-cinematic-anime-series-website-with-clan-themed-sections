@@ -1,13 +1,14 @@
 # Specification
 
 ## Summary
-**Goal:** Enhance the Episodes admin panel to support richer episode metadata, thumbnail uploads, and persistent drag-and-drop ordering.
+**Goal:** Let admins add an optional character portrait image (validated to 20MB max, PNG/JPEG/WebP) when creating or editing characters, and display it on public character cards when available.
 
 **Planned changes:**
-- Extend the backend Episode model and CRUD APIs to store admin-managed fields: runtime (minutes), visibility (Draft/Scheduled/Public), admin-set release date, tagged character IDs, and a persisted sort/order value.
-- Add conditional state migration (only if needed) to preserve existing episodes and initialize new fields with deterministic defaults.
-- Update frontend query hooks and types so create/update/read operations include the new episode fields and continue to invalidate/refetch the episodes list after mutations (including reordering).
-- Enhance the Episodes admin create/edit UI to add: thumbnail file upload with preview (stored in thumbnailUrl), release date selector, runtime input, visibility selector, and character tagging multi-select sourced from the characters list; keep the existing summary as a large textarea with clear English validation errors.
-- Implement (or verify existing) drag-and-drop reordering in the Episodes admin list and persist the order via the backend sort/order field.
+- Persist an optional character portrait reference (e.g., `portraitUrl`) in the backend Character model and return it from character query APIs.
+- Extend backend create/update Character mutations to accept and store the optional portrait reference while keeping existing admin-only authorization behavior.
+- Add/adjust upgrade migration logic if the stable state schema changes so existing stored characters are preserved and the portrait field initializes safely.
+- Update frontend React Query hooks/types to read/write the portrait field in create/update flows.
+- Enhance the Characters admin panel to include a portrait file picker with client-side validation (20MB max; PNG/JPEG/WebP), preview, and ability to clear the portrait before saving.
+- Update public Characters section/card rendering to show the portrait image when present, otherwise keep the existing placeholder icon behavior.
 
-**User-visible outcome:** Admins can upload episode thumbnails, set release dates and runtime, control visibility (Draft/Scheduled/Public), tag appearing characters, edit episode summaries, and reorder episodes via drag-and-drop with the order preserved after refresh.
+**User-visible outcome:** Admins can upload/select and save a character portrait image (up to 20MB) in the Characters admin panel, and users will see that portrait on character cards when it’s set.

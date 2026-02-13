@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-episodes-react-query-hooks-and-typescript-types-frontend-src-hooks-usequeries-ts-and-generated-backend-types-usage-so-the-admin-ui-can-read-write-the-new-episode-fields-runtimeminutes-visibility-releasedate-admin-set-tagged-character-ids-and-order-ensure-query-invalidation-continues-to-refresh-the-episodes-list-after-mutations",
-      "featureTitle": "Update the Episodes React Query hooks and TypeScript types (frontend/src/hooks/useQueries.ts and generated backend types usage) so the admin UI can read/write the new episode fields: runtimeMinutes, visibility, releaseDate (admin-set), tagged character IDs, and order. Ensure query invalidation continues to refresh the episodes list after mutations.",
+      "featureId": "feature-update-react-query-character-hooks-types-in-frontend-src-hooks-usequeries-ts-to-support-reading-writing-the-new-character-portrait-field-when-creating-and-editing-characters-in-the-admin-ui",
+      "featureTitle": "Update React Query character hooks/types in frontend/src/hooks/useQueries.ts to support reading/writing the new character portrait field when creating and editing characters in the admin UI.",
       "files": [
         "frontend/src/hooks/useQueries.ts"
       ],
@@ -17,15 +17,15 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-65"
+        "REQ-91"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-enhance-the-episodes-admin-panel-ui-frontend-src-components-admin-panels-episodesadminpanel-tsx-to-support-editing-the-requested-episode-fields-when-creating-and-editing-1-thumbnail-image-upload-from-device-in-addition-to-existing-url-input-2-release-date-selector-control-3-runtime-field-4-visibility-toggle-with-draft-scheduled-public-5-character-tagging-via-multi-select-populated-from-backend-characters-list-and-6-keep-the-episode-summary-textbox-already-present-but-ensure-it-remains-a-large-usable-text-area-all-user-facing-strings-must-be-in-english-and-validation-errors-must-be-clear",
-      "featureTitle": "Enhance the Episodes admin panel UI (frontend/src/components/admin/panels/EpisodesAdminPanel.tsx) to support editing the requested episode fields when creating and editing: (1) thumbnail image upload from device (in addition to existing URL input), (2) release date selector control, (3) runtime field, (4) visibility toggle with Draft/Scheduled/Public, (5) character tagging via multi-select (populated from backend characters list), and (6) keep the episode summary textbox (already present) but ensure it remains a large, usable text area. All user-facing strings must be in English and validation errors must be clear.",
+      "featureId": "feature-enhance-the-characters-admin-panel-frontend-src-components-admin-panels-charactersadminpanel-tsx-to-allow-admins-to-upload-select-a-character-portrait-image-when-creating-or-editing-a-character-with-client-side-validation-enforcing-a-20mb-max-file-size-and-allowed-image-types-png-jpeg-webp-using-the-existing-frontend-src-utils-galleryimageupload-ts-validation-utility",
+      "featureTitle": "Enhance the Characters admin panel (frontend/src/components/admin/panels/CharactersAdminPanel.tsx) to allow admins to upload/select a character portrait image when creating or editing a character, with client-side validation enforcing a 20MB max file size and allowed image types (PNG/JPEG/WebP) using the existing frontend/src/utils/galleryImageUpload.ts validation utility.",
       "files": [
-        "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx",
+        "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
         "frontend/src/utils/galleryImageUpload.ts"
       ],
       "components": [
@@ -38,16 +38,17 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-66"
+        "REQ-92"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-drag-and-drop-episode-reordering-in-the-episodes-admin-panel-list-frontend-src-components-admin-panels-episodesadminpanel-tsx-persist-the-new-order-to-the-backend-using-the-episode-order-sort-field-so-that-after-refresh-the-order-remains-if-drag-and-drop-reordering-already-exists-do-not-duplicate-it-instead-ensure-it-correctly-persists-and-reloads",
-      "featureTitle": "Implement drag-and-drop episode reordering in the Episodes admin panel list (frontend/src/components/admin/panels/EpisodesAdminPanel.tsx). Persist the new order to the backend using the episode order/sort field so that after refresh the order remains. If drag-and-drop reordering already exists, do not duplicate it; instead ensure it correctly persists and reloads.",
+      "featureId": "feature-update-the-public-characters-section-data-mapping-frontend-src-components-sections-characterssection-tsx-and-character-card-rendering-frontend-src-components-characters-charactercard-tsx-so-that-if-a-character-portrait-image-is-available-from-backend-data-it-is-displayed-in-place-of-the-current-placeholder-icon-otherwise-keep-the-existing-placeholder-behavior",
+      "featureTitle": "Update the public Characters section data mapping (frontend/src/components/sections/CharactersSection.tsx) and character card rendering (frontend/src/components/characters/CharacterCard.tsx) so that if a character portrait image is available from backend data, it is displayed in place of the current placeholder icon; otherwise keep the existing placeholder behavior.",
       "files": [
-        "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/characters/CharacterCard.tsx",
+        "frontend/src/components/sections/CharactersSection.tsx",
+        "frontend/src/data/characters.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -59,7 +60,7 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-67"
+        "REQ-93"
       ],
       "confidence": "high"
     }

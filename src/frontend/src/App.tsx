@@ -9,15 +9,20 @@ import { GallerySection } from './components/sections/GallerySection';
 import { NewsUpdatesSection } from './components/sections/NewsUpdatesSection';
 import { Footer } from './components/sections/Footer';
 import { AdminAccessGate } from './components/admin/AdminAccessGate';
+import { ProModeGate } from './components/pro/ProModeGate';
+import { ProPresentationSection } from './components/pro/ProPresentationSection';
+import { ProToolbar } from './components/pro/ProToolbar';
 
 function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'admin'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'admin' | 'pro'>('main');
 
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
       if (hash === '#admin') {
         setCurrentView('admin');
+      } else if (hash === '#pro') {
+        setCurrentView('pro');
       } else {
         setCurrentView('main');
       }
@@ -36,12 +41,35 @@ function App() {
     );
   }
 
+  if (currentView === 'pro') {
+    return (
+      <ProModeGate>
+        <div className="min-h-screen bg-background text-foreground">
+          <ProToolbar />
+          <HeaderNav />
+          <main>
+            <HeroSection />
+            <AboutSection />
+            <ProPresentationSection isProMode={true} />
+            <CharactersSection />
+            <ClansSection />
+            <EpisodesSection />
+            <GallerySection />
+            <NewsUpdatesSection />
+          </main>
+          <Footer />
+        </div>
+      </ProModeGate>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <HeaderNav />
       <main>
         <HeroSection />
         <AboutSection />
+        <ProPresentationSection isProMode={false} />
         <CharactersSection />
         <ClansSection />
         <EpisodesSection />

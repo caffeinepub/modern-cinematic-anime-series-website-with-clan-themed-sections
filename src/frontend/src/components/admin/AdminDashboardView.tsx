@@ -18,6 +18,10 @@ export function AdminDashboardView() {
     window.location.hash = '';
   };
 
+  const handleProTabClick = () => {
+    window.location.hash = 'pro';
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-card/20 to-background">
       {/* Header */}
@@ -53,7 +57,7 @@ export function AdminDashboardView() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="episodes" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 mb-6">
+              <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 mb-6">
                 <TabsTrigger value="episodes">Episodes</TabsTrigger>
                 <TabsTrigger value="characters">Characters</TabsTrigger>
                 <TabsTrigger value="clans">Clans</TabsTrigger>
@@ -61,6 +65,7 @@ export function AdminDashboardView() {
                 <TabsTrigger value="news">News</TabsTrigger>
                 <TabsTrigger value="scripts">Scripts</TabsTrigger>
                 {isAdmin && <TabsTrigger value="team">Team</TabsTrigger>}
+                <TabsTrigger value="pro" onClick={handleProTabClick}>Pro</TabsTrigger>
               </TabsList>
 
               <TabsContent value="episodes" className="space-y-4">

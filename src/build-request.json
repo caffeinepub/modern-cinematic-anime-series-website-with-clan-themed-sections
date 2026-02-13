@@ -1,122 +1,116 @@
 {
   "kind": "build_request",
-  "title": "Enhance Episodes admin panel: thumbnail upload, scheduling fields, visibility, character tags, and drag-and-drop ordering",
+  "title": "Allow admin to upload character portrait images (max 20MB) in Characters admin panel",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-63",
-      "text": "Extend the backend Episode data model and Episodes CRUD APIs in backend/main.mo to support the additional admin-managed episode fields: (1) runtime (in minutes), (2) visibility status with exactly these values: Draft, Scheduled, Public, (3) an explicit release date value that can be set by the admin (not auto-generated), (4) a list of character IDs tagged as appearing in the episode, and (5) an explicit sortable order field used for episode reordering. Ensure existing episode fields and production progress fields continue to work.",
+      "id": "REQ-88",
+      "text": "Update the backend Character model in backend/main.mo to persist a character portrait image reference (e.g., portraitUrl as Text) and expose it via getAllCharacters/getCharacterById.",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-user-episodes-admin-upgrades"
+          "recent-messages-3"
         ],
         "quotes": [
-          "Improve the Episodes admin panel with the following features:\n\n• Add episode thumbnail image upload\n• Add release date selector\n• Add episode runtime field\n• Add visibility toggle (Draft / Scheduled / Public)\n• Allow tagging characters that appear in each episode\n• Add episode summary text box\n• Add drag-and-drop episode reordering\n(if already there don't worry about it)"
+          "when admin is making a character in the admin panel.....alow admin to add an image of the character 20mb max"
         ]
       },
       "acceptanceCriteria": [
-        "backend/main.mo Episode type includes fields for runtimeMinutes, visibility (Draft|Scheduled|Public), tagged character IDs, and an order/sort field used for reordering.",
-        "backend/main.mo createEpisode and updateEpisode accept and persist the new fields (admin-only writes remain enforced).",
-        "getAllEpisodes returns the new fields for each episode so the admin UI can render them.",
-        "No existing episode functionality regresses (create/update/delete, production progress toggles, existing thumbnailUrl/videoUrl fields)."
+        "Backend Character records include a persisted portraitUrl (or equivalent) field returned by character query APIs.",
+        "Existing Character CRUD continues to work, with portraitUrl preserved on updates when provided."
       ]
     },
     {
-      "id": "REQ-64",
-      "text": "Add conditional state migration support (only if required by the schema change) so existing stored episodes are preserved after upgrade and the new episode fields are initialized to sensible defaults (e.g., runtime unset/0, visibility=Draft or Public per current behavior, tagged character IDs empty, order derived from existing episode number/id).",
+      "id": "REQ-89",
+      "text": "Extend backend Character CRUD APIs in backend/main.mo so admins can create/update a character with an optional portrait image reference (portraitUrl). Enforce the existing admin-only authorization checks for these mutations.",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-user-episodes-admin-upgrades"
+          "recent-messages-3"
         ],
         "quotes": [
-          "Add episode runtime field",
-          "Add visibility toggle (Draft / Scheduled / Public)",
-          "Add drag-and-drop episode reordering"
+          "alow admin to add an image of the character 20mb max"
         ]
       },
       "acceptanceCriteria": [
-        "If the Episode record schema changes, backend/migration.mo is updated/created per project migration policy to preserve existing episodes.",
-        "After upgrade, previously created episodes still load successfully and the new fields have deterministic default values (no traps/crashes)."
+        "createCharacter and updateCharacter accept an additional optional portraitUrl parameter (or equivalent) and store it on the Character record.",
+        "Non-admin callers attempting to create/update a character (including the portrait field) are rejected with the existing unauthorized behavior.",
+        "Character delete and list operations still behave as before."
       ]
     },
     {
-      "id": "REQ-65",
-      "text": "Update the Episodes React Query hooks and TypeScript types (frontend/src/hooks/useQueries.ts and generated backend types usage) so the admin UI can read/write the new episode fields: runtimeMinutes, visibility, releaseDate (admin-set), tagged character IDs, and order. Ensure query invalidation continues to refresh the episodes list after mutations.",
+      "id": "REQ-90",
+      "text": "If adding a portrait field changes stable state schema, add/update backend/migration.mo following the project’s conditional migration policy so existing stored characters are preserved and the new portrait field initializes safely (e.g., empty string or null).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "recent-messages-3"
+        ]
+      },
+      "acceptanceCriteria": [
+        "After upgrade, existing characters are still present.",
+        "The new character portrait field is initialized to a safe default for pre-existing character records.",
+        "Migration logic runs only on upgrade (not on fresh install), consistent with the conditional migration policy."
+      ]
+    },
+    {
+      "id": "REQ-91",
+      "text": "Update React Query character hooks/types in frontend/src/hooks/useQueries.ts to support reading/writing the new character portrait field when creating and editing characters in the admin UI.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-episodes-admin-upgrades"
-        ],
-        "quotes": [
-          "Add release date selector",
-          "Add episode runtime field",
-          "Add visibility toggle (Draft / Scheduled / Public)",
-          "Allow tagging characters that appear in each episode",
-          "Add drag-and-drop episode reordering"
+          "recent-messages-3"
         ]
       },
       "acceptanceCriteria": [
-        "useCreateEpisode and useUpdateEpisode accept and pass through the new episode fields to the backend actor calls.",
-        "The Episode type used by the admin panel includes the new fields without TypeScript errors.",
-        "The existing ['episodes'] query is invalidated/refetched after create/update/delete and after any reorder operation."
+        "useCreateCharacter and useUpdateCharacter send the portrait field to the backend when provided.",
+        "Characters fetched via useGetAllCharacters include the portrait field in the returned type and data flow (no TypeScript errors).",
+        "Character list invalidation/refetch still occurs after create/update/delete as before."
       ]
     },
     {
-      "id": "REQ-66",
-      "text": "Enhance the Episodes admin panel UI (frontend/src/components/admin/panels/EpisodesAdminPanel.tsx) to support editing the requested episode fields when creating and editing: (1) thumbnail image upload from device (in addition to existing URL input), (2) release date selector control, (3) runtime field, (4) visibility toggle with Draft/Scheduled/Public, (5) character tagging via multi-select (populated from backend characters list), and (6) keep the episode summary textbox (already present) but ensure it remains a large, usable text area. All user-facing strings must be in English and validation errors must be clear.",
+      "id": "REQ-92",
+      "text": "Enhance the Characters admin panel (frontend/src/components/admin/panels/CharactersAdminPanel.tsx) to allow admins to upload/select a character portrait image when creating or editing a character, with client-side validation enforcing a 20MB max file size and allowed image types (PNG/JPEG/WebP) using the existing frontend/src/utils/galleryImageUpload.ts validation utility.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-episodes-admin-upgrades"
+          "recent-messages-3"
         ],
         "quotes": [
-          "Add episode thumbnail image upload",
-          "Add release date selector",
-          "Add episode runtime field",
-          "Add visibility toggle (Draft / Scheduled / Public)",
-          "Allow tagging characters that appear in each episode",
-          "Add episode summary text box"
+          "alow admin to add an image of the character 20mb max"
         ]
       },
       "acceptanceCriteria": [
-        "Create Episode and Edit Episode dialogs include controls for: thumbnail file upload, release date selection, runtime minutes input, visibility selection (Draft/Scheduled/Public), and character tagging multi-select.",
-        "Thumbnail upload produces a non-empty preview and stores the resulting value in thumbnailUrl (e.g., a data URL), similar to how the Gallery admin upload works.",
-        "If an invalid file is selected, the UI shows a clear English error message and does not submit.",
-        "The admin can select zero or more characters for an episode; saving persists the selection and reopening the edit dialog shows the previously selected characters.",
-        "The existing Summary textarea remains available and is used as the episode summary text box."
+        "Create and Edit character dialogs include a clearly labeled portrait upload control (file picker).",
+        "Selecting an invalid file type shows a clear English validation error: only PNG/JPEG/WebP allowed.",
+        "Selecting a file larger than 20MB shows a clear English validation error indicating the 20MB limit.",
+        "Selecting a valid image shows a non-broken preview in the dialog and includes the portrait data in the create/update mutation payload.",
+        "Admins can remove/clear the selected portrait before saving (reverting to no portrait)."
       ]
     },
     {
-      "id": "REQ-67",
-      "text": "Implement drag-and-drop episode reordering in the Episodes admin panel list (frontend/src/components/admin/panels/EpisodesAdminPanel.tsx). Persist the new order to the backend using the episode order/sort field so that after refresh the order remains. If drag-and-drop reordering already exists, do not duplicate it; instead ensure it correctly persists and reloads.",
-      "target": "both",
+      "id": "REQ-93",
+      "text": "Update the public Characters section data mapping (frontend/src/components/sections/CharactersSection.tsx) and character card rendering (frontend/src/components/characters/CharacterCard.tsx) so that if a character portrait image is available from backend data, it is displayed in place of the current placeholder icon; otherwise keep the existing placeholder behavior.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-episodes-admin-upgrades"
-        ],
-        "quotes": [
-          "Add drag-and-drop episode reordering (if already there don't worry about it)"
+          "recent-messages-3"
         ]
       },
       "acceptanceCriteria": [
-        "The Episodes admin list supports drag-and-drop reordering via a clear handle/interaction.",
-        "After reordering, the new order is persisted to the backend and the episodes list re-renders in the saved order on subsequent loads.",
-        "Reordering does not break editing, deleting, or production progress toggles.",
-        "If drag-and-drop was already implemented, it continues to work and persistence is verified."
+        "When a backend character has a portrait image set, the character card renders it as the portrait (not the placeholder icon).",
+        "When a backend character does not have a portrait image set, the existing placeholder icon remains visible and the card layout does not break.",
+        "No console errors occur during rendering for either case."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files in frontend immutablePaths (e.g., frontend/src/hooks/useActor.ts, frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/main.tsx, frontend/src/components/ui).",
-    "Backend must remain a single Motoko actor in backend/main.mo.",
-    "All user-facing text must be English."
+    "Do not edit files in frontend/immutablePaths (compose existing UI components instead).",
+    "Keep all Motoko logic in the single actor in backend/main.mo; only use backend/migration.mo if a state upgrade is required."
   ],
   "nonGoals": [
-    "Do not add third-party services or external databases for file storage.",
-    "Do not change public Episodes section behavior unless required to support the persisted ordering/visibility fields.",
-    "Do not implement character portrait upload in this request (separate earlier request)."
+    "Adding third-party image hosting or external storage services.",
+    "Adding real-time image processing beyond the existing data-url conversion/validation pattern."
   ],
   "imageRequirements": {
     "required": [],

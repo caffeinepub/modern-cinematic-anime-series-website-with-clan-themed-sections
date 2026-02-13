@@ -1,23 +1,24 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 45,
+  "projectStateVersion": 59,
   "summary": "Build a modern anime streaming/promo-style website for \"Whispers Of The White Moon\" with dark cinematic styling, glowing accents, smooth transitions/parallax, content sections (Characters, Episodes, Gallery, News/Updates, Clans), and a secure admin dashboard for the site owner to manage all anime content.",
   "architectural_notes": [
     "Visual direction: anime streaming/promo-site feel with dark theme (navy/black/deep purple) and glowing accents (moon blue, fiery gold).",
     "Animation direction: smooth fade transitions; implement parallax scrolling where performant and appropriate (with reduced-motion support).",
     "Update/extend site information architecture to include top-level sections for Characters, Episodes, Gallery, and News/Updates (in addition to Home/Story/Clans) accessible via the top navigation.",
-    "Lean into official anime promotion-site presentation: dramatic hero section, layered background/overlay depth, prominent glowing UI highlights, and smooth scroll-linked/reveal animations (with reduced-motion support).",
     "Add a secure admin/auth layer and an owner-only admin dashboard for managing site content (episodes, characters, news posts, gallery images, clans), styled consistently with the main dark theme.",
     "Admin dashboard should support role-based access control (RBAC) with permissions by role, including team member account administration.",
     "Homepage should include a dedicated \"Series Overview\" subsection within the About/Story area, featuring the provided narrative overview text.",
     "Public Episodes UI should conditionally render an embedded video player for episodes marked Released; otherwise show a clear \"not released yet\" message/state.",
     "Homepage layout: ensure existing sections (Story, Characters, Clans, Episodes, Gallery, News/Updates) can be reordered to match the intended page flow while keeping stable section DOM ids for nav scrolling.",
-    "Homepage UX: add clear, prominent section title headings for each main section (Hero/Series title, Story, Characters, Clans, Episodes, Gallery, News) so users see the section name as they scroll."
+    "Homepage UX: add clear, prominent section title headings for each main section (Hero/Series title, Story, Characters, Clans, Episodes, Gallery, News) so users see the section name as they scroll.",
+    "Hero enhancements: add subtle floating particle layer + parallax background + animated glowing logo on load + fade-in text transitions; include reduced-motion support and keep effects performant. Ambient music must be opt-in with an obvious toggle (muted/off by default) and must not auto-play without user interaction."
   ],
   "known_issues": [
     "User reports the Gallery “+” upload button is not visible (likely due to not being authenticated as an admin).",
     "Build/deployment failed due to a configuration error (Caffeine platform error).",
-    "Build/generation process intermittently fails with \"couldn't generate your application\" / \"AI couldn't handle that request\" errors."
+    "Build/generation process intermittently fails with \"couldn't generate your application\" / \"AI couldn't handle that request\" errors.",
+    "Pro mode: admin cannot edit presentation text after clicking the \"Pro\" tab (editing UI/flow not working or missing)."
   ],
   "isFixRequest": false,
   "existing_features": [
@@ -436,6 +437,150 @@
         "REQ-67"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-create-react-query-hooks-in-frontend-src-hooks-usequeries-ts-or-another-non-immutable-frontend-file-for-admin-analytics-fetch-overall-analytics-summary-fetch-top-viewed-characters-top-viewed-episodes-gallery-image-popularity-recent-user-activity-and-episode-engagement-stats-using-the-existing-actor-setup-and-query-invalidation-patterns",
+      "title": "Create React Query hooks in frontend/src/hooks/useQueries.ts (or another non-immutable frontend file) for admin analytics: fetch overall analytics summary, fetch top viewed characters, top viewed episodes, gallery image popularity, recent user activity, and episode engagement stats, using the existing actor setup and query invalidation patterns.",
+      "reqIds": [
+        "REQ-71"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-analytics-area-to-the-admin-dashboard-ui-integrated-into-the-existing-admindashboardview-tab-layout-and-implement-an-analyticsadminpanel-component-that-displays-total-site-visits-ranked-lists-for-most-viewed-characters-episodes-gallery-images-a-recent-activity-feed-and-episode-engagement-stats-all-user-facing-text-must-be-in-english",
+      "title": "Add a new “Analytics” area to the admin dashboard UI, integrated into the existing AdminDashboardView tab layout, and implement an AnalyticsAdminPanel component that displays: total site visits, ranked lists for most viewed characters/episodes/gallery images, a recent activity feed, and episode engagement stats. All user-facing text must be in English.",
+      "reqIds": [
+        "REQ-72"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-instrument-the-public-marketing-site-frontend-to-record-analytics-events-using-the-new-backend-tracking-apis-record-a-site-visit-record-views-interactions-for-characters-episodes-including-watch-attempts-plays-and-gallery-items-instrumentation-must-be-lightweight-and-must-not-break-existing-section-rendering-or-reduced-motion-behavior",
+      "title": "Instrument the public marketing site frontend to record analytics events using the new backend tracking APIs: record a site visit; record views/interactions for Characters, Episodes (including watch attempts/plays), and Gallery items. Instrumentation must be lightweight and must not break existing section rendering or reduced-motion behavior.",
+      "reqIds": [
+        "REQ-73"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-existing-homepage-hero-section-frontend-src-components-sections-herosection-tsx-so-it-clearly-delivers-the-requested-animated-experience-slow-floating-particles-moon-dust-or-wind-energy-parallax-scrolling-background-glowing-animated-logo-on-initial-page-load-and-fade-in-text-transitions-for-hero-content",
+      "title": "Update the existing homepage Hero section (frontend/src/components/sections/HeroSection.tsx) so it clearly delivers the requested animated experience: slow floating particles (moon dust or wind energy), parallax scrolling background, glowing animated logo on initial page load, and fade-in text transitions for hero content.",
+      "reqIds": [
+        "REQ-74"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-user-controlled-background-ambient-music-toggle-to-the-homepage-hero-frontend-src-components-sections-herosection-tsx-that-can-start-stop-a-bundled-ambient-audio-track-with-clear-english-labeling-and-accessible-controls",
+      "title": "Add a user-controlled background ambient music toggle to the homepage Hero (frontend/src/components/sections/HeroSection.tsx) that can start/stop a bundled ambient audio track, with clear English labeling and accessible controls.",
+      "reqIds": [
+        "REQ-75"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-generated-transparent-background-hero-logo-image-to-the-frontend-static-assets-and-render-it-in-the-hero-section-as-the-animated-logo-element",
+      "title": "Add a generated, transparent-background hero logo image to the frontend static assets and render it in the Hero section as the animated logo element.",
+      "reqIds": [
+        "REQ-76"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-homepage-hero-section-frontend-src-components-sections-herosection-tsx-to-render-a-generated-transparent-hero-logo-image-as-a-prominent-animated-element-on-initial-page-load-while-preserving-the-existing-particles-parallax-background-and-reduced-motion-behavior",
+      "title": "Update the homepage Hero section (frontend/src/components/sections/HeroSection.tsx) to render a generated transparent hero logo image as a prominent animated element on initial page load, while preserving the existing particles, parallax background, and reduced-motion behavior.",
+      "reqIds": [
+        "REQ-77"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-user-controlled-ambient-background-music-toggle-to-the-homepage-hero-section-frontend-src-components-sections-herosection-tsx-that-can-start-stop-a-bundled-ambient-audio-track-using-clear-english-labels-and-accessible-controls",
+      "title": "Add a user-controlled ambient background music toggle to the homepage Hero section (frontend/src/components/sections/HeroSection.tsx) that can start/stop a bundled ambient audio track, using clear English labels and accessible controls.",
+      "reqIds": [
+        "REQ-78"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-hero-section-text-content-uses-smooth-fade-in-transitions-title-subtitle-cta-block-that-align-with-the-cinematic-theme-while-remaining-performant-and-respecting-prefers-reduced-motion",
+      "title": "Ensure Hero section text content uses smooth fade-in transitions (title, subtitle, CTA block) that align with the cinematic theme while remaining performant and respecting prefers-reduced-motion.",
+      "reqIds": [
+        "REQ-79"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-admin-dashboard-tab-labeled-pro-in-frontend-src-components-admin-admindashboardview-tsx-when-the-admin-clicks-the-pro-tab-immediately-navigate-the-app-to-a-new-pro-editing-mode-on-the-public-main-site-without-opening-a-standard-admin-crud-panel",
+      "title": "Add a new admin dashboard tab labeled \"Pro\" in frontend/src/components/admin/AdminDashboardView.tsx. When the admin clicks the \"Pro\" tab, immediately navigate the app to a new Pro editing mode on the public main site (without opening a standard admin CRUD panel).",
+      "reqIds": [
+        "REQ-82"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-frontend-src-app-tsx-routing-to-support-a-third-view-state-for-pro-mode-in-addition-to-the-existing-main-and-admin-hash-based-routing-in-pro-mode-render-the-normal-public-site-ui-headernav-all-sections-footer-but-with-a-visible-pro-editing-toolbar-that-allows-the-admin-to-edit-presentation-text-and-exit-pro-mode",
+      "title": "Extend frontend/src/App.tsx routing to support a third view state for Pro mode (in addition to the existing 'main' and 'admin' hash-based routing). In Pro mode, render the normal public site UI (HeaderNav + all sections + Footer) but with a visible Pro editing toolbar that allows the admin to edit presentation text and exit Pro mode.",
+      "reqIds": [
+        "REQ-83"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-pro-presentation-editing-experience-that-lets-an-admin-change-and-add-presentation-text-while-viewing-the-main-site-provide-an-always-visible-pro-toolbar-with-1-an-add-text-block-action-2-an-edit-capability-for-existing-pro-text-blocks-and-3-a-done-action-to-finish-editing",
+      "title": "Implement a Pro presentation editing experience that lets an admin change and add presentation text while viewing the main site. Provide an always-visible Pro toolbar with: (1) an \"Add Text Block\" action, (2) an \"Edit\" capability for existing Pro text blocks, and (3) a \"Done\" action to finish editing.",
+      "reqIds": [
+        "REQ-84"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-pro-presentation-text-so-changes-survive-a-page-refresh-add-backend-storage-and-apis-in-backend-main-mo-to-1-read-the-current-pro-presentation-content-publicly-and-2-allow-admins-to-update-it-add-corresponding-react-query-hooks-in-frontend-src-hooks-usequeries-ts-to-fetch-and-update-the-pro-presentation-content-and-wire-the-pro-editor-to-use-these-hooks",
+      "title": "Persist Pro presentation text so changes survive a page refresh: add backend storage and APIs in backend/main.mo to (1) read the current Pro presentation content publicly and (2) allow admins to update it. Add corresponding React Query hooks in frontend/src/hooks/useQueries.ts to fetch and update the Pro presentation content, and wire the Pro editor to use these hooks.",
+      "reqIds": [
+        "REQ-85"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-that-when-an-authenticated-admin-clicks-the-pro-tab-in-the-admin-dashboard-the-pro-editing-mode-reliably-allows-editing-text-blocks-title-body-directly-on-the-public-site-view-including-being-able-to-change-existing-blocks-and-add-new-ones",
+      "title": "Ensure that when an authenticated admin clicks the \"Pro\" tab in the Admin Dashboard, the Pro editing mode reliably allows editing text blocks (title + body) directly on the public site view, including being able to change existing blocks and add new ones.",
+      "reqIds": [
+        "REQ-86"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-pro-mode-done-action-persists-the-edited-pro-presentation-blocks-to-the-backend-and-that-the-saved-content-is-visible-after-a-page-refresh-and-also-in-non-pro-mode-when-blocks-exist",
+      "title": "Ensure the Pro mode \"Done\" action persists the edited Pro presentation blocks to the backend and that the saved content is visible after a page refresh (and also in non-Pro mode when blocks exist).",
+      "reqIds": [
+        "REQ-87"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-react-query-character-hooks-types-in-frontend-src-hooks-usequeries-ts-to-support-reading-writing-the-new-character-portrait-field-when-creating-and-editing-characters-in-the-admin-ui",
+      "title": "Update React Query character hooks/types in frontend/src/hooks/useQueries.ts to support reading/writing the new character portrait field when creating and editing characters in the admin UI.",
+      "reqIds": [
+        "REQ-91"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-characters-admin-panel-frontend-src-components-admin-panels-charactersadminpanel-tsx-to-allow-admins-to-upload-select-a-character-portrait-image-when-creating-or-editing-a-character-with-client-side-validation-enforcing-a-20mb-max-file-size-and-allowed-image-types-png-jpeg-webp-using-the-existing-frontend-src-utils-galleryimageupload-ts-validation-utility",
+      "title": "Enhance the Characters admin panel (frontend/src/components/admin/panels/CharactersAdminPanel.tsx) to allow admins to upload/select a character portrait image when creating or editing a character, with client-side validation enforcing a 20MB max file size and allowed image types (PNG/JPEG/WebP) using the existing frontend/src/utils/galleryImageUpload.ts validation utility.",
+      "reqIds": [
+        "REQ-92"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-public-characters-section-data-mapping-frontend-src-components-sections-characterssection-tsx-and-character-card-rendering-frontend-src-components-characters-charactercard-tsx-so-that-if-a-character-portrait-image-is-available-from-backend-data-it-is-displayed-in-place-of-the-current-placeholder-icon-otherwise-keep-the-existing-placeholder-behavior",
+      "title": "Update the public Characters section data mapping (frontend/src/components/sections/CharactersSection.tsx) and character card rendering (frontend/src/components/characters/CharacterCard.tsx) so that if a character portrait image is available from backend data, it is displayed in place of the current placeholder icon; otherwise keep the existing placeholder behavior.",
+      "reqIds": [
+        "REQ-93"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -718,6 +863,94 @@
       "summary": "Add conditional state migration support (only if required by the schema change) so existing stored episodes are preserved after upgrade and the new episode fields are initialized to sensible defaults (e.g., runtime unset/0, visibility=Draft or Public per current behavior, tagged character IDs empty, order derived from existing episode number/id).",
       "reqIds": [
         "REQ-64"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-50",
+      "summary": "Create an admin-only analytics dashboard showing total site visits, most viewed characters, most viewed episodes, gallery image popularity, recent user activity, and episode engagement stats.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-51",
+      "summary": "Add backend analytics event tracking to the existing single Motoko actor (backend/main.mo) to record: (1) total site visits, (2) character views, (3) episode views, (4) episode watch attempts/plays, and (5) gallery image views. Tracking APIs must be safe for public callers (no admin required to record an event) and must not trap for anonymous visitors.",
+      "reqIds": [
+        "REQ-68"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-52",
+      "summary": "Add backend admin-only query APIs in backend/main.mo to compute and return aggregated analytics for the admin dashboard: total site visits, most viewed characters, most viewed episodes, gallery image popularity, recent user activity, and episode engagement statistics.",
+      "reqIds": [
+        "REQ-69"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-53",
+      "summary": "Ensure analytics state is preserved across canister upgrades. If new stable state fields are introduced for analytics in backend/main.mo, add/update backend/migration.mo following the project’s conditional migration policy so existing state is preserved and new analytics fields initialize safely.",
+      "reqIds": [
+        "REQ-70"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-54",
+      "summary": "Create an animated homepage Hero section with slow floating particles (moon dust/wind energy), parallax scrolling background, a glowing animated logo on initial page load, and fade-in text transitions.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-55",
+      "summary": "Add a background ambient music toggle on the homepage (user-controlled on/off) for optional hero ambience.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-56",
+      "summary": "Fix the backend build/deployment failure by correcting the migration module import and usage in backend/main.mo so that the Motoko canister compiles successfully and can be deployed.",
+      "reqIds": [
+        "REQ-80"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-57",
+      "summary": "Ensure the backend’s migration integration follows the project’s conditional migration policy: only run migration logic when upgrading existing stable state, and do not introduce breaking schema changes without preserving existing state.",
+      "reqIds": [
+        "REQ-81"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-58",
+      "summary": "Add a new \"Pro\" tab in the admin dashboard that opens a presentation-style editing mode on the main public site, allowing the admin to change/add text inline; provide a clear \"Done\" action to exit and return to the admin panel.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-59",
+      "summary": "Update the backend Character model in backend/main.mo to persist a character portrait image reference (e.g., portraitUrl as Text) and expose it via getAllCharacters/getCharacterById.",
+      "reqIds": [
+        "REQ-88"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-60",
+      "summary": "Extend backend Character CRUD APIs in backend/main.mo so admins can create/update a character with an optional portrait image reference (portraitUrl). Enforce the existing admin-only authorization checks for these mutations.",
+      "reqIds": [
+        "REQ-89"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-61",
+      "summary": "If adding a portrait field changes stable state schema, add/update backend/migration.mo following the project’s conditional migration policy so existing stored characters are preserved and the new portrait field initializes safely (e.g., empty string or null).",
+      "reqIds": [
+        "REQ-90"
       ],
       "status": "pending"
     }

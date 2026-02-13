@@ -1,96 +1,69 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T14:45:37.888Z",
-  "summary": "Backend and admin panel were extended with new episode fields, migration support, image upload validation, and UI state for sorting/reordering. However, the diff shows mismatches with the required field/value names (runtimeMinutes vs runtime; Public vs publicVisibility), and the React Query mutations do not appear to send/persist an explicit order field. Additionally, many unrelated marketing-site UI/style changes were made that were not requested.",
+  "generatedAt": "2026-02-13T17:43:40.613Z",
+  "summary": "Diff implements character portraitUrl across backend types, adds a migration to initialize portraitUrl for existing characters, updates frontend data mapping and CharacterCard rendering to show portraits when present, and adds admin-panel state/handlers plus shared image validation utility/constants for character portrait uploads. However, the diff summary does not provide direct evidence that backend createCharacter/updateCharacter signatures were extended to accept portraitUrl (or that authorization behavior remains unchanged), and it also includes several unrelated UI/theme/routing enhancements not requested in the BuildRequest.",
   "missing_requirements": [
     {
-      "id": "REQ-63",
-      "requirement": "Visibility status must support exactly these values: Draft, Scheduled, Public (and be persisted/returned consistently).",
-      "reason": "The backend visibility variant is implemented as #publicVisibility (and frontend uses 'publicVisibility'), not 'Public' as required, indicating the value set does not match the exact required enum values.",
+      "id": "REQ-89",
+      "requirement": "Extend backend Character CRUD APIs in backend/main.mo so admins can create/update a character with an optional portrait image reference (portraitUrl) and enforce existing admin-only authorization checks.",
+      "reason": "backend/main.mo is truncated before the Character CRUD functions, so there is no explicit evidence in the diff summary that createCharacter/updateCharacter accept and persist a portraitUrl parameter, preserve portraitUrl on updates, and retain the existing unauthorized behavior for non-admin callers.",
       "evidence": [
-        "backend/main.mo",
-        "backend/migration.mo",
-        "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx",
-        "frontend/src/hooks/useQueries.ts"
-      ]
-    },
-    {
-      "id": "REQ-63",
-      "requirement": "Episode data model/API must use runtimeMinutes (in minutes) as an admin-managed field.",
-      "reason": "The schema uses a field named runtime (type ?Nat) rather than runtimeMinutes, so the required field name is not implemented as specified.",
-      "evidence": [
-        "backend/main.mo",
-        "backend/migration.mo",
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx"
-      ]
-    },
-    {
-      "id": "REQ-63",
-      "requirement": "Create and update APIs accept and persist the explicit sortable order field used for episode reordering.",
-      "reason": "The frontend create mutation payload and actor.createEpisode call do not include an order parameter, so the admin cannot explicitly set/persist the order field via create/update as required (only sorting by order is shown in the UI).",
-      "evidence": [
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx"
-      ]
-    },
-    {
-      "id": "REQ-65",
-      "requirement": "useCreateEpisode and useUpdateEpisode accept and pass through the new episode fields including order.",
-      "reason": "useCreateEpisode’s mutationFn does not include/order pass an order field to actor.createEpisode; therefore the hook does not pass through all required new fields.",
-      "evidence": [
-        "frontend/src/hooks/useQueries.ts"
+        "backend/main.mo (truncated; CRUD functions not shown)"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Large-scale redesign/enhancement of global marketing-site styling and animations (e.g., 'dramatic anime aesthetic', world-map-hotspot utility classes, new keyframes, cinematic tokens).",
-      "reason": "Not requested by the BuildRequest, which is focused on the Episodes admin panel enhancements and backend episode fields.",
+      "description": "Broad site-wide visual/theme enhancements (cinematic/anime styling, animations, Tailwind config extensions).",
+      "reason": "Not requested by the BuildRequest, which is specifically about adding character portrait upload/display and related backend/frontend plumbing.",
       "evidence": [
-        "frontend-file-summaries.txt (frontend/src/index.css)",
-        "frontend-file-summaries.txt (frontend/tailwind.config.js)"
+        "frontend/src/index.css (per frontend-file-summaries.txt)",
+        "frontend/tailwind.config.js (per frontend-file-summaries.txt)",
+        "frontend/src/components/sections/HeroSection.tsx (per frontend-file-summaries.txt)",
+        "frontend/src/components/sections/AboutSection.tsx (per frontend-file-summaries.txt)",
+        "frontend/src/components/clans/ClanCard.tsx (per frontend-file-summaries.txt)"
       ]
     },
     {
-      "description": "Hash-based routing changes and navigation/admin-link behavior changes in the main app and header.",
-      "reason": "Not requested; BuildRequest does not ask for routing or navigation changes.",
+      "description": "Hash-based routing with multiple views (main/admin/pro) and ProToolbar/ProPresentationSection integration changes.",
+      "reason": "Not part of the portrait-upload feature request.",
       "evidence": [
-        "frontend-file-summaries.txt (frontend/src/App.tsx)",
-        "frontend-file-summaries.txt (frontend/src/components/sections/HeaderNav.tsx)"
+        "frontend/src/App.tsx (per frontend-file-summaries.txt)"
       ]
     },
     {
-      "description": "Multiple marketing section content/layout changes (Hero/About/Clans/Footer/ClanCard/ClanBadge/CharactersSection), including lore text edits and integrated WorldMapSection.",
-      "reason": "Not requested; outside Episodes admin panel scope.",
+      "description": "Navigation header change adding an admin link visible only to authenticated admins.",
+      "reason": "Not requested by the portrait upload feature requirements.",
       "evidence": [
-        "frontend-file-summaries.txt (frontend/src/components/sections/HeroSection.tsx)",
-        "frontend-file-summaries.txt (frontend/src/components/sections/AboutSection.tsx)",
-        "frontend-file-summaries.txt (frontend/src/components/sections/ClansSection.tsx)",
-        "frontend-file-summaries.txt (frontend/src/components/sections/Footer.tsx)",
-        "frontend-file-summaries.txt (frontend/src/components/clans/ClanCard.tsx)",
-        "frontend-file-summaries.txt (frontend/src/components/clans/ClanBadge.tsx)",
-        "frontend-file-summaries.txt (frontend/src/components/sections/CharactersSection.tsx)",
-        "frontend-file-summaries.txt (frontend/src/data/clans.ts)"
+        "frontend/src/components/sections/HeaderNav.tsx (per frontend-file-summaries.txt)"
       ]
     },
     {
-      "description": "New general-purpose animation/parallax hooks (usePrefersReducedMotion/useRevealOnScroll/useParallax).",
-      "reason": "Not requested by this Episodes admin panel enhancement request.",
+      "description": "Clans section changes including backend loading/fallback merging and WorldMapSection integration.",
+      "reason": "Not requested; unrelated to character portrait upload/display.",
       "evidence": [
-        "frontend-file-summaries.txt (frontend/src/hooks/usePrefersReducedMotion.ts)",
-        "frontend-file-summaries.txt (frontend/src/hooks/useRevealOnScroll.ts)",
-        "frontend-file-summaries.txt (frontend/src/hooks/useParallax.ts)"
+        "frontend/src/components/sections/ClansSection.tsx (per frontend-file-summaries.txt)"
+      ]
+    },
+    {
+      "description": "New parallax hook and other scroll/animation behavior tweaks beyond what is needed for portraits.",
+      "reason": "Not requested by the BuildRequest.",
+      "evidence": [
+        "frontend/src/hooks/useParallax.ts (per frontend-file-summaries.txt)",
+        "frontend/src/hooks/useRevealOnScroll.ts (per frontend-file-summaries.txt)"
       ]
     }
   ],
-  "confidence": 0.72,
+  "confidence": 0.64,
   "changed_files": [
     "backend/main.mo",
     "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/components/admin/panels/EpisodesAdminPanel.tsx",
+    "frontend/src/components/admin/panels/CharactersAdminPanel.tsx",
+    "frontend/src/components/characters/CharacterCard.tsx",
+    "frontend/src/components/sections/CharactersSection.tsx",
+    "frontend/src/data/characters.ts",
     "frontend/src/hooks/useQueries.ts",
     "frontend/src/utils/galleryImageUpload.ts",
     "project_state.json"

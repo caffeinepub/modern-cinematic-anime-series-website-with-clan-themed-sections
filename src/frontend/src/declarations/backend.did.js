@@ -36,6 +36,7 @@ export const Character = IDL.Record({
   'episodes' : IDL.Vec(IDL.Nat),
   'name' : IDL.Text,
   'role' : IDL.Text,
+  'portraitUrl' : IDL.Text,
 });
 export const Clan = IDL.Record({
   'id' : IDL.Nat,
@@ -75,6 +76,34 @@ export const NewsPost = IDL.Record({
   'content' : IDL.Text,
   'author' : IDL.Text,
   'timestamp' : IDL.Int,
+});
+export const BlockType = IDL.Variant({
+  'title' : IDL.Null,
+  'character' : IDL.Null,
+  'data' : IDL.Null,
+  'list' : IDL.Null,
+  'text' : IDL.Null,
+  'section' : IDL.Null,
+  'progress' : IDL.Null,
+  'image' : IDL.Null,
+  'episode' : IDL.Null,
+});
+export const ProBlockData = IDL.Record({
+  'id' : IDL.Text,
+  'height' : IDL.Nat,
+  'title' : IDL.Text,
+  'dataset' : IDL.Text,
+  'content' : IDL.Text,
+  'transparent' : IDL.Bool,
+  'meta' : IDL.Opt(IDL.Text),
+  'createdAt' : IDL.Int,
+  'color' : IDL.Opt(IDL.Text),
+  'blockType' : BlockType,
+  'updatedAt' : IDL.Int,
+  'subTitle' : IDL.Opt(IDL.Text),
+  'width' : IDL.Nat,
+  'position' : IDL.Nat,
+  'episode' : IDL.Opt(IDL.Nat),
 });
 export const Script = IDL.Record({
   'id' : IDL.Nat,
@@ -118,7 +147,14 @@ export const idlService = IDL.Service({
   'addMemberToClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'createCharacter' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, IDL.Opt(IDL.Nat), IDL.Vec(IDL.Nat)],
+      [
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Opt(IDL.Nat),
+        IDL.Vec(IDL.Nat),
+        IDL.Text,
+      ],
       [],
       [],
     ),
@@ -154,12 +190,14 @@ export const idlService = IDL.Service({
   'deleteEpisode' : IDL.Func([IDL.Nat], [], []),
   'deleteGalleryItem' : IDL.Func([IDL.Nat], [], []),
   'deleteNewsPost' : IDL.Func([IDL.Nat], [], []),
+  'deleteProBlock' : IDL.Func([IDL.Text], [], []),
   'deleteScript' : IDL.Func([IDL.Nat], [], []),
   'getAllCharacters' : IDL.Func([], [IDL.Vec(Character)], ['query']),
   'getAllClans' : IDL.Func([], [IDL.Vec(Clan)], ['query']),
   'getAllEpisodes' : IDL.Func([], [IDL.Vec(Episode)], ['query']),
   'getAllGalleryItems' : IDL.Func([], [IDL.Vec(GalleryItem)], ['query']),
   'getAllNewsPosts' : IDL.Func([], [IDL.Vec(NewsPost)], ['query']),
+  'getAllProBlocks' : IDL.Func([], [IDL.Vec(ProBlockData)], ['query']),
   'getAllScripts' : IDL.Func([], [IDL.Vec(Script)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
@@ -170,6 +208,7 @@ export const idlService = IDL.Service({
   'getGalleryItemById' : IDL.Func([IDL.Nat], [IDL.Opt(GalleryItem)], ['query']),
   'getNewsPostById' : IDL.Func([IDL.Nat], [IDL.Opt(NewsPost)], ['query']),
   'getNewsPostsByAuthor' : IDL.Func([IDL.Text], [IDL.Vec(NewsPost)], ['query']),
+  'getProPresentation' : IDL.Func([], [IDL.Text], ['query']),
   'getScriptById' : IDL.Func([IDL.Nat], [IDL.Opt(Script)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
@@ -185,8 +224,10 @@ export const idlService = IDL.Service({
     ),
   'removeMemberFromClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
   'reorderEpisodes' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
+  'reorderProBlocks' : IDL.Func([IDL.Vec(IDL.Text)], [], []),
   'revokeRole' : IDL.Func([IDL.Principal], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'saveProBlock' : IDL.Func([ProBlockData], [], []),
   'updateCharacter' : IDL.Func(
       [
         IDL.Nat,
@@ -195,6 +236,7 @@ export const idlService = IDL.Service({
         IDL.Text,
         IDL.Opt(IDL.Nat),
         IDL.Vec(IDL.Nat),
+        IDL.Text,
       ],
       [],
       [],
@@ -226,6 +268,8 @@ export const idlService = IDL.Service({
       [],
     ),
   'updateNewsPost' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
+  'updateProBlock' : IDL.Func([IDL.Text, ProBlockData], [], []),
+  'updateProPresentation' : IDL.Func([IDL.Text], [], []),
   'updateScript' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
 });
 
@@ -260,6 +304,7 @@ export const idlFactory = ({ IDL }) => {
     'episodes' : IDL.Vec(IDL.Nat),
     'name' : IDL.Text,
     'role' : IDL.Text,
+    'portraitUrl' : IDL.Text,
   });
   const Clan = IDL.Record({
     'id' : IDL.Nat,
@@ -299,6 +344,34 @@ export const idlFactory = ({ IDL }) => {
     'content' : IDL.Text,
     'author' : IDL.Text,
     'timestamp' : IDL.Int,
+  });
+  const BlockType = IDL.Variant({
+    'title' : IDL.Null,
+    'character' : IDL.Null,
+    'data' : IDL.Null,
+    'list' : IDL.Null,
+    'text' : IDL.Null,
+    'section' : IDL.Null,
+    'progress' : IDL.Null,
+    'image' : IDL.Null,
+    'episode' : IDL.Null,
+  });
+  const ProBlockData = IDL.Record({
+    'id' : IDL.Text,
+    'height' : IDL.Nat,
+    'title' : IDL.Text,
+    'dataset' : IDL.Text,
+    'content' : IDL.Text,
+    'transparent' : IDL.Bool,
+    'meta' : IDL.Opt(IDL.Text),
+    'createdAt' : IDL.Int,
+    'color' : IDL.Opt(IDL.Text),
+    'blockType' : BlockType,
+    'updatedAt' : IDL.Int,
+    'subTitle' : IDL.Opt(IDL.Text),
+    'width' : IDL.Nat,
+    'position' : IDL.Nat,
+    'episode' : IDL.Opt(IDL.Nat),
   });
   const Script = IDL.Record({
     'id' : IDL.Nat,
@@ -342,7 +415,14 @@ export const idlFactory = ({ IDL }) => {
     'addMemberToClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'createCharacter' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Opt(IDL.Nat), IDL.Vec(IDL.Nat)],
+        [
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Opt(IDL.Nat),
+          IDL.Vec(IDL.Nat),
+          IDL.Text,
+        ],
         [],
         [],
       ),
@@ -378,12 +458,14 @@ export const idlFactory = ({ IDL }) => {
     'deleteEpisode' : IDL.Func([IDL.Nat], [], []),
     'deleteGalleryItem' : IDL.Func([IDL.Nat], [], []),
     'deleteNewsPost' : IDL.Func([IDL.Nat], [], []),
+    'deleteProBlock' : IDL.Func([IDL.Text], [], []),
     'deleteScript' : IDL.Func([IDL.Nat], [], []),
     'getAllCharacters' : IDL.Func([], [IDL.Vec(Character)], ['query']),
     'getAllClans' : IDL.Func([], [IDL.Vec(Clan)], ['query']),
     'getAllEpisodes' : IDL.Func([], [IDL.Vec(Episode)], ['query']),
     'getAllGalleryItems' : IDL.Func([], [IDL.Vec(GalleryItem)], ['query']),
     'getAllNewsPosts' : IDL.Func([], [IDL.Vec(NewsPost)], ['query']),
+    'getAllProBlocks' : IDL.Func([], [IDL.Vec(ProBlockData)], ['query']),
     'getAllScripts' : IDL.Func([], [IDL.Vec(Script)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
@@ -402,6 +484,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(NewsPost)],
         ['query'],
       ),
+    'getProPresentation' : IDL.Func([], [IDL.Text], ['query']),
     'getScriptById' : IDL.Func([IDL.Nat], [IDL.Opt(Script)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
@@ -417,8 +500,10 @@ export const idlFactory = ({ IDL }) => {
       ),
     'removeMemberFromClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
     'reorderEpisodes' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
+    'reorderProBlocks' : IDL.Func([IDL.Vec(IDL.Text)], [], []),
     'revokeRole' : IDL.Func([IDL.Principal], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'saveProBlock' : IDL.Func([ProBlockData], [], []),
     'updateCharacter' : IDL.Func(
         [
           IDL.Nat,
@@ -427,6 +512,7 @@ export const idlFactory = ({ IDL }) => {
           IDL.Text,
           IDL.Opt(IDL.Nat),
           IDL.Vec(IDL.Nat),
+          IDL.Text,
         ],
         [],
         [],
@@ -458,6 +544,8 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'updateNewsPost' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
+    'updateProBlock' : IDL.Func([IDL.Text, ProBlockData], [], []),
+    'updateProPresentation' : IDL.Func([IDL.Text], [], []),
     'updateScript' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
   });
 };

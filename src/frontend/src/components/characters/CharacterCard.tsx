@@ -1,6 +1,7 @@
 import { type Character } from '../../data/characters';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { User } from 'lucide-react';
+import { useState } from 'react';
 
 interface CharacterCardProps {
   character: Character;
@@ -10,6 +11,7 @@ interface CharacterCardProps {
 
 export function CharacterCard({ character, index, isVisible }: CharacterCardProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [imageError, setImageError] = useState(false);
 
   // Get clan color based on clan name
   const getClanColor = (clan: string): string => {
@@ -27,6 +29,7 @@ export function CharacterCard({ character, index, isVisible }: CharacterCardProp
   };
 
   const clanColor = getClanColor(character.clan);
+  const hasPortrait = character.portraitUrl && !imageError;
 
   return (
     <div
@@ -48,10 +51,10 @@ export function CharacterCard({ character, index, isVisible }: CharacterCardProp
 
       {/* Content */}
       <div className="relative p-6 flex flex-col h-full">
-        {/* Portrait Placeholder */}
+        {/* Portrait */}
         <div className="mb-4 flex justify-center">
           <div
-            className={`relative w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 ${
+            className={`relative w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 overflow-hidden ${
               !prefersReducedMotion ? 'group-hover:scale-110' : 'group-hover:scale-105'
             }`}
             style={{
@@ -59,10 +62,19 @@ export function CharacterCard({ character, index, isVisible }: CharacterCardProp
               boxShadow: `0 0 20px ${clanColor}40`
             }}
           >
-            <User
-              className="w-12 h-12"
-              style={{ color: clanColor }}
-            />
+            {hasPortrait ? (
+              <img
+                src={character.portraitUrl}
+                alt={character.name}
+                className="w-full h-full object-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <User
+                className="w-12 h-12"
+                style={{ color: clanColor }}
+              />
+            )}
           </div>
         </div>
 

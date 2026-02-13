@@ -1,8 +1,9 @@
-// Validation utility for image uploads (gallery and episodes)
+// Validation utility for image uploads (gallery, episodes, and character portraits)
 
 const ALLOWED_MIME_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
 const MAX_FILE_SIZE_GALLERY = 5 * 1024 * 1024; // 5MB for gallery
 const MAX_FILE_SIZE_EPISODE = 20 * 1024 * 1024; // 20MB for episodes
+const MAX_FILE_SIZE_CHARACTER = 20 * 1024 * 1024; // 20MB for character portraits
 
 export interface ValidationResult {
   success: boolean;
@@ -73,3 +74,4 @@ function fileToDataUrl(file: File): Promise<string> {
 // Export constants for use in components
 export const EPISODE_MAX_FILE_SIZE = MAX_FILE_SIZE_EPISODE;
 export const GALLERY_MAX_FILE_SIZE = MAX_FILE_SIZE_GALLERY;
+export const CHARACTER_MAX_FILE_SIZE = MAX_FILE_SIZE_CHARACTER;
