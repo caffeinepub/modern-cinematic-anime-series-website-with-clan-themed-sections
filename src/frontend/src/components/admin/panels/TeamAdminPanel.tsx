@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Alert, AlertDescription } from '../../ui/alert';
 import { Skeleton } from '../../ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
-import { Plus, Shield, ShieldAlert, AlertCircle, Users, Trash2 } from 'lucide-react';
+import { Plus, Shield, ShieldAlert, AlertCircle, Users, Trash2, Info } from 'lucide-react';
 import { Principal } from '@dfinity/principal';
 import { UserRole } from '../../../backend';
 
@@ -132,12 +132,21 @@ export function TeamAdminPanel() {
 
   return (
     <div className="space-y-4">
+      {/* Info Alert */}
+      <Alert>
+        <Info className="h-4 w-4" />
+        <AlertDescription>
+          <strong>Important:</strong> Roles are granted using Internet Identity Principal IDs, not email addresses. 
+          When someone requests admin access (e.g., "give admin to email@example.com"), ask them to log in and share their Principal ID from the unauthorized screen.
+        </AlertDescription>
+      </Alert>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold">Team Members</h3>
           <p className="text-sm text-muted-foreground">
-            Manage user roles and permissions
+            Manage user roles and permissions by Principal ID
           </p>
         </div>
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
@@ -151,7 +160,7 @@ export function TeamAdminPanel() {
             <DialogHeader>
               <DialogTitle>Add Team Member</DialogTitle>
               <DialogDescription>
-                Grant a role to a user by their principal ID
+                Grant a role to a user using their Internet Identity Principal ID
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
@@ -171,7 +180,7 @@ export function TeamAdminPanel() {
                   className="font-mono text-sm"
                 />
                 <p className="text-xs text-muted-foreground">
-                  The user's Internet Identity principal
+                  The user's Internet Identity Principal ID (not their email). Users can find this on the unauthorized admin screen after logging in.
                 </p>
               </div>
               <div className="space-y-2">
@@ -184,7 +193,7 @@ export function TeamAdminPanel() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="admin">Admin - Full access</SelectItem>
+                    <SelectItem value="admin">Admin - Full access to all content and settings</SelectItem>
                     <SelectItem value="user">User - Limited access</SelectItem>
                   </SelectContent>
                 </Select>
@@ -215,7 +224,7 @@ export function TeamAdminPanel() {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Users className="w-12 h-12 text-muted-foreground mb-4" />
             <p className="text-muted-foreground text-center">
-              No team members yet. Add members to grant them access.
+              No team members yet. Add members by their Principal ID to grant them access.
             </p>
           </CardContent>
         </Card>

@@ -1,85 +1,94 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T02:40:03.205Z",
-  "summary": "Diff adds a backend gallery schema migration and extends the GalleryItem type with fan art metadata fields. Frontend adds/updates gallery admin UI and introduces new gallery upload dialog, featured/filter hooks usage, and many unrelated styling/section changes. Several requested public Gallery UI elements (submission guidelines text and featured section behavior) are not verifiable from the truncated diffs.",
+  "generatedAt": "2026-02-14T17:36:21.420Z",
+  "summary": "Diff adds new Collaboration/Supporter Help forms, new admin panels and dashboard tabs, and adds new backend state/types and React Query hooks. However, several required fields and backend type/API details do not match the BuildRequest, and multiple unrelated UI/feature changes were introduced.",
   "missing_requirements": [
     {
-      "id": "REQ-119",
-      "requirement": "Add a public-facing \"Submission Guidelines\" block in GallerySection.tsx with the four exact English bullet points provided.",
-      "reason": "GallerySection.tsx is truncated and the diff excerpt does not show any \"Submission Guidelines\" block or the exact required bullet text.",
+      "id": "REQ-1",
+      "requirement": "Collaboration form must collect Name, Email, Optional Social Media Links, and Message (no other required/unrequested fields).",
+      "reason": "The added CollaborationForm component shows state for a `company` field rather than an optional social media links field; the diff does not provide evidence of a social links input being implemented.",
       "evidence": [
-        "frontend/src/components/sections/GallerySection.tsx (truncated excerpt shows filtering logic and imports, but no guidelines block text)"
+        "frontend/src/components/sections/CollaborationForm.tsx"
       ]
     },
     {
-      "id": "REQ-120",
-      "requirement": "Extend backend Gallery CRUD APIs (admin-only writes, public reads) to support new fields (artistName, artworkTitle/title alignment, optionalDescription/description alignment, optionalCreditLink, featured, character/clan tags, popularity metric) and preserve data via conditional migration policy if needed.",
-      "reason": "The diff shows the GalleryItem type extended and a migration module added, but the backend CRUD/read API changes and authorization behavior are not shown in the truncated backend/main.mo excerpt, so it is not verifiable that create/update/read endpoints actually accept/return the new fields and remain admin-only for writes.",
+      "id": "REQ-2",
+      "requirement": "Supporter Help form must collect Name, Email, Optional Social Media Links, and Message, and the destructive warning remains visible above the form.",
+      "reason": "The added SupporterHelpForm component includes `company` plus submits `subject`, `product`, and `serial` fields; the diff provides no evidence of an Optional Social Media Links input, and the required destructive warning text is not shown in the truncated SupporterHelpForm snippet.",
       "evidence": [
-        "backend/main.mo (truncated; shows updated GalleryItem type but not gallery CRUD/query functions)",
-        "backend/migration.mo (adds migration, but does not prove API surface changes)"
+        "frontend/src/components/sections/SupporterHelpForm.tsx"
       ]
     },
     {
-      "id": "REQ-121",
-      "requirement": "Update React Query hooks/types in useQueries.ts to read/write the extended GalleryItem fields while keeping existing galleryItems query invalidation behavior.",
-      "reason": "useQueries.ts is heavily truncated and does not include the gallery hooks implementations or the invalidation logic for create/update/delete; only a file summary claims these updates.",
+      "id": "REQ-3",
+      "requirement": "Backend type for Collaboration submissions must store: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp; and expose public submit + admin-only query list API (Unauthorized trap for non-admins).",
+      "reason": "The backend type shown is `CollaborationRequest` with fields `name`, `company`, `email`, `message`, and `timestamp`, which does not match the required field names/shape (missing senderName/senderEmail/socialLinks/submittedAt). The diff snippet also does not show the required public submit method or the admin-only query method and its Unauthorized trapping.",
       "evidence": [
-        "frontend/src/hooks/useQueries.ts (truncated; does not show gallery hooks or invalidation)",
-        "frontend-file-summaries.txt (summary claims changes, but code evidence is not present in diff excerpt)"
+        "backend/main.mo"
       ]
     },
     {
-      "id": "REQ-122",
-      "requirement": "Enhance GalleryAdminPanel.tsx so admins can view/edit artist name, artwork title, optional description, optional credit link, and toggle Featured; changes persist and reflect after refetch.",
-      "reason": "GalleryAdminPanel.tsx excerpt shows new form fields/state, but the create/edit dialog UI, list rendering of artist/credit link, and save/refetch behavior are not visible in the truncated portion, so full compliance is not verifiable.",
+      "id": "REQ-4",
+      "requirement": "Backend type for Supporter Help submissions must store: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp; and expose public submit + admin-only query list API (Unauthorized trap for non-admins).",
+      "reason": "The backend type shown is `SupportRequest` with extra fields (`company`, `subject`, `product`, `serial`) and uses `name`/`email`/`timestamp` instead of the required senderName/senderEmail/socialLinks/submittedAt fields. The diff snippet also does not show the required public submit method or the admin-only query method and its Unauthorized trapping.",
       "evidence": [
-        "frontend/src/components/admin/panels/GalleryAdminPanel.tsx (truncated; shows new formData fields but not full UI/rendering/persistence)"
-      ]
-    },
-    {
-      "id": "REQ-123",
-      "requirement": "Add a public \"Featured Fan Art\" section/sub-section that displays featured items, hides when empty (or shows clear English empty message), and opens existing lightbox on click.",
-      "reason": "GallerySection.tsx excerpt imports/useGetFeaturedGalleryItems and featuredItems state, but the UI rendering for a \"Featured Fan Art\" section and its empty-state behavior is not shown in the truncated excerpt.",
-      "evidence": [
-        "frontend/src/components/sections/GallerySection.tsx (truncated; shows featured hook usage but not the featured section UI)"
-      ]
-    },
-    {
-      "id": "REQ-124",
-      "requirement": "Add public Gallery sorting/filtering controls for character, clan, and popularity; options populated from backend characters/clans queries; deterministic ordering; must not break existing category tab behavior.",
-      "reason": "GallerySection.tsx excerpt shows state for selectedCharacterId/selectedClanId/sortByPopularity and uses character/clan queries, but the actual UI controls (Selects/toggles), deterministic sorting behavior, and confirmation that existing category-tab behavior is preserved are not visible in the truncated excerpt.",
-      "evidence": [
-        "frontend/src/components/sections/GallerySection.tsx (truncated; shows filter state/mutation but not controls or category-tab interaction)"
+        "backend/main.mo"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Added/modified multiple unrelated site-wide visual/styling and navigation features (donation CTA styles/animations, Contact section routing/nav, hero/about/clans/footer visual overhauls, tailwind token extensions, world-map-hotspot utilities, etc.).",
-      "reason": "The BuildRequest is specifically about gallery submission guidelines, featured curation, metadata, and filtering; these broader styling/routing changes are not requested.",
+      "description": "Added/used a 'company' field in Collaboration and Supporter Help submissions and forms.",
+      "reason": "BuildRequest did not ask for a Company field; it required Optional Social Media Links instead.",
       "evidence": [
-        "frontend-file-summaries.txt (mentions frontend/src/index.css, frontend/src/App.tsx, HeaderNav.tsx, HeroSection.tsx, AboutSection.tsx, ClansSection.tsx, Footer.tsx, tailwind.config.js, etc.)"
+        "frontend/src/components/sections/CollaborationForm.tsx",
+        "frontend/src/components/sections/SupporterHelpForm.tsx",
+        "backend/main.mo"
       ]
     },
     {
-      "description": "Introduced a GalleryUploadDialog component that appears to perform gallery item creation (image drag/drop + metadata fields).",
-      "reason": "The request explicitly lists non-goal: do not implement public fan art submission/upload by non-admin users. While this dialog may be intended for admin use, the diff summary does not show that it is strictly admin-gated; its presence and functionality were not explicitly requested as part of the requirements (REQ-122 only asked to enhance GalleryAdminPanel dialogs).",
+      "description": "Supporter Help submission includes subject/product/serial fields and hardcoded values ('Supporter Help Request', 'Donation Reward', '').",
+      "reason": "BuildRequest only requested Name, Email, Optional Social Media Links, and Message.",
       "evidence": [
-        "frontend/src/components/gallery/GalleryUploadDialog.tsx",
-        "frontend/src/components/sections/GallerySection.tsx (imports GalleryUploadDialog)"
+        "frontend/src/components/sections/SupporterHelpForm.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Artist profile dialog enhancements (badges/leaderboard/lightbox-related changes).",
+      "reason": "Not requested; BuildRequest is focused on contact forms and admin viewing of those submissions.",
+      "evidence": [
+        "frontend/src/components/gallery/ArtistProfileDialog.tsx"
+      ]
+    },
+    {
+      "description": "Gallery section behavior changes (filters, sorting by popularity, admin delete/view count hooks usage, additional UI tabs/controls).",
+      "reason": "Not requested by the BuildRequest.",
+      "evidence": [
+        "frontend/src/components/sections/GallerySection.tsx"
+      ]
+    },
+    {
+      "description": "Broad site-wide styling/UX changes (anime aesthetic, dramatic hero/about/clans/footer changes, tailwind config extensions, navigation changes, routing layout changes).",
+      "reason": "Not requested; scope was adding two forms and admin viewing.",
+      "evidence": [
+        "frontend-file-summaries.txt"
       ]
     }
   ],
-  "confidence": 0.55,
+  "confidence": 0.72,
   "changed_files": [
     "backend/main.mo",
-    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/components/admin/panels/GalleryAdminPanel.tsx",
-    "frontend/src/components/gallery/GalleryUploadDialog.tsx",
+    "frontend/src/components/admin/AdminDashboardView.tsx",
+    "frontend/src/components/admin/panels/CollaborationAdminPanel.tsx",
+    "frontend/src/components/admin/panels/SupporterHelpAdminPanel.tsx",
+    "frontend/src/components/gallery/ArtistProfileDialog.tsx",
+    "frontend/src/components/sections/CollaborationForm.tsx",
+    "frontend/src/components/sections/ContactSection.tsx",
     "frontend/src/components/sections/GallerySection.tsx",
+    "frontend/src/components/sections/SupporterHelpForm.tsx",
     "frontend/src/hooks/useQueries.ts",
     "project_state.json"
   ]

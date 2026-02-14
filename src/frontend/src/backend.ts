@@ -161,6 +161,17 @@ export interface Clan {
     name: string;
     description: string;
 }
+export interface SupportRequest {
+    id: bigint;
+    subject: string;
+    name: string;
+    serial: string;
+    email: string;
+    company: string;
+    message: string;
+    timestamp: bigint;
+    product: string;
+}
 export interface Script {
     id: bigint;
     title: string;
@@ -168,6 +179,14 @@ export interface Script {
     content: string;
     createdAt: bigint;
     updatedAt: bigint;
+}
+export interface CollaborationRequest {
+    id: bigint;
+    name: string;
+    email: string;
+    company: string;
+    message: string;
+    timestamp: bigint;
 }
 export interface GalleryItem {
     id: bigint;
@@ -225,10 +244,12 @@ export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     createCharacter(name: string, bio: string, role: string, clanId: bigint | null, episodes: Array<bigint>, portraitUrl: string): Promise<void>;
     createClan(name: string, description: string): Promise<void>;
+    createCollaboration(name: string, company: string, email: string, message: string): Promise<void>;
     createEpisode(title: string, description: string, videoUrl: string, thumbnailUrl: string, explicitReleaseDate: bigint, runtime: bigint | null, visibility: Visibility, taggedCharacterIds: Array<bigint>, writingComplete: boolean, storyboardComplete: boolean, voiceActingComplete: boolean, animationComplete: boolean, editingComplete: boolean): Promise<void>;
     createGalleryItem(title: string, artistName: string, artworkTitle: string, description: string | null, creditLink: string | null, imageUrl: string, creator: string, featured: boolean, taggedCharacterIds: Array<bigint>, taggedClanIds: Array<bigint>): Promise<void>;
     createNewsPost(title: string, content: string): Promise<void>;
     createScript(title: string, content: string, creator: string): Promise<void>;
+    createSupportRequest(name: string, company: string, email: string, subject: string, product: string, serial: string, message: string): Promise<void>;
     deleteCharacter(id: bigint): Promise<void>;
     deleteClan(id: bigint): Promise<void>;
     deleteEpisode(id: bigint): Promise<void>;
@@ -239,12 +260,14 @@ export interface backendInterface {
     filterGalleryItems(characterIds: Array<bigint>, clanIds: Array<bigint>, sortByPopularity: boolean, featuredOnly: boolean): Promise<Array<GalleryItem>>;
     getAllCharacters(): Promise<Array<Character>>;
     getAllClans(): Promise<Array<Clan>>;
+    getAllCollaborations(): Promise<Array<CollaborationRequest>>;
     getAllEpisodes(): Promise<Array<Episode>>;
     getAllFanMail(): Promise<Array<FanMailMessage>>;
     getAllGalleryItems(): Promise<Array<GalleryItem>>;
     getAllNewsPosts(): Promise<Array<NewsPost>>;
     getAllProBlocks(): Promise<Array<ProBlockData>>;
     getAllScripts(): Promise<Array<Script>>;
+    getAllSupport(): Promise<Array<SupportRequest>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getCharacterById(id: bigint): Promise<Character | null>;
@@ -269,6 +292,7 @@ export interface backendInterface {
     revokeRole(principal: Principal): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     saveProBlock(block: ProBlockData): Promise<void>;
+    submitFanArt(title: string, artistName: string, artworkTitle: string, description: string | null, creditLink: string | null, imageUrl: string, creator: string, taggedCharacterIds: Array<bigint>, taggedClanIds: Array<bigint>): Promise<void>;
     submitFanMail(name: string, email: string, message: string): Promise<void>;
     updateCharacter(id: bigint, name: string, bio: string, role: string, clanId: bigint | null, episodes: Array<bigint>, portraitUrl: string): Promise<void>;
     updateClan(id: bigint, name: string, description: string): Promise<void>;
@@ -436,6 +460,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async createCollaboration(arg0: string, arg1: string, arg2: string, arg3: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.createCollaboration(arg0, arg1, arg2, arg3);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.createCollaboration(arg0, arg1, arg2, arg3);
+            return result;
+        }
+    }
     async createEpisode(arg0: string, arg1: string, arg2: string, arg3: string, arg4: bigint, arg5: bigint | null, arg6: Visibility, arg7: Array<bigint>, arg8: boolean, arg9: boolean, arg10: boolean, arg11: boolean, arg12: boolean): Promise<void> {
         if (this.processError) {
             try {
@@ -489,6 +527,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.createScript(arg0, arg1, arg2);
+            return result;
+        }
+    }
+    async createSupportRequest(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.createSupportRequest(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.createSupportRequest(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
             return result;
         }
     }
@@ -632,6 +684,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async getAllCollaborations(): Promise<Array<CollaborationRequest>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllCollaborations();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllCollaborations();
+            return result;
+        }
+    }
     async getAllEpisodes(): Promise<Array<Episode>> {
         if (this.processError) {
             try {
@@ -713,6 +779,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.getAllScripts();
+            return result;
+        }
+    }
+    async getAllSupport(): Promise<Array<SupportRequest>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllSupport();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllSupport();
             return result;
         }
     }
@@ -1049,6 +1129,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.saveProBlock(to_candid_ProBlockData_n48(this._uploadFile, this._downloadFile, arg0));
+            return result;
+        }
+    }
+    async submitFanArt(arg0: string, arg1: string, arg2: string, arg3: string | null, arg4: string | null, arg5: string, arg6: string, arg7: Array<bigint>, arg8: Array<bigint>): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.submitFanArt(arg0, arg1, arg2, to_candid_opt_n13(this._uploadFile, this._downloadFile, arg3), to_candid_opt_n13(this._uploadFile, this._downloadFile, arg4), arg5, arg6, arg7, arg8);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.submitFanArt(arg0, arg1, arg2, to_candid_opt_n13(this._uploadFile, this._downloadFile, arg3), to_candid_opt_n13(this._uploadFile, this._downloadFile, arg4), arg5, arg6, arg7, arg8);
             return result;
         }
     }

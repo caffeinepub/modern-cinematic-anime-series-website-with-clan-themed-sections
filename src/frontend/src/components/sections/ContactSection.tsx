@@ -2,6 +2,8 @@ import { useRevealOnScroll } from '../../hooks/useRevealOnScroll';
 import { Mail, User, Link as LinkIcon, Clock, Users, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FanMailForm } from './FanMailForm';
+import { CollaborationForm } from './CollaborationForm';
+import { SupporterHelpForm } from './SupporterHelpForm';
 
 export function ContactSection() {
   const { ref, isVisible } = useRevealOnScroll();
@@ -97,7 +99,7 @@ export function ContactSection() {
               <h3 className="text-2xl font-bold text-foreground">Collaboration</h3>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <p className="text-lg text-foreground leading-relaxed">
                 We're looking for talented individuals to join the Whispers Of The White Moon project!
               </p>
@@ -135,6 +137,9 @@ export function ContactSection() {
                   <span className="font-semibold">Please include:</span> Your experience and skills when messaging us. Share your portfolio, previous work, or relevant background to help us understand how you can contribute to the project.
                 </AlertDescription>
               </Alert>
+
+              {/* Collaboration Form */}
+              <CollaborationForm />
             </div>
           </div>
 
@@ -147,7 +152,7 @@ export function ContactSection() {
               <h3 className="text-2xl font-bold text-foreground">Supporter Help</h3>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <Alert variant="destructive" className="mb-6">
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription className="font-semibold">
@@ -191,9 +196,12 @@ export function ContactSection() {
                 </ul>
               </div>
 
-              <p className="text-sm text-muted-foreground mt-4">
+              <p className="text-sm text-muted-foreground">
                 We'll work to resolve your issue as quickly as possible. Thank you for your patience and support!
               </p>
+
+              {/* Supporter Help Form */}
+              <SupporterHelpForm />
             </div>
           </div>
         </div>

@@ -1,14 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Add public fan art submission guidelines, enable admin curation/metadata for gallery items (including featured fan art), and provide public gallery filtering/sorting by character, clan, and popularity.
+**Goal:** Let any visitor submit Collaboration and Supporter Help inquiries from the Contact page, and allow admins to view those submissions in the admin panel.
 
 **Planned changes:**
-- Add a public-facing “Submission Guidelines” block to the Gallery section with the provided four English bullet points.
-- Extend the backend GalleryItem model and Gallery CRUD APIs to include fan art metadata (artist name, artwork title, optional description, optional credit link), featured flag, optional character/clan tags, and a persisted popularity metric for stable sorting; keep public reads and admin-only writes.
-- Update React Query hooks/types to read and write the extended GalleryItem fields while preserving existing gallery query invalidation behavior.
-- Enhance the Gallery admin panel so admins can view/edit the new metadata fields and toggle “Featured” on artworks.
-- Add a public “Featured Fan Art” section (or clearly separated sub-section) that highlights featured items and opens the existing lightbox on click, with appropriate empty-state behavior.
-- Add public gallery controls to filter by character and clan (options sourced from backend Characters/Clans queries when available) and sort by popularity, without breaking existing category/tab behavior.
+- Update the Contact page to replace the static “Collaboration” and “Supporter Help” cards with interactive submission forms (Name, Email, Optional Social Media Links, Message) including validation and success/error alerts.
+- Keep the existing “ONLY for supporters…” warning visible above the Supporter Help form.
+- Add backend storage and actor methods for creating Collaboration and Supporter Help submissions (public) and listing them (admin-only).
+- Add React Query hooks for submitting and admin-fetching Collaboration and Supporter Help submissions.
+- Add new admin dashboard tabs/panels to list Collaboration and Supporter Help submissions, with item detail dialogs and loading/error states similar to existing Fan Mail admin UI.
 
-**User-visible outcome:** Visitors see submission guidelines, can browse featured fan art, and can filter/sort gallery artwork by character, clan, and popularity; admins can manage additional fan art metadata and mark items as featured, with changes reflected without manual refresh.
+**User-visible outcome:** Visitors can submit Collaboration or Supporter Help messages directly on the Contact page without logging in, and admins can view all submissions in the admin dashboard.

@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-a-public-facing-submission-guidelines-block-to-the-gallery-section-frontend-src-components-sections-gallerysection-tsx-that-displays-the-following-english-bullet-points-exactly-artwork-must-be-appropriate-and-respectful-artwork-must-be-original-or-credited-properly-the-creator-team-may-review-and-approve-submissions-before-posting-submissions-may-be-featured-on-the-website-or-social-media",
-      "featureTitle": "Add a public-facing \"Submission Guidelines\" block to the Gallery section (frontend/src/components/sections/GallerySection.tsx) that displays the following English bullet points exactly:\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media",
+      "featureId": "feature-add-a-collaboration-contact-form-to-the-contact-page-that-allows-any-visitor-to-type-and-submit-name-email-optional-social-media-links-and-a-message",
+      "featureTitle": "Add a Collaboration contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
       "files": [
-        "frontend/src/components/sections/GallerySection.tsx"
+        "frontend/src/components/sections/CollaborationForm.tsx",
+        "frontend/src/components/sections/ContactSection.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -17,14 +18,37 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-119"
+        "REQ-1"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-react-query-hooks-and-types-in-frontend-src-hooks-usequeries-ts-to-support-reading-and-writing-the-extended-galleryitem-fields-added-in-the-backend-including-featured-state-credit-link-and-character-clan-tagging-fields-while-keeping-existing-query-invalidation-behavior-for-the-galleryitems-query",
-      "featureTitle": "Update React Query hooks and types in frontend/src/hooks/useQueries.ts to support reading and writing the extended GalleryItem fields added in the backend, including featured state, credit link, and character/clan tagging fields, while keeping existing query invalidation behavior for the galleryItems query.",
+      "featureId": "feature-add-a-supporter-help-contact-form-to-the-contact-page-that-allows-any-visitor-to-type-and-submit-name-email-optional-social-media-links-and-a-message",
+      "featureTitle": "Add a Supporter Help contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
       "files": [
+        "frontend/src/components/sections/ContactSection.tsx",
+        "frontend/src/components/sections/SupporterHelpForm.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-react-query-hooks-for-submitting-and-admin-fetching-collaboration-and-supporter-help-submissions-wired-to-the-new-backend-actor-methods",
+      "featureTitle": "Add React Query hooks for submitting and admin-fetching Collaboration and Supporter Help submissions, wired to the new backend actor methods.",
+      "files": [
+        "frontend/src/components/sections/CollaborationForm.tsx",
+        "frontend/src/components/sections/SupporterHelpForm.tsx",
         "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
@@ -37,15 +61,17 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-121"
+        "REQ-5"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-enhance-the-gallery-admin-management-ui-frontend-src-components-admin-panels-galleryadminpanel-tsx-so-admins-can-view-and-edit-fan-art-metadata-for-each-artwork-including-artist-name-or-username-artwork-title-optional-description-optional-credit-or-social-media-link-also-add-an-admin-control-to-mark-unmark-an-artwork-as-featured-so-it-can-appear-in-the-public-featured-fan-art-section",
-      "featureTitle": "Enhance the Gallery admin management UI (frontend/src/components/admin/panels/GalleryAdminPanel.tsx) so admins can view and edit fan art metadata for each artwork, including:\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\nAlso add an admin control to mark/unmark an artwork as \"Featured\" so it can appear in the public \"Featured Fan Art\" section.",
+      "featureId": "feature-add-admin-dashboard-tabs-panels-so-admins-can-view-collaboration-and-supporter-help-submissions-in-the-admin-panel",
+      "featureTitle": "Add admin dashboard tabs/panels so admins can view Collaboration and Supporter Help submissions in the admin panel.",
       "files": [
-        "frontend/src/components/admin/panels/GalleryAdminPanel.tsx"
+        "frontend/src/components/admin/AdminDashboardView.tsx",
+        "frontend/src/components/admin/panels/CollaborationAdminPanel.tsx",
+        "frontend/src/components/admin/panels/SupporterHelpAdminPanel.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -57,48 +83,7 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-122"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-new-public-featured-fan-art-section-or-a-clearly-separated-sub-section-within-the-existing-gallery-section-that-highlights-artworks-flagged-as-featured-by-admins-the-featured-display-must-use-the-same-cinematic-styling-language-as-the-rest-of-the-site-and-must-open-the-existing-lightbox-when-an-image-is-clicked",
-      "featureTitle": "Add a new public \"Featured Fan Art\" section (or a clearly separated sub-section within the existing Gallery section) that highlights artworks flagged as featured by admins. The featured display must use the same cinematic styling language as the rest of the site and must open the existing lightbox when an image is clicked.",
-      "files": [
-        "frontend/src/components/sections/GallerySection.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-123"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-sorting-and-filtering-controls-for-gallery-artwork-on-the-public-gallery-ui-to-allow-visitors-to-sort-filter-by-character-clan-and-popularity-character-clan-filter-options-must-be-populated-from-backend-characters-clans-queries-when-available-popularity-must-be-based-on-the-backend-defined-popularity-metric-e-g-viewcount-and-the-ui-must-support-sorting-by-popularity-e-g-most-popular",
-      "featureTitle": "Add sorting and filtering controls for gallery artwork on the public Gallery UI to allow visitors to sort/filter by character, clan, and popularity. Character/clan filter options must be populated from backend Characters/Clans queries when available. Popularity must be based on the backend-defined popularity metric (e.g., viewCount) and the UI must support sorting by popularity (e.g., Most Popular).",
-      "files": [
-        "frontend/src/components/sections/GallerySection.tsx",
-        "frontend/src/hooks/useQueries.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-124"
+        "REQ-6"
       ],
       "confidence": "high"
     }

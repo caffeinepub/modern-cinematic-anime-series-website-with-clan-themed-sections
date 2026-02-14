@@ -60,6 +60,14 @@ export const Clan = IDL.Record({
   'name' : IDL.Text,
   'description' : IDL.Text,
 });
+export const CollaborationRequest = IDL.Record({
+  'id' : IDL.Nat,
+  'name' : IDL.Text,
+  'email' : IDL.Text,
+  'company' : IDL.Text,
+  'message' : IDL.Text,
+  'timestamp' : IDL.Int,
+});
 export const Episode = IDL.Record({
   'id' : IDL.Nat,
   'taggedCharacterIds' : IDL.Vec(IDL.Nat),
@@ -129,6 +137,17 @@ export const Script = IDL.Record({
   'createdAt' : IDL.Int,
   'updatedAt' : IDL.Int,
 });
+export const SupportRequest = IDL.Record({
+  'id' : IDL.Nat,
+  'subject' : IDL.Text,
+  'name' : IDL.Text,
+  'serial' : IDL.Text,
+  'email' : IDL.Text,
+  'company' : IDL.Text,
+  'message' : IDL.Text,
+  'timestamp' : IDL.Int,
+  'product' : IDL.Text,
+});
 export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 export const ExternalBlob = IDL.Vec(IDL.Nat8);
 
@@ -175,6 +194,11 @@ export const idlService = IDL.Service({
       [],
     ),
   'createClan' : IDL.Func([IDL.Text, IDL.Text], [], []),
+  'createCollaboration' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
   'createEpisode' : IDL.Func(
       [
         IDL.Text,
@@ -212,6 +236,11 @@ export const idlService = IDL.Service({
     ),
   'createNewsPost' : IDL.Func([IDL.Text, IDL.Text], [], []),
   'createScript' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
+  'createSupportRequest' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
   'deleteCharacter' : IDL.Func([IDL.Nat], [], []),
   'deleteClan' : IDL.Func([IDL.Nat], [], []),
   'deleteEpisode' : IDL.Func([IDL.Nat], [], []),
@@ -226,12 +255,18 @@ export const idlService = IDL.Service({
     ),
   'getAllCharacters' : IDL.Func([], [IDL.Vec(Character)], ['query']),
   'getAllClans' : IDL.Func([], [IDL.Vec(Clan)], ['query']),
+  'getAllCollaborations' : IDL.Func(
+      [],
+      [IDL.Vec(CollaborationRequest)],
+      ['query'],
+    ),
   'getAllEpisodes' : IDL.Func([], [IDL.Vec(Episode)], ['query']),
   'getAllFanMail' : IDL.Func([], [IDL.Vec(FanMailMessage)], ['query']),
   'getAllGalleryItems' : IDL.Func([], [IDL.Vec(GalleryItem)], ['query']),
   'getAllNewsPosts' : IDL.Func([], [IDL.Vec(NewsPost)], ['query']),
   'getAllProBlocks' : IDL.Func([], [IDL.Vec(ProBlockData)], ['query']),
   'getAllScripts' : IDL.Func([], [IDL.Vec(Script)], ['query']),
+  'getAllSupport' : IDL.Func([], [IDL.Vec(SupportRequest)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getCharacterById' : IDL.Func([IDL.Nat], [IDL.Opt(Character)], ['query']),
@@ -264,6 +299,21 @@ export const idlService = IDL.Service({
   'revokeRole' : IDL.Func([IDL.Principal], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'saveProBlock' : IDL.Func([ProBlockData], [], []),
+  'submitFanArt' : IDL.Func(
+      [
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Opt(IDL.Text),
+        IDL.Opt(IDL.Text),
+        IDL.Text,
+        IDL.Text,
+        IDL.Vec(IDL.Nat),
+        IDL.Vec(IDL.Nat),
+      ],
+      [],
+      [],
+    ),
   'submitFanMail' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
   'updateCharacter' : IDL.Func(
       [
@@ -377,6 +427,14 @@ export const idlFactory = ({ IDL }) => {
     'name' : IDL.Text,
     'description' : IDL.Text,
   });
+  const CollaborationRequest = IDL.Record({
+    'id' : IDL.Nat,
+    'name' : IDL.Text,
+    'email' : IDL.Text,
+    'company' : IDL.Text,
+    'message' : IDL.Text,
+    'timestamp' : IDL.Int,
+  });
   const Episode = IDL.Record({
     'id' : IDL.Nat,
     'taggedCharacterIds' : IDL.Vec(IDL.Nat),
@@ -446,6 +504,17 @@ export const idlFactory = ({ IDL }) => {
     'createdAt' : IDL.Int,
     'updatedAt' : IDL.Int,
   });
+  const SupportRequest = IDL.Record({
+    'id' : IDL.Nat,
+    'subject' : IDL.Text,
+    'name' : IDL.Text,
+    'serial' : IDL.Text,
+    'email' : IDL.Text,
+    'company' : IDL.Text,
+    'message' : IDL.Text,
+    'timestamp' : IDL.Int,
+    'product' : IDL.Text,
+  });
   const UserProfile = IDL.Record({ 'name' : IDL.Text });
   const ExternalBlob = IDL.Vec(IDL.Nat8);
   
@@ -492,6 +561,11 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'createClan' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'createCollaboration' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
     'createEpisode' : IDL.Func(
         [
           IDL.Text,
@@ -529,6 +603,11 @@ export const idlFactory = ({ IDL }) => {
       ),
     'createNewsPost' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'createScript' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
+    'createSupportRequest' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
     'deleteCharacter' : IDL.Func([IDL.Nat], [], []),
     'deleteClan' : IDL.Func([IDL.Nat], [], []),
     'deleteEpisode' : IDL.Func([IDL.Nat], [], []),
@@ -543,12 +622,18 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getAllCharacters' : IDL.Func([], [IDL.Vec(Character)], ['query']),
     'getAllClans' : IDL.Func([], [IDL.Vec(Clan)], ['query']),
+    'getAllCollaborations' : IDL.Func(
+        [],
+        [IDL.Vec(CollaborationRequest)],
+        ['query'],
+      ),
     'getAllEpisodes' : IDL.Func([], [IDL.Vec(Episode)], ['query']),
     'getAllFanMail' : IDL.Func([], [IDL.Vec(FanMailMessage)], ['query']),
     'getAllGalleryItems' : IDL.Func([], [IDL.Vec(GalleryItem)], ['query']),
     'getAllNewsPosts' : IDL.Func([], [IDL.Vec(NewsPost)], ['query']),
     'getAllProBlocks' : IDL.Func([], [IDL.Vec(ProBlockData)], ['query']),
     'getAllScripts' : IDL.Func([], [IDL.Vec(Script)], ['query']),
+    'getAllSupport' : IDL.Func([], [IDL.Vec(SupportRequest)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getCharacterById' : IDL.Func([IDL.Nat], [IDL.Opt(Character)], ['query']),
@@ -593,6 +678,21 @@ export const idlFactory = ({ IDL }) => {
     'revokeRole' : IDL.Func([IDL.Principal], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'saveProBlock' : IDL.Func([ProBlockData], [], []),
+    'submitFanArt' : IDL.Func(
+        [
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Opt(IDL.Text),
+          IDL.Opt(IDL.Text),
+          IDL.Text,
+          IDL.Text,
+          IDL.Vec(IDL.Nat),
+          IDL.Vec(IDL.Nat),
+        ],
+        [],
+        [],
+      ),
     'submitFanMail' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
     'updateCharacter' : IDL.Func(
         [

@@ -4,18 +4,16 @@ import Text "mo:core/Text";
 import Time "mo:core/Time";
 import Int "mo:core/Int";
 import Array "mo:core/Array";
-import Runtime "mo:core/Runtime";
-import Principal "mo:core/Principal";
 import Nat "mo:core/Nat";
+import Iter "mo:core/Iter";
+import Principal "mo:core/Principal";
+import Runtime "mo:core/Runtime";
 
 import AccessControl "authorization/access-control";
 import BlobStorage "blob-storage/Storage";
 import MixinStorage "blob-storage/Mixin";
 import MixinAuthorization "authorization/MixinAuthorization";
-import Migration "migration";
 
-// Specify migration function to run on upgrade via with clause
-(with migration = Migration.run)
 actor {
   include MixinStorage();
 
@@ -57,6 +55,35 @@ actor {
   // Fan Mail
   let fanMails = List.empty<FanMailMessage>();
   var nextFanMailId = 0;
+
+  // Collaboration requests
+  let collaborations = List.empty<CollaborationRequest>();
+  var collaborationId = 0;
+
+  // Support requests
+  let supportRequests = List.empty<SupportRequest>();
+  var supportRequestId = 0;
+
+  public type CollaborationRequest = {
+    id : Nat;
+    name : Text;
+    company : Text;
+    email : Text;
+    message : Text;
+    timestamp : Int;
+  };
+
+  public type SupportRequest = {
+    id : Nat;
+    name : Text;
+    company : Text;
+    email : Text;
+    subject : Text;
+    product : Text;
+    serial : Text;
+    message : Text;
+    timestamp : Int;
+  };
 
   public type UserProfile = {
     name : Text;
@@ -802,29 +829,38 @@ actor {
   };
 
   public query ({ caller }) func getAllScripts() : async [Script] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view scripts");
+    };
     scripts.toArray();
   };
 
   public query ({ caller }) func getScriptById(id : Nat) : async ?Script {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view scripts");
+    };
     scripts.find(func(script) { script.id == id });
   };
 
   // Team Member Management
   public query ({ caller }) func listTeamMembers() : async [(Principal, AccessControl.UserRole)] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view team members");
+    };
     [];
   };
 
   public shared ({ caller }) func grantRole(principal : Principal, role : AccessControl.UserRole) : async () {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only the creator can grant roles");
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can grant roles");
     };
 
     AccessControl.assignRole(accessControlState, caller, principal, role);
   };
 
   public shared ({ caller }) func revokeRole(principal : Principal) : async () {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only the creator can revoke roles");
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can revoke roles");
     };
 
     AccessControl.assignRole(accessControlState, caller, principal, #guest);
@@ -877,7 +913,7 @@ actor {
     );
   };
 
-   // Gallery Filtering and Sorting
+  // Gallery Filtering and Sorting
   public query ({ caller }) func filterGalleryItems(
     characterIds : [Nat],
     clanIds : [Nat],
@@ -917,5 +953,93 @@ actor {
       filteredArray;
     };
     sorted;
+  };
+
+  // New: Public Fan Art Submission (without admin privileges)
+  public shared ({ caller }) func submitFanArt(
+    title : Text,
+    artistName : Text,
+    artworkTitle : Text,
+    description : ?Text,
+    creditLink : ?Text,
+    imageUrl : Text,
+    creator : Text,
+    taggedCharacterIds : [Nat],
+    taggedClanIds : [Nat],
+  ) : async () {
+    let newItem = {
+      id = nextGalleryItemId;
+      title;
+      artistName;
+      artworkTitle;
+      description;
+      creditLink;
+      imageUrl;
+      creator;
+      date = Time.now();
+      featured = false;
+      taggedCharacterIds;
+      taggedClanIds;
+      popularity = 0;
+      viewCount = 0;
+    };
+
+    galleryItems.add(newItem);
+    nextGalleryItemId += 1;
+  };
+
+  // Collaboration Management
+  public shared ({ caller }) func createCollaboration(name : Text, company : Text, email : Text, message : Text) : async () {
+    let newCollaboration : CollaborationRequest = {
+      id = collaborationId;
+      name;
+      company;
+      email;
+      message;
+      timestamp = Time.now();
+    };
+
+    collaborations.add(newCollaboration);
+    collaborationId += 1;
+  };
+
+  public query ({ caller }) func getAllCollaborations() : async [CollaborationRequest] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view collaborations");
+    };
+    collaborations.toArray();
+  };
+
+  // Support Management
+  public shared ({ caller }) func createSupportRequest(
+    name : Text,
+    company : Text,
+    email : Text,
+    subject : Text,
+    product : Text,
+    serial : Text,
+    message : Text,
+  ) : async () {
+    let newSupportRequest : SupportRequest = {
+      id = supportRequestId;
+      name;
+      company;
+      email;
+      subject;
+      product;
+      serial;
+      message;
+      timestamp = Time.now();
+    };
+
+    supportRequests.add(newSupportRequest);
+    supportRequestId += 1;
+  };
+
+  public query ({ caller }) func getAllSupport() : async [SupportRequest] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view support requests");
+    };
+    supportRequests.toArray();
   };
 };

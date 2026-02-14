@@ -1,143 +1,143 @@
 {
   "kind": "build_request",
-  "title": "Add fan art submission guidelines, featured fan art curation, and advanced gallery metadata + filtering",
+  "title": "Add Collaboration & Supporter Help submission forms with admin viewing",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-119",
-      "text": "Add a public-facing \"Submission Guidelines\" block to the Gallery section (frontend/src/components/sections/GallerySection.tsx) that displays the following English bullet points exactly:\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media",
+      "id": "REQ-1",
+      "text": "Add a Collaboration contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-user"
+          "recent-1"
         ],
         "quotes": [
-          "Add submission guidelines that include:\n\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media"
+          "in the collaberation contact tab and the Supporter Help contact tab, allow all people to be able to type stuff using Name\nYour Name\nEmail\nyour.email@example.com\nOptional Social Media Links\nTwitter, Instagram, Discord, etc.",
+          "yes....let them submit and alow admins to see it in the admin panel",
+          "1"
         ]
       },
       "acceptanceCriteria": [
-        "Gallery section shows a clearly labeled \"Submission Guidelines\" area visible to all visitors.",
-        "The four guideline bullets appear in English and match the requested wording.",
-        "The guidelines block matches the site’s existing cinematic dark styling and does not break existing reveal-on-scroll/reduced-motion behavior."
+        "In `frontend/src/components/sections/ContactSection.tsx`, the existing static “Collaboration” card includes an interactive form (not just display text).",
+        "The Collaboration form includes inputs for Name, Email, Optional Social Media Links, and a multiline Message field, plus a Submit button.",
+        "Form validation prevents submitting when required fields are missing (at minimum: Name and Message, consistent with `FanMailForm`).",
+        "On successful submit, the form resets and a success alert is shown; on failure, an error alert is shown.",
+        "Form is usable for unauthenticated visitors (no Internet Identity login required)."
       ]
     },
     {
-      "id": "REQ-120",
-      "text": "Extend the backend GalleryItem model and Gallery CRUD APIs in backend/main.mo to support fan art metadata and curation, including at minimum:\n- artistName (artist name or username)\n- artworkTitle (continue to support/align with existing title field if kept)\n- optionalDescription (continue to support/align with existing description field if kept)\n- optionalCreditLink (credit or social media link)\n- featured (boolean controlled by admin)\n- optional taggedCharacterIds (for filtering)\n- optional taggedClanIds or a single optional clanId (for filtering)\n- popularity metric usable for sorting (define and persist a stable value, e.g., viewCount)\nEnsure reads remain public and writes remain admin-only (consistent with existing gallery authorization checks).",
+      "id": "REQ-2",
+      "text": "Add a Supporter Help contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-1"
+        ],
+        "quotes": [
+          "in the collaberation contact tab and the Supporter Help contact tab, allow all people to be able to type stuff using Name\nYour Name\nEmail\nyour.email@example.com\nOptional Social Media Links\nTwitter, Instagram, Discord, etc.",
+          "yes....let them submit and alow admins to see it in the admin panel",
+          "1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In `frontend/src/components/sections/ContactSection.tsx`, the existing static “Supporter Help” card includes an interactive form (not just instructions text).",
+        "The Supporter Help form includes inputs for Name, Email, Optional Social Media Links, and a multiline Message field, plus a Submit button.",
+        "Form validation prevents submitting when required fields are missing (at minimum: Name and Message, consistent with `FanMailForm`).",
+        "On successful submit, the form resets and a success alert is shown; on failure, an error alert is shown.",
+        "The existing destructive warning (“ONLY for supporters…”) remains visible above the form."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement backend storage and APIs for Collaboration form submissions, including an admin-only method to list all submissions.",
       "target": "backend",
       "source": {
         "messageIds": [
-          "recent-messages-user"
+          "recent-1"
         ],
         "quotes": [
-          "Allow artwork to be displayed to admin in the admin panel with:\n\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\n\nAdd a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin .\n\nAdd a way to sort or filter artwork by character, clan, or popularity."
+          "let them submit and alow admins to see it in the admin panel"
         ]
       },
       "acceptanceCriteria": [
-        "Backend exposes gallery items with the new fan art metadata fields so the frontend can display them without parsing/overloading unrelated fields.",
-        "Admin-only create/update APIs can set/update the new fields (artistName, artworkTitle/title, optionalDescription/description, optionalCreditLink, featured, tags, popularity fields as applicable).",
-        "Public read APIs still work for unauthenticated users and return the new fields.",
-        "Any necessary state migration for new stable fields is implemented conditionally per the project migration policy and preserves existing gallery items."
+        "In `backend/main.mo`, define a new public type for Collaboration submissions that stores: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp.",
+        "In `backend/main.mo`, store Collaboration submissions in backend state with an auto-incrementing id (pattern consistent with existing `fanMails` + `nextFanMailId`).",
+        "Expose a public shared method for any visitor to submit a Collaboration entry (no admin restriction).",
+        "Expose a public query method to retrieve all Collaboration submissions that is restricted to admins (trap with an Unauthorized message for non-admins).",
+        "Returned list is stable in ordering or explicitly sorted on the frontend (either is acceptable, but must be consistent and documented in code)."
       ]
     },
     {
-      "id": "REQ-121",
-      "text": "Update React Query hooks and types in frontend/src/hooks/useQueries.ts to support reading and writing the extended GalleryItem fields added in the backend, including featured state, credit link, and character/clan tagging fields, while keeping existing query invalidation behavior for the galleryItems query.",
+      "id": "REQ-4",
+      "text": "Implement backend storage and APIs for Supporter Help form submissions, including an admin-only method to list all submissions.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "recent-1"
+        ],
+        "quotes": [
+          "let them submit and alow admins to see it in the admin panel"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In `backend/main.mo`, define a new public type for Supporter Help submissions that stores: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp.",
+        "In `backend/main.mo`, store Supporter Help submissions in backend state with an auto-incrementing id.",
+        "Expose a public shared method for any visitor to submit a Supporter Help entry (no admin restriction).",
+        "Expose a public query method to retrieve all Supporter Help submissions that is restricted to admins (trap with an Unauthorized message for non-admins)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add React Query hooks for submitting and admin-fetching Collaboration and Supporter Help submissions, wired to the new backend actor methods.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-user"
+          "recent-1"
         ],
         "quotes": [
-          "Allow artwork to be displayed to admin in the admin panel with:\n\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\n\nAdd a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin .\n\nAdd a way to sort or filter artwork by character, clan, or popularity."
+          "let them submit and alow admins to see it in the admin panel"
         ]
       },
       "acceptanceCriteria": [
-        "useGetAllGalleryItems returns gallery items including the new fields.",
-        "useCreateGalleryItem/useUpdateGalleryItem can send the new fields to the backend.",
-        "After creating/updating/deleting gallery items, the public Gallery section updates via the existing query invalidation/refetch pattern."
+        "In `frontend/src/hooks/useQueries.ts`, add mutations for submitting Collaboration and Supporter Help forms.",
+        "In `frontend/src/hooks/useQueries.ts`, add admin queries for fetching all Collaboration submissions and all Supporter Help submissions.",
+        "Hooks follow the existing patterns used by `useSubmitFanMail` and `useGetAllFanMail` (React Query keys, actor availability checks, invalidation if needed).",
+        "All hooks use English user-facing error messaging consistent with existing UI (e.g., “Failed to send…”)."
       ]
     },
     {
-      "id": "REQ-122",
-      "text": "Enhance the Gallery admin management UI (frontend/src/components/admin/panels/GalleryAdminPanel.tsx) so admins can view and edit fan art metadata for each artwork, including:\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\nAlso add an admin control to mark/unmark an artwork as \"Featured\" so it can appear in the public \"Featured Fan Art\" section.",
+      "id": "REQ-6",
+      "text": "Add admin dashboard tabs/panels so admins can view Collaboration and Supporter Help submissions in the admin panel.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-user"
+          "recent-1"
         ],
         "quotes": [
-          "Allow artwork to be displayed to admin in the admin panel with:\n\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\n\nAdd a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin ."
+          "alow admins to see it in the admin panel"
         ]
       },
       "acceptanceCriteria": [
-        "GalleryAdminPanel list view displays the artist name/username and the credit/social link when present (in addition to existing image preview/title).",
-        "Create and Edit dialogs include inputs for artist name/username, artwork title, optional description, and optional credit/social link, with clear English labels.",
-        "Create and Edit dialogs include a Featured toggle/checkbox with clear English labeling.",
-        "Saving changes persists to the backend and is reflected after refetch (no manual page refresh required)."
-      ]
-    },
-    {
-      "id": "REQ-123",
-      "text": "Add a new public \"Featured Fan Art\" section (or a clearly separated sub-section within the existing Gallery section) that highlights artworks flagged as featured by admins. The featured display must use the same cinematic styling language as the rest of the site and must open the existing lightbox when an image is clicked.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages-user"
-        ],
-        "quotes": [
-          "Add a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin ."
-        ]
-      },
-      "acceptanceCriteria": [
-        "When at least one gallery item is marked Featured in backend data, the public site shows a \"Featured Fan Art\" heading and renders the featured items prominently.",
-        "Clicking a featured item opens the existing GalleryLightbox at the correct image.",
-        "When there are no featured items, the UI does not show an empty featured grid (either hide the section or show a clear English empty message)."
-      ]
-    },
-    {
-      "id": "REQ-124",
-      "text": "Add sorting and filtering controls for gallery artwork on the public Gallery UI to allow visitors to sort/filter by character, clan, and popularity. Character/clan filter options must be populated from backend Characters/Clans queries when available. Popularity must be based on the backend-defined popularity metric (e.g., viewCount) and the UI must support sorting by popularity (e.g., Most Popular).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "recent-messages-user"
-        ],
-        "quotes": [
-          "Add a way to sort or filter artwork by character, clan, or popularity."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Public Gallery UI provides controls to (1) filter by character, (2) filter by clan, and (3) sort by popularity.",
-        "Character and clan filter lists are populated from backend data when available (with a sensible empty/loading behavior if not).",
-        "Popularity sorting produces a stable, deterministic ordering based on backend-provided popularity values.",
-        "Filtering/sorting does not break existing category behavior in GalleryGrid (category tabs should still hide when irrelevant, per existing logic)."
+        "In `frontend/src/components/admin/AdminDashboardView.tsx`, add new TabsTrigger entries for Collaboration and Supporter Help (alongside existing Fan Mail tab).",
+        "Create new admin panels (new files under `frontend/src/components/admin/panels/`) to list Collaboration submissions and Supporter Help submissions.",
+        "Each panel shows a count of submissions and a scrollable list similar to `FanMailAdminPanel` (read-only is sufficient).",
+        "Clicking an item opens a dialog (or equivalent detail view) showing submitted Name, Email, Optional Social Media Links, Message, and submitted date/time.",
+        "Panels display loading skeletons and an error alert if the query fails, consistent with `FanMailAdminPanel`."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
-    "Generate/update backend/migration.mo only if required by a stable-state schema change, and follow the project’s conditional migration policy to preserve existing data.",
-    "Do not edit frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui (compose existing UI components instead).",
-    "All user-facing text added/changed for these features must be in English."
+    "Do not edit any files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, or `frontend/src/components/ui` (compose existing UI components instead).",
+    "Backend must remain a single Motoko actor in `backend/main.mo` (no additional backend services).",
+    "Use English for all user-facing text added or changed."
   ],
   "nonGoals": [
-    "Do not implement public fan art submission/upload by non-admin users unless explicitly requested later (this request only adds guidelines, admin visibility/metadata, featured curation, and filtering/sorting).",
-    "Do not add third-party social media API integrations for featuring content; only display the guideline text and stored credit/social links.",
-    "Do not introduce new frontend frameworks or backend languages outside the existing stack."
+    "Do not add third-party authentication providers; only Internet Identity remains supported for admin access.",
+    "Do not implement outbound email, SMS, push notifications, or external integrations for contacting users.",
+    "Do not add admin reply functionality for Collaboration or Supporter Help unless explicitly requested later."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

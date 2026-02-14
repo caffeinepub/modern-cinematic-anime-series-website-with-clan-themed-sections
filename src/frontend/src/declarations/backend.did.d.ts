@@ -34,6 +34,14 @@ export interface Clan {
   'name' : string,
   'description' : string,
 }
+export interface CollaborationRequest {
+  'id' : bigint,
+  'name' : string,
+  'email' : string,
+  'company' : string,
+  'message' : string,
+  'timestamp' : bigint,
+}
 export interface Episode {
   'id' : bigint,
   'taggedCharacterIds' : Array<bigint>,
@@ -109,6 +117,17 @@ export interface Script {
   'createdAt' : bigint,
   'updatedAt' : bigint,
 }
+export interface SupportRequest {
+  'id' : bigint,
+  'subject' : string,
+  'name' : string,
+  'serial' : string,
+  'email' : string,
+  'company' : string,
+  'message' : string,
+  'timestamp' : bigint,
+  'product' : string,
+}
 export interface UserProfile { 'name' : string }
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
@@ -151,6 +170,10 @@ export interface _SERVICE {
     undefined
   >,
   'createClan' : ActorMethod<[string, string], undefined>,
+  'createCollaboration' : ActorMethod<
+    [string, string, string, string],
+    undefined
+  >,
   'createEpisode' : ActorMethod<
     [
       string,
@@ -186,6 +209,10 @@ export interface _SERVICE {
   >,
   'createNewsPost' : ActorMethod<[string, string], undefined>,
   'createScript' : ActorMethod<[string, string, string], undefined>,
+  'createSupportRequest' : ActorMethod<
+    [string, string, string, string, string, string, string],
+    undefined
+  >,
   'deleteCharacter' : ActorMethod<[bigint], undefined>,
   'deleteClan' : ActorMethod<[bigint], undefined>,
   'deleteEpisode' : ActorMethod<[bigint], undefined>,
@@ -199,12 +226,14 @@ export interface _SERVICE {
   >,
   'getAllCharacters' : ActorMethod<[], Array<Character>>,
   'getAllClans' : ActorMethod<[], Array<Clan>>,
+  'getAllCollaborations' : ActorMethod<[], Array<CollaborationRequest>>,
   'getAllEpisodes' : ActorMethod<[], Array<Episode>>,
   'getAllFanMail' : ActorMethod<[], Array<FanMailMessage>>,
   'getAllGalleryItems' : ActorMethod<[], Array<GalleryItem>>,
   'getAllNewsPosts' : ActorMethod<[], Array<NewsPost>>,
   'getAllProBlocks' : ActorMethod<[], Array<ProBlockData>>,
   'getAllScripts' : ActorMethod<[], Array<Script>>,
+  'getAllSupport' : ActorMethod<[], Array<SupportRequest>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getCharacterById' : ActorMethod<[bigint], [] | [Character]>,
@@ -229,6 +258,20 @@ export interface _SERVICE {
   'revokeRole' : ActorMethod<[Principal], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'saveProBlock' : ActorMethod<[ProBlockData], undefined>,
+  'submitFanArt' : ActorMethod<
+    [
+      string,
+      string,
+      string,
+      [] | [string],
+      [] | [string],
+      string,
+      string,
+      Array<bigint>,
+      Array<bigint>,
+    ],
+    undefined
+  >,
   'submitFanMail' : ActorMethod<[string, string, string], undefined>,
   'updateCharacter' : ActorMethod<
     [bigint, string, string, string, [] | [bigint], Array<bigint>, string],

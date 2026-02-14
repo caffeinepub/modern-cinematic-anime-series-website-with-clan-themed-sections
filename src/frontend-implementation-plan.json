@@ -1,107 +1,106 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Gallery guidelines, featured curation, and advanced metadata filtering (frontend-only)",
+  "title": "Collaboration & Supporter Help forms with admin viewing (frontend)",
   "requirements": [
     {
-      "id": "REQ-119",
-      "summary": "Add a public Submission Guidelines block to the Gallery section with exact English bullets and cinematic dark styling.",
+      "id": "REQ-1",
+      "summary": "Add an interactive Collaboration contact form on the Contact page for public submissions.",
       "acceptanceCriteria": [
-        "Gallery section shows a clearly labeled \"Submission Guidelines\" area visible to all visitors.",
-        "The four guideline bullets appear in English and match the requested wording.",
-        "The guidelines block matches the site’s existing cinematic dark styling and does not break existing reveal-on-scroll/reduced-motion behavior."
+        "In `frontend/src/components/sections/ContactSection.tsx`, the existing static “Collaboration” card includes an interactive form (not just display text).",
+        "The Collaboration form includes inputs for Name, Email, Optional Social Media Links, and a multiline Message field, plus a Submit button.",
+        "Form validation prevents submitting when required fields are missing (at minimum: Name and Message, consistent with `FanMailForm`).",
+        "On successful submit, the form resets and a success alert is shown; on failure, an error alert is shown.",
+        "Form is usable for unauthenticated visitors (no Internet Identity login required)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/sections/GallerySection.tsx",
+          "path": "frontend/src/components/sections/CollaborationForm.tsx",
+          "operation": "create",
+          "description": "Create a Collaboration submission form component modeled after `FanMailForm` (Name + Message required, plus Email and Optional Social Media Links), using existing shadcn-ui components (e.g., Button/Input/Textarea/Label/Alert) for consistent styling and feedback. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/sections/ContactSection.tsx",
           "operation": "modify",
-          "description": "Add a clearly labeled \"Submission Guidelines\" block within the existing Gallery section that renders the four bullets exactly as provided; use existing cinematic dark styling conventions and compose with existing shadcn-ui primitives (e.g., Card/Alert/Typography) for consistent appearance. Verify the component's usage instructions before implementing."
+          "description": "Replace the static Collaboration content area with the new `CollaborationForm` while preserving existing Collaboration explanatory content above/around the form; ensure the form remains accessible to unauthenticated visitors and uses English user-facing text. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-121",
-      "summary": "Update React Query hooks/types to read/write extended GalleryItem fields (featured, credit link, artist/title/description, tags) while preserving gallery invalidation behavior.",
+      "id": "REQ-2",
+      "summary": "Add an interactive Supporter Help contact form on the Contact page for public submissions while keeping the warning visible.",
       "acceptanceCriteria": [
-        "useGetAllGalleryItems returns gallery items including the new fields.",
-        "useCreateGalleryItem/useUpdateGalleryItem can send the new fields to the backend.",
-        "After creating/updating/deleting gallery items, the public Gallery section updates via the existing query invalidation/refetch pattern."
+        "In `frontend/src/components/sections/ContactSection.tsx`, the existing static “Supporter Help” card includes an interactive form (not just instructions text).",
+        "The Supporter Help form includes inputs for Name, Email, Optional Social Media Links, and a multiline Message field, plus a Submit button.",
+        "Form validation prevents submitting when required fields are missing (at minimum: Name and Message, consistent with `FanMailForm`).",
+        "On successful submit, the form resets and a success alert is shown; on failure, an error alert is shown.",
+        "The existing destructive warning (“ONLY for supporters…”) remains visible above the form."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/SupporterHelpForm.tsx",
+          "operation": "create",
+          "description": "Create a Supporter Help submission form component modeled after `FanMailForm` (Name + Message required, plus Email and Optional Social Media Links), with success and error alerts and disabled states during submission, using existing shadcn-ui components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/sections/ContactSection.tsx",
+          "operation": "modify",
+          "description": "Augment the existing Supporter Help section by inserting `SupporterHelpForm` below the existing destructive warning (warning must remain visible above the form), keeping the current instructions text as needed and ensuring all new user-facing text is in English. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add React Query hooks for submitting and admin-fetching Collaboration and Supporter Help submissions via the backend actor.",
+      "acceptanceCriteria": [
+        "In `frontend/src/hooks/useQueries.ts`, add mutations for submitting Collaboration and Supporter Help forms.",
+        "In `frontend/src/hooks/useQueries.ts`, add admin queries for fetching all Collaboration submissions and all Supporter Help submissions.",
+        "Hooks follow the existing patterns used by `useSubmitFanMail` and `useGetAllFanMail` (React Query keys, actor availability checks, invalidation if needed).",
+        "All hooks use English user-facing error messaging consistent with existing UI (e.g., “Failed to send…”)."
       ],
       "file_operations": [
         {
           "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Update gallery-related React Query hooks to align with the current backend interface for GalleryItem (create/update params include artistName, artworkTitle, optional description/creditLink, featured, taggedCharacterIds/taggedClanIds) and keep existing ['galleryItems'] invalidation behavior; add query helpers for featured-only and filtered/sorted gallery reads using the existing backend capability exposed in the actor (without changing invalidation semantics for the main galleryItems query)."
+          "description": "Add new React Query hooks: (1) public mutations to submit Collaboration and Supporter Help using the backend actor methods, (2) admin queries to fetch all Collaboration submissions and all Supporter Help submissions for display in the admin UI. Follow existing patterns for actor availability checks, query keys, and consistent English error messages."
         },
         {
-          "path": "frontend/src/backend.d.ts",
+          "path": "frontend/src/components/sections/CollaborationForm.tsx",
           "operation": "modify",
-          "description": "If generated types are out of sync with the actor interface used by the frontend build (e.g., gallery create/update signatures or GalleryItem fields), update the local type declarations so hooks and UI compile cleanly against the extended GalleryItem shape."
+          "description": "Wire the Collaboration form component to the new submit mutation hook; ensure success resets fields and shows a success Alert, and failures show a destructive Alert consistent with `FanMailForm`. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/sections/SupporterHelpForm.tsx",
+          "operation": "modify",
+          "description": "Wire the Supporter Help form component to the new submit mutation hook; ensure success resets fields and shows a success Alert, and failures show a destructive Alert consistent with `FanMailForm`. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-122",
-      "summary": "Enhance Gallery admin management UI to view/edit fan art metadata fields and control Featured state.",
+      "id": "REQ-6",
+      "summary": "Add admin dashboard tabs and panels to view Collaboration and Supporter Help submissions (read-only) with detail dialogs.",
       "acceptanceCriteria": [
-        "GalleryAdminPanel list view displays the artist name/username and the credit/social link when present (in addition to existing image preview/title).",
-        "Create and Edit dialogs include inputs for artist name/username, artwork title, optional description, and optional credit/social link, with clear English labels.",
-        "Create and Edit dialogs include a Featured toggle/checkbox with clear English labeling.",
-        "Saving changes persists to the backend and is reflected after refetch (no manual page refresh required)."
+        "In `frontend/src/components/admin/AdminDashboardView.tsx`, add new TabsTrigger entries for Collaboration and Supporter Help (alongside existing Fan Mail tab).",
+        "Create new admin panels (new files under `frontend/src/components/admin/panels/`) to list Collaboration submissions and Supporter Help submissions.",
+        "Each panel shows a count of submissions and a scrollable list similar to `FanMailAdminPanel` (read-only is sufficient).",
+        "Clicking an item opens a dialog (or equivalent detail view) showing submitted Name, Email, Optional Social Media Links, Message, and submitted date/time.",
+        "Panels display loading skeletons and an error alert if the query fails, consistent with `FanMailAdminPanel`."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/admin/panels/GalleryAdminPanel.tsx",
-          "operation": "modify",
-          "description": "Extend the admin list cards to show artistName and creditLink when present; update Create/Edit dialogs to include English-labeled inputs for artistName, artworkTitle, optional description, optional credit/social link, and a Featured toggle/checkbox; wire form submission to the updated useCreateGalleryItem/useUpdateGalleryItem mutations and preserve current refetch behavior. Compose UI using existing shadcn-ui components (Input, Label, Textarea, Select, Checkbox/Switch where available). Verify the component's usage instructions before implementing."
+          "path": "frontend/src/components/admin/panels/CollaborationAdminPanel.tsx",
+          "operation": "create",
+          "description": "Create a read-only admin panel to list Collaboration submissions with count, scrollable list, loading skeletons, and error Alert; clicking an item opens a shadcn-ui Dialog showing full details (Name, Email, Optional Social Media Links, Message, submitted date/time). Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/utils/adminContentAdapters.ts",
-          "operation": "modify",
-          "description": "Review gallery metadata encode/decode helpers so they continue to handle category/alt without overloading the new first-class fan art fields (artistName/artworkTitle/creditLink/featured); keep backward compatibility for existing stored descriptions."
-        }
-      ]
-    },
-    {
-      "id": "REQ-123",
-      "summary": "Add a public Featured Fan Art section/sub-section that highlights admin-featured items and opens the existing lightbox on click.",
-      "acceptanceCriteria": [
-        "When at least one gallery item is marked Featured in backend data, the public site shows a \"Featured Fan Art\" heading and renders the featured items prominently.",
-        "Clicking a featured item opens the existing GalleryLightbox at the correct image.",
-        "When there are no featured items, the UI does not show an empty featured grid (either hide the section or show a clear English empty message)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/sections/GallerySection.tsx",
-          "operation": "modify",
-          "description": "Add a \"Featured Fan Art\" heading and prominent featured grid (or clearly separated sub-section) above/beside the main gallery; source featured items from backend-provided featured field (via a dedicated query helper) and ensure clicking any featured item opens the existing GalleryLightbox at the correct index in the unified gallery items array (id-based index resolution). Use existing cinematic styling and compose with shadcn-ui primitives as needed. Verify the component's usage instructions before implementing."
+          "path": "frontend/src/components/admin/panels/SupporterHelpAdminPanel.tsx",
+          "operation": "create",
+          "description": "Create a read-only admin panel to list Supporter Help submissions with count, scrollable list, loading skeletons, and error Alert; clicking an item opens a shadcn-ui Dialog showing full details (Name, Email, Optional Social Media Links, Message, submitted date/time). Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/components/gallery/GalleryGrid.tsx",
+          "path": "frontend/src/components/admin/AdminDashboardView.tsx",
           "operation": "modify",
-          "description": "If needed to support the featured sub-section layout without duplicating logic, refactor GalleryGrid to accept optional display variants (e.g., compact/prominent) while preserving existing category-tab behavior and click-to-open semantics. Use existing shadcn-ui Tabs as currently implemented. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-124",
-      "summary": "Add public Gallery sorting/filtering controls for character, clan, and popularity, populated from backend Characters/Clans queries and using backend popularity metric.",
-      "acceptanceCriteria": [
-        "Public Gallery UI provides controls to (1) filter by character, (2) filter by clan, and (3) sort by popularity.",
-        "Character and clan filter lists are populated from backend data when available (with a sensible empty/loading behavior if not).",
-        "Popularity sorting produces a stable, deterministic ordering based on backend-provided popularity values.",
-        "Filtering/sorting does not break existing category behavior in GalleryGrid (category tabs should still hide when irrelevant, per existing logic)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Add/adjust React Query helpers to retrieve filtered/sorted gallery items using the actor’s existing gallery filtering capability (characterIds, clanIds, sortByPopularity, featuredOnly) while keeping the base ['galleryItems'] query intact for default browsing and maintaining existing invalidation behavior."
-        },
-        {
-          "path": "frontend/src/components/sections/GallerySection.tsx",
-          "operation": "modify",
-          "description": "Add filter + sort controls to the public Gallery UI: character filter (populated from useGetAllCharacters), clan filter (useGetAllClans), and a popularity sort control; implement sensible loading/empty states, and apply the resulting filtered/sorted gallery items to the existing GalleryGrid while keeping its category tab hiding logic effective. Compose controls using shadcn-ui Select/Tabs/Button primitives as appropriate. Verify the component's usage instructions before implementing."
+          "description": "Add new admin dashboard tabs and content panes for Collaboration and Supporter Help alongside Fan Mail; import and render the new panels, ensuring the tabs are wired and not orphaned. Verify the component's usage instructions before implementing."
         }
       ]
     }
