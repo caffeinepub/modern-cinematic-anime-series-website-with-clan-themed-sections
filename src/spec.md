@@ -1,11 +1,14 @@
 # Specification
 
 ## Summary
-**Goal:** Add a new Donation section to the public homepage with Cash App support instructions, and expose it via a new “Donation” navigation item.
+**Goal:** Add public fan art submission guidelines, enable admin curation/metadata for gallery items (including featured fan art), and provide public gallery filtering/sorting by character, clan, and popularity.
 
 **Planned changes:**
-- Add a new public-facing homepage section with stable id="donation", titled "Donation", using the exact user-provided English donation text (including "$WOTWM"), styled consistently with the site’s cinematic dark theme and existing reveal-on-scroll / reduced-motion-safe animations.
-- Update the primary header navigation (desktop and mobile) to include a “Donation” item that smooth-scrolls to #donation without breaking existing scroll targets.
-- Insert the Donation section into the main homepage flow in `frontend/src/App.tsx` near the end of the page (e.g., before the Footer) so it appears in both normal view and Pro mode.
+- Add a public-facing “Submission Guidelines” block to the Gallery section with the provided four English bullet points.
+- Extend the backend GalleryItem model and Gallery CRUD APIs to include fan art metadata (artist name, artwork title, optional description, optional credit link), featured flag, optional character/clan tags, and a persisted popularity metric for stable sorting; keep public reads and admin-only writes.
+- Update React Query hooks/types to read and write the extended GalleryItem fields while preserving existing gallery query invalidation behavior.
+- Enhance the Gallery admin panel so admins can view/edit the new metadata fields and toggle “Featured” on artworks.
+- Add a public “Featured Fan Art” section (or clearly separated sub-section) that highlights featured items and opens the existing lightbox on click, with appropriate empty-state behavior.
+- Add public gallery controls to filter by character and clan (options sourced from backend Characters/Clans queries when available) and sort by popularity, without breaking existing category/tab behavior.
 
-**User-visible outcome:** Visitors can click “Donation” in the site navigation to smoothly scroll to a new Donation section that explains how to support “Whispers Of The White Moon” via Cash App ($WOTWM).
+**User-visible outcome:** Visitors see submission guidelines, can browse featured fan art, and can filter/sort gallery artwork by character, clan, and popularity; admins can manage additional fan art metadata and mark items as featured, with changes reflected without manual refresh.

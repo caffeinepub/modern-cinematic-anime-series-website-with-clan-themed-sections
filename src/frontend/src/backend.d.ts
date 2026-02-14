@@ -14,6 +14,14 @@ export class ExternalBlob {
     static fromBytes(blob: Uint8Array<ArrayBuffer>): ExternalBlob;
     withUploadProgress(onProgress: (percentage: number) => void): ExternalBlob;
 }
+export interface FanMailMessage {
+    id: bigint;
+    adminReply?: string;
+    submittedAt: bigint;
+    message: string;
+    senderName: string;
+    senderEmail: string;
+}
 export interface ProBlockData {
     id: string;
     height: bigint;
@@ -81,11 +89,19 @@ export interface Script {
 }
 export interface GalleryItem {
     id: bigint;
+    taggedCharacterIds: Array<bigint>;
     title: string;
     creator: string;
+    featured: boolean;
+    creditLink?: string;
+    artworkTitle: string;
     date: bigint;
-    description: string;
+    description?: string;
+    taggedClanIds: Array<bigint>;
     imageUrl: string;
+    viewCount: bigint;
+    artistName: string;
+    popularity: bigint;
 }
 export interface UserProfile {
     name: string;
@@ -117,7 +133,7 @@ export interface backendInterface {
     createCharacter(name: string, bio: string, role: string, clanId: bigint | null, episodes: Array<bigint>, portraitUrl: string): Promise<void>;
     createClan(name: string, description: string): Promise<void>;
     createEpisode(title: string, description: string, videoUrl: string, thumbnailUrl: string, explicitReleaseDate: bigint, runtime: bigint | null, visibility: Visibility, taggedCharacterIds: Array<bigint>, writingComplete: boolean, storyboardComplete: boolean, voiceActingComplete: boolean, animationComplete: boolean, editingComplete: boolean): Promise<void>;
-    createGalleryItem(title: string, imageUrl: string, description: string, creator: string): Promise<void>;
+    createGalleryItem(title: string, artistName: string, artworkTitle: string, description: string | null, creditLink: string | null, imageUrl: string, creator: string, featured: boolean, taggedCharacterIds: Array<bigint>, taggedClanIds: Array<bigint>): Promise<void>;
     createNewsPost(title: string, content: string): Promise<void>;
     createScript(title: string, content: string, creator: string): Promise<void>;
     deleteCharacter(id: bigint): Promise<void>;
@@ -127,9 +143,11 @@ export interface backendInterface {
     deleteNewsPost(id: bigint): Promise<void>;
     deleteProBlock(id: string): Promise<void>;
     deleteScript(id: bigint): Promise<void>;
+    filterGalleryItems(characterIds: Array<bigint>, clanIds: Array<bigint>, sortByPopularity: boolean, featuredOnly: boolean): Promise<Array<GalleryItem>>;
     getAllCharacters(): Promise<Array<Character>>;
     getAllClans(): Promise<Array<Clan>>;
     getAllEpisodes(): Promise<Array<Episode>>;
+    getAllFanMail(): Promise<Array<FanMailMessage>>;
     getAllGalleryItems(): Promise<Array<GalleryItem>>;
     getAllNewsPosts(): Promise<Array<NewsPost>>;
     getAllProBlocks(): Promise<Array<ProBlockData>>;
@@ -139,6 +157,7 @@ export interface backendInterface {
     getCharacterById(id: bigint): Promise<Character | null>;
     getClanById(id: bigint): Promise<Clan | null>;
     getEpisodeById(id: bigint): Promise<Episode | null>;
+    getFanMailById(id: bigint): Promise<FanMailMessage | null>;
     getGalleryImages(): Promise<Array<ExternalBlob>>;
     getGalleryItemById(id: bigint): Promise<GalleryItem | null>;
     getNewsPostById(id: bigint): Promise<NewsPost | null>;
@@ -147,18 +166,21 @@ export interface backendInterface {
     getScriptById(id: bigint): Promise<Script | null>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     grantRole(principal: Principal, role: UserRole): Promise<void>;
+    incrementGalleryItemViewCount(id: bigint): Promise<void>;
     isCallerAdmin(): Promise<boolean>;
     listTeamMembers(): Promise<Array<[Principal, UserRole]>>;
     removeMemberFromClan(clanId: bigint, characterId: bigint): Promise<void>;
     reorderEpisodes(newOrder: Array<bigint>): Promise<void>;
     reorderProBlocks(newOrder: Array<string>): Promise<void>;
+    replyToFanMail(id: bigint, reply: string): Promise<void>;
     revokeRole(principal: Principal): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     saveProBlock(block: ProBlockData): Promise<void>;
+    submitFanMail(name: string, email: string, message: string): Promise<void>;
     updateCharacter(id: bigint, name: string, bio: string, role: string, clanId: bigint | null, episodes: Array<bigint>, portraitUrl: string): Promise<void>;
     updateClan(id: bigint, name: string, description: string): Promise<void>;
     updateEpisode(id: bigint, title: string, description: string, videoUrl: string, thumbnailUrl: string, explicitReleaseDate: bigint, runtime: bigint | null, visibility: Visibility, taggedCharacterIds: Array<bigint>, writingComplete: boolean, storyboardComplete: boolean, voiceActingComplete: boolean, animationComplete: boolean, editingComplete: boolean): Promise<void>;
-    updateGalleryItem(id: bigint, title: string, imageUrl: string, description: string, creator: string): Promise<void>;
+    updateGalleryItem(id: bigint, title: string, artistName: string, artworkTitle: string, description: string | null, creditLink: string | null, imageUrl: string, creator: string, featured: boolean, taggedCharacterIds: Array<bigint>, taggedClanIds: Array<bigint>): Promise<void>;
     updateNewsPost(id: bigint, title: string, content: string): Promise<void>;
     updateProBlock(id: string, block: ProBlockData): Promise<void>;
     updateProPresentation(content: string): Promise<void>;

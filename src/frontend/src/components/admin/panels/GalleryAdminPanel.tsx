@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useGetAllGalleryItems, useCreateGalleryItem, useUpdateGalleryItem, useDeleteGalleryItem } from '../../../hooks/useQueries';
+import { useGetAllGalleryItems, useCreateGalleryItem, useUpdateGalleryItem, useDeleteGalleryItem, useGetAllCharacters, useGetAllClans } from '../../../hooks/useQueries';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -8,14 +8,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { Alert, AlertDescription } from '../../ui/alert';
 import { Skeleton } from '../../ui/skeleton';
-import { Plus, Edit, Trash2, AlertCircle, Upload, X } from 'lucide-react';
+import { Plus, Edit, Trash2, AlertCircle, Upload, X, ExternalLink } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
+import { Switch } from '../../ui/switch';
 import { encodeGalleryMetadata, decodeGalleryMetadata } from '../../../utils/adminContentAdapters';
 import { validateAndConvertImage } from '../../../utils/galleryImageUpload';
 import type { GalleryItem } from '../../../backend';
 
 export function GalleryAdminPanel() {
   const { data: galleryItems = [], isLoading, error } = useGetAllGalleryItems();
+  const { data: characters = [] } = useGetAllCharacters();
+  const { data: clans = [] } = useGetAllClans();
   const createMutation = useCreateGalleryItem();
   const updateMutation = useUpdateGalleryItem();
   const deleteMutation = useDeleteGalleryItem();
@@ -24,11 +27,17 @@ export function GalleryAdminPanel() {
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
   const [formData, setFormData] = useState({
     title: '',
-    imageUrl: '',
+    artistName: '',
+    artworkTitle: '',
     description: '',
+    creditLink: '',
+    imageUrl: '',
     creator: '',
     category: 'Concept Art',
     alt: '',
+    featured: false,
+    taggedCharacterIds: [] as string[],
+    taggedClanIds: [] as string[],
   });
   const [formError, setFormError] = useState('');
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -39,11 +48,17 @@ export function GalleryAdminPanel() {
   const resetForm = () => {
     setFormData({
       title: '',
-      imageUrl: '',
+      artistName: '',
+      artworkTitle: '',
       description: '',
+      creditLink: '',
+      imageUrl: '',
       creator: '',
       category: 'Concept Art',
       alt: '',
+      featured: false,
+      taggedCharacterIds: [],
+      taggedClanIds: [],
     });
     setFormError('');
     setImagePreview('');
@@ -84,8 +99,8 @@ export function GalleryAdminPanel() {
   };
 
   const handleCreate = async () => {
-    if (!formData.title.trim() || !formData.imageUrl.trim()) {
-      setFormError('Title and image are required');
+    if (!formData.title.trim() || !formData.imageUrl.trim() || !formData.artistName.trim() || !formData.artworkTitle.trim()) {
+      setFormError('Title, artist name, artwork title, and image are required');
       return;
     }
 
@@ -97,9 +112,15 @@ export function GalleryAdminPanel() {
 
       await createMutation.mutateAsync({
         title: formData.title,
+        artistName: formData.artistName,
+        artworkTitle: formData.artworkTitle,
+        description: formData.description || null,
+        creditLink: formData.creditLink || null,
         imageUrl: formData.imageUrl,
-        description: encodedDescription,
         creator: formData.creator || 'Unknown',
+        featured: formData.featured,
+        taggedCharacterIds: formData.taggedCharacterIds.map(id => BigInt(id)),
+        taggedClanIds: formData.taggedClanIds.map(id => BigInt(id)),
       });
 
       setIsCreateOpen(false);
@@ -110,8 +131,8 @@ export function GalleryAdminPanel() {
   };
 
   const handleUpdate = async () => {
-    if (!editingItem || !formData.title.trim() || !formData.imageUrl.trim()) {
-      setFormError('Title and image are required');
+    if (!editingItem || !formData.title.trim() || !formData.imageUrl.trim() || !formData.artistName.trim() || !formData.artworkTitle.trim()) {
+      setFormError('Title, artist name, artwork title, and image are required');
       return;
     }
 
@@ -124,9 +145,15 @@ export function GalleryAdminPanel() {
       await updateMutation.mutateAsync({
         id: editingItem.id,
         title: formData.title,
+        artistName: formData.artistName,
+        artworkTitle: formData.artworkTitle,
+        description: formData.description || null,
+        creditLink: formData.creditLink || null,
         imageUrl: formData.imageUrl,
-        description: encodedDescription,
         creator: formData.creator || 'Unknown',
+        featured: formData.featured,
+        taggedCharacterIds: formData.taggedCharacterIds.map(id => BigInt(id)),
+        taggedClanIds: formData.taggedClanIds.map(id => BigInt(id)),
       });
 
       setEditingItem(null);
@@ -147,14 +174,20 @@ export function GalleryAdminPanel() {
   };
 
   const openEditDialog = (item: GalleryItem) => {
-    const { description, metadata } = decodeGalleryMetadata(item.description);
+    const { description, metadata } = decodeGalleryMetadata(item.description || '');
     setFormData({
       title: item.title,
+      artistName: item.artistName,
+      artworkTitle: item.artworkTitle,
+      description: item.description || '',
+      creditLink: item.creditLink || '',
       imageUrl: item.imageUrl,
-      description,
       creator: item.creator,
       category: metadata.category || 'Concept Art',
       alt: metadata.alt || '',
+      featured: item.featured,
+      taggedCharacterIds: item.taggedCharacterIds.map(id => id.toString()),
+      taggedClanIds: item.taggedClanIds.map(id => id.toString()),
     });
     setImagePreview(item.imageUrl);
     setEditingItem(item);
@@ -225,6 +258,160 @@ export function GalleryAdminPanel() {
     </div>
   );
 
+  const renderFormFields = (idPrefix: string) => (
+    <>
+      <div className="space-y-2">
+        <Label htmlFor={`${idPrefix}-title`}>Title</Label>
+        <Input
+          id={`${idPrefix}-title`}
+          value={formData.title}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          placeholder="Gallery item title"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor={`${idPrefix}-artistName`}>Artist Name / Username</Label>
+          <Input
+            id={`${idPrefix}-artistName`}
+            value={formData.artistName}
+            onChange={(e) => setFormData({ ...formData, artistName: e.target.value })}
+            placeholder="Artist name"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={`${idPrefix}-artworkTitle`}>Artwork Title</Label>
+          <Input
+            id={`${idPrefix}-artworkTitle`}
+            value={formData.artworkTitle}
+            onChange={(e) => setFormData({ ...formData, artworkTitle: e.target.value })}
+            placeholder="Artwork title"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`${idPrefix}-description`}>Description (optional)</Label>
+        <Textarea
+          id={`${idPrefix}-description`}
+          value={formData.description}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          placeholder="Additional description"
+          rows={2}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`${idPrefix}-creditLink`}>Credit / Social Media Link (optional)</Label>
+        <Input
+          id={`${idPrefix}-creditLink`}
+          value={formData.creditLink}
+          onChange={(e) => setFormData({ ...formData, creditLink: e.target.value })}
+          placeholder="https://..."
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`${idPrefix}-category`}>Category</Label>
+        <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
+          <SelectTrigger id={`${idPrefix}-category`}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Concept Art">Concept Art</SelectItem>
+            <SelectItem value="Fight Scenes">Fight Scenes</SelectItem>
+            <SelectItem value="Character Designs">Character Designs</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {renderImageUploadSection()}
+
+      <div className="space-y-2">
+        <Label htmlFor={`${idPrefix}-alt`}>Alt Text</Label>
+        <Input
+          id={`${idPrefix}-alt`}
+          value={formData.alt}
+          onChange={(e) => setFormData({ ...formData, alt: e.target.value })}
+          placeholder="Image description for accessibility"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`${idPrefix}-creator`}>Creator</Label>
+        <Input
+          id={`${idPrefix}-creator`}
+          value={formData.creator}
+          onChange={(e) => setFormData({ ...formData, creator: e.target.value })}
+          placeholder="Creator name"
+        />
+      </div>
+
+      <div className="flex items-center justify-between space-x-2 p-4 border rounded-lg">
+        <div className="space-y-0.5">
+          <Label htmlFor={`${idPrefix}-featured`}>Featured</Label>
+          <p className="text-sm text-muted-foreground">Display this artwork in the Featured Fan Art section</p>
+        </div>
+        <Switch
+          id={`${idPrefix}-featured`}
+          checked={formData.featured}
+          onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Tagged Characters (optional)</Label>
+        <div className="flex flex-wrap gap-2">
+          {characters.map((char) => (
+            <Button
+              key={char.id.toString()}
+              type="button"
+              variant={formData.taggedCharacterIds.includes(char.id.toString()) ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => {
+                const id = char.id.toString();
+                setFormData({
+                  ...formData,
+                  taggedCharacterIds: formData.taggedCharacterIds.includes(id)
+                    ? formData.taggedCharacterIds.filter(cid => cid !== id)
+                    : [...formData.taggedCharacterIds, id]
+                });
+              }}
+            >
+              {char.name}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Tagged Clans (optional)</Label>
+        <div className="flex flex-wrap gap-2">
+          {clans.map((clan) => (
+            <Button
+              key={clan.id.toString()}
+              type="button"
+              variant={formData.taggedClanIds.includes(clan.id.toString()) ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => {
+                const id = clan.id.toString();
+                setFormData({
+                  ...formData,
+                  taggedClanIds: formData.taggedClanIds.includes(id)
+                    ? formData.taggedClanIds.filter(cid => cid !== id)
+                    : [...formData.taggedClanIds, id]
+                });
+              }}
+            >
+              {clan.name}
+            </Button>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -269,57 +456,7 @@ export function GalleryAdminPanel() {
                   <AlertDescription>{formError}</AlertDescription>
                 </Alert>
               )}
-              <div className="space-y-2">
-                <Label htmlFor="create-title">Title</Label>
-                <Input
-                  id="create-title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Image title"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="create-category">Category</Label>
-                <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                  <SelectTrigger id="create-category">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Concept Art">Concept Art</SelectItem>
-                    <SelectItem value="Fight Scenes">Fight Scenes</SelectItem>
-                    <SelectItem value="Character Designs">Character Designs</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              {renderImageUploadSection()}
-              <div className="space-y-2">
-                <Label htmlFor="create-alt">Alt Text</Label>
-                <Input
-                  id="create-alt"
-                  value={formData.alt}
-                  onChange={(e) => setFormData({ ...formData, alt: e.target.value })}
-                  placeholder="Image description for accessibility"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="create-creator">Creator</Label>
-                <Input
-                  id="create-creator"
-                  value={formData.creator}
-                  onChange={(e) => setFormData({ ...formData, creator: e.target.value })}
-                  placeholder="Artist name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="create-description">Description (optional)</Label>
-                <Textarea
-                  id="create-description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Additional description"
-                  rows={2}
-                />
-              </div>
+              {renderFormFields('create')}
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
@@ -340,14 +477,37 @@ export function GalleryAdminPanel() {
           </Card>
         ) : (
           galleryItems.map((item) => {
-            const { description, metadata } = decodeGalleryMetadata(item.description);
+            const { description, metadata } = decodeGalleryMetadata(item.description || '');
             return (
-              <Card key={item.id.toString()}>
+              <Card key={item.id.toString()} className={item.featured ? 'border-accent/50' : ''}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle>{item.title}</CardTitle>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <CardTitle>{item.title}</CardTitle>
+                        {item.featured && (
+                          <span className="bg-accent/20 text-accent px-2 py-0.5 rounded text-xs font-semibold">
+                            Featured
+                          </span>
+                        )}
+                      </div>
                       <CardDescription>{metadata.category || 'Uncategorized'}</CardDescription>
+                      <div className="mt-2 space-y-1 text-sm">
+                        <p className="text-muted-foreground">
+                          <span className="font-medium">Artist:</span> {item.artistName}
+                        </p>
+                        <p className="text-muted-foreground">
+                          <span className="font-medium">Artwork:</span> {item.artworkTitle}
+                        </p>
+                        {item.creditLink && (
+                          <p className="text-muted-foreground flex items-center gap-1">
+                            <ExternalLink className="w-3 h-3" />
+                            <a href={item.creditLink} target="_blank" rel="noopener noreferrer" className="hover:underline truncate">
+                              {item.creditLink}
+                            </a>
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <div className="flex gap-2">
                       <Button variant="outline" size="sm" onClick={() => openEditDialog(item)}>
@@ -367,7 +527,12 @@ export function GalleryAdminPanel() {
                 <CardContent className="space-y-2">
                   <img src={item.imageUrl} alt={metadata.alt || item.title} className="w-full h-32 object-cover rounded" />
                   <p className="text-sm text-muted-foreground">Creator: {item.creator}</p>
-                  {description && <p className="text-sm text-muted-foreground">{description}</p>}
+                  {item.description && <p className="text-sm text-muted-foreground">{item.description}</p>}
+                  <div className="flex gap-2 text-xs text-muted-foreground">
+                    <span>Views: {item.viewCount.toString()}</span>
+                    <span>•</span>
+                    <span>Popularity: {item.popularity.toString()}</span>
+                  </div>
                 </CardContent>
               </Card>
             );
@@ -394,53 +559,7 @@ export function GalleryAdminPanel() {
                 <AlertDescription>{formError}</AlertDescription>
               </Alert>
             )}
-            <div className="space-y-2">
-              <Label htmlFor="edit-title">Title</Label>
-              <Input
-                id="edit-title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-category">Category</Label>
-              <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                <SelectTrigger id="edit-category">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Concept Art">Concept Art</SelectItem>
-                  <SelectItem value="Fight Scenes">Fight Scenes</SelectItem>
-                  <SelectItem value="Character Designs">Character Designs</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {renderImageUploadSection()}
-            <div className="space-y-2">
-              <Label htmlFor="edit-alt">Alt Text</Label>
-              <Input
-                id="edit-alt"
-                value={formData.alt}
-                onChange={(e) => setFormData({ ...formData, alt: e.target.value })}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-creator">Creator</Label>
-              <Input
-                id="edit-creator"
-                value={formData.creator}
-                onChange={(e) => setFormData({ ...formData, creator: e.target.value })}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-description">Description (optional)</Label>
-              <Textarea
-                id="edit-description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                rows={2}
-              />
-            </div>
+            {renderFormFields('edit')}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingItem(null)}>Cancel</Button>

@@ -1,76 +1,143 @@
 {
   "kind": "build_request",
-  "title": "Add Donation tab/section with Cash App instructions",
+  "title": "Add fan art submission guidelines, featured fan art curation, and advanced gallery metadata + filtering",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-100",
-      "text": "Add a new public-facing page section with stable DOM id \"donation\" that displays the donation/support content for \"Whispers Of The White Moon\" using the exact English text provided by the user (including the Cash App handle \"$WOTWM\"). The section must match the site’s existing cinematic dark styling, include a prominent section title \"Donation\", and use the existing reveal-on-scroll / reduced-motion-safe animation behavior used in other sections.",
+      "id": "REQ-119",
+      "text": "Add a public-facing \"Submission Guidelines\" block to the Gallery section (frontend/src/components/sections/GallerySection.tsx) that displays the following English bullet points exactly:\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "recent-messages-user"
         ],
         "quotes": [
-          "make a donation tab \n\n🌙 Support Whispers Of The White Moon\n\nHelp bring the story, animation, and characters to life.\nEvery donation helps support development, voice acting, art, and future episodes.\n\n🔥 Donate Via Cash App\n\n💵 Send support to:\n$WOTWM"
+          "Add submission guidelines that include:\n\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media"
         ]
       },
       "acceptanceCriteria": [
-        "A new section is rendered on the public site with id=\"donation\".",
-        "The section shows a visible heading/title: \"Donation\".",
-        "The donation body content matches the user-provided text verbatim (including \"$WOTWM\").",
-        "The section styling is consistent with existing sections (dark cinematic background, readable typography, spacing).",
-        "Animations respect prefers-reduced-motion (no mandatory motion effects when reduced motion is enabled)."
+        "Gallery section shows a clearly labeled \"Submission Guidelines\" area visible to all visitors.",
+        "The four guideline bullets appear in English and match the requested wording.",
+        "The guidelines block matches the site’s existing cinematic dark styling and does not break existing reveal-on-scroll/reduced-motion behavior."
       ]
     },
     {
-      "id": "REQ-101",
-      "text": "Update the site’s primary navigation (HeaderNav) to include a new clickable item labeled \"Donation\" that smooth-scrolls to the \"#donation\" section in both desktop and mobile menus, without breaking existing scroll targets.",
-      "target": "frontend",
+      "id": "REQ-120",
+      "text": "Extend the backend GalleryItem model and Gallery CRUD APIs in backend/main.mo to support fan art metadata and curation, including at minimum:\n- artistName (artist name or username)\n- artworkTitle (continue to support/align with existing title field if kept)\n- optionalDescription (continue to support/align with existing description field if kept)\n- optionalCreditLink (credit or social media link)\n- featured (boolean controlled by admin)\n- optional taggedCharacterIds (for filtering)\n- optional taggedClanIds or a single optional clanId (for filtering)\n- popularity metric usable for sorting (define and persist a stable value, e.g., viewCount)\nEnsure reads remain public and writes remain admin-only (consistent with existing gallery authorization checks).",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "recent-messages-user"
         ],
         "quotes": [
-          "make a donation tab"
+          "Allow artwork to be displayed to admin in the admin panel with:\n\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\n\nAdd a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin .\n\nAdd a way to sort or filter artwork by character, clan, or popularity."
         ]
       },
       "acceptanceCriteria": [
-        "Header navigation includes a \"Donation\" item on desktop.",
-        "Mobile menu includes a \"Donation\" item.",
-        "Clicking \"Donation\" smoothly scrolls to the section with id=\"donation\".",
-        "All existing nav items (Story, Characters, Clans, Episodes, Gallery, News) still work and scroll correctly."
+        "Backend exposes gallery items with the new fan art metadata fields so the frontend can display them without parsing/overloading unrelated fields.",
+        "Admin-only create/update APIs can set/update the new fields (artistName, artworkTitle/title, optionalDescription/description, optionalCreditLink, featured, tags, popularity fields as applicable).",
+        "Public read APIs still work for unauthenticated users and return the new fields.",
+        "Any necessary state migration for new stable fields is implemented conditionally per the project migration policy and preserves existing gallery items."
       ]
     },
     {
-      "id": "REQ-102",
-      "text": "Insert the new Donation section into the main site page flow in frontend/src/App.tsx so it appears as part of the public homepage content (and also in Pro mode, since Pro mode renders the normal public site UI). Place it in a sensible location near the end of the page (e.g., before the Footer), while preserving existing section order and behavior.",
+      "id": "REQ-121",
+      "text": "Update React Query hooks and types in frontend/src/hooks/useQueries.ts to support reading and writing the extended GalleryItem fields added in the backend, including featured state, credit link, and character/clan tagging fields, while keeping existing query invalidation behavior for the galleryItems query.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "recent-messages-user"
+        ],
+        "quotes": [
+          "Allow artwork to be displayed to admin in the admin panel with:\n\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\n\nAdd a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin .\n\nAdd a way to sort or filter artwork by character, clan, or popularity."
         ]
       },
       "acceptanceCriteria": [
-        "Donation section renders in the normal (non-admin) view.",
-        "Donation section renders in Pro mode view as well.",
-        "No existing sections disappear or lose their current ids/scroll behavior after inserting the Donation section."
+        "useGetAllGalleryItems returns gallery items including the new fields.",
+        "useCreateGalleryItem/useUpdateGalleryItem can send the new fields to the backend.",
+        "After creating/updating/deleting gallery items, the public Gallery section updates via the existing query invalidation/refetch pattern."
+      ]
+    },
+    {
+      "id": "REQ-122",
+      "text": "Enhance the Gallery admin management UI (frontend/src/components/admin/panels/GalleryAdminPanel.tsx) so admins can view and edit fan art metadata for each artwork, including:\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\nAlso add an admin control to mark/unmark an artwork as \"Featured\" so it can appear in the public \"Featured Fan Art\" section.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages-user"
+        ],
+        "quotes": [
+          "Allow artwork to be displayed to admin in the admin panel with:\n\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\n\nAdd a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin ."
+        ]
+      },
+      "acceptanceCriteria": [
+        "GalleryAdminPanel list view displays the artist name/username and the credit/social link when present (in addition to existing image preview/title).",
+        "Create and Edit dialogs include inputs for artist name/username, artwork title, optional description, and optional credit/social link, with clear English labels.",
+        "Create and Edit dialogs include a Featured toggle/checkbox with clear English labeling.",
+        "Saving changes persists to the backend and is reflected after refetch (no manual page refresh required)."
+      ]
+    },
+    {
+      "id": "REQ-123",
+      "text": "Add a new public \"Featured Fan Art\" section (or a clearly separated sub-section within the existing Gallery section) that highlights artworks flagged as featured by admins. The featured display must use the same cinematic styling language as the rest of the site and must open the existing lightbox when an image is clicked.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages-user"
+        ],
+        "quotes": [
+          "Add a \"Featured Fan Art\" section that highlights selected artwork chosen by the Admin ."
+        ]
+      },
+      "acceptanceCriteria": [
+        "When at least one gallery item is marked Featured in backend data, the public site shows a \"Featured Fan Art\" heading and renders the featured items prominently.",
+        "Clicking a featured item opens the existing GalleryLightbox at the correct image.",
+        "When there are no featured items, the UI does not show an empty featured grid (either hide the section or show a clear English empty message)."
+      ]
+    },
+    {
+      "id": "REQ-124",
+      "text": "Add sorting and filtering controls for gallery artwork on the public Gallery UI to allow visitors to sort/filter by character, clan, and popularity. Character/clan filter options must be populated from backend Characters/Clans queries when available. Popularity must be based on the backend-defined popularity metric (e.g., viewCount) and the UI must support sorting by popularity (e.g., Most Popular).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "recent-messages-user"
+        ],
+        "quotes": [
+          "Add a way to sort or filter artwork by character, clan, or popularity."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Public Gallery UI provides controls to (1) filter by character, (2) filter by clan, and (3) sort by popularity.",
+        "Character and clan filter lists are populated from backend data when available (with a sensible empty/loading behavior if not).",
+        "Popularity sorting produces a stable, deterministic ordering based on backend-provided popularity values.",
+        "Filtering/sorting does not break existing category behavior in GalleryGrid (category tabs should still hide when irrelevant, per existing logic)."
       ]
     }
   ],
   "constraints": [
-    "Do not edit any files under frontend/src/components/ui (read-only Shadcn components).",
-    "Do not edit immutable hook files (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
-    "Do not add any backend changes for donations; this is a static informational section only.",
-    "All user-facing text must be in English."
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Generate/update backend/migration.mo only if required by a stable-state schema change, and follow the project’s conditional migration policy to preserve existing data.",
+    "Do not edit frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui (compose existing UI components instead).",
+    "All user-facing text added/changed for these features must be in English."
   ],
   "nonGoals": [
-    "Do not implement payment processing, checkout, or any third-party donation API integrations.",
-    "Do not store donation data or donor information on the backend.",
-    "Do not add authentication requirements for viewing the Donation section."
+    "Do not implement public fan art submission/upload by non-admin users unless explicitly requested later (this request only adds guidelines, admin visibility/metadata, featured curation, and filtering/sorting).",
+    "Do not add third-party social media API integrations for featuring content; only display the guideline text and stored credit/social links.",
+    "Do not introduce new frontend frameworks or backend languages outside the existing stack."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

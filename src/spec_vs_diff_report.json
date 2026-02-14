@@ -1,33 +1,86 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T18:34:13.478Z",
-  "summary": "Donation section and nav link were added and wired into both main and Pro views. However, the donation body content does not appear to match any “exact English text provided by the user” verbatim, as required.",
+  "generatedAt": "2026-02-14T02:40:03.205Z",
+  "summary": "Diff adds a backend gallery schema migration and extends the GalleryItem type with fan art metadata fields. Frontend adds/updates gallery admin UI and introduces new gallery upload dialog, featured/filter hooks usage, and many unrelated styling/section changes. Several requested public Gallery UI elements (submission guidelines text and featured section behavior) are not verifiable from the truncated diffs.",
   "missing_requirements": [
     {
-      "id": "REQ-100",
-      "requirement": "Donation/support body content must match the user-provided English text verbatim (including the Cash App handle \"$WOTWM\").",
-      "reason": "The new DonationSection includes custom phrasing and additional emoji/text (e.g., \"Help bring the story...\", \"Thank you for your support! 💙\", \"🔥\", \"🌙\") rather than any clearly user-supplied verbatim block. The BuildRequest requires using the exact text provided by the user, but the implemented copy appears authored in the diff.",
+      "id": "REQ-119",
+      "requirement": "Add a public-facing \"Submission Guidelines\" block in GallerySection.tsx with the four exact English bullet points provided.",
+      "reason": "GallerySection.tsx is truncated and the diff excerpt does not show any \"Submission Guidelines\" block or the exact required bullet text.",
       "evidence": [
-        "frontend/src/components/sections/DonationSection.tsx"
+        "frontend/src/components/sections/GallerySection.tsx (truncated excerpt shows filtering logic and imports, but no guidelines block text)"
+      ]
+    },
+    {
+      "id": "REQ-120",
+      "requirement": "Extend backend Gallery CRUD APIs (admin-only writes, public reads) to support new fields (artistName, artworkTitle/title alignment, optionalDescription/description alignment, optionalCreditLink, featured, character/clan tags, popularity metric) and preserve data via conditional migration policy if needed.",
+      "reason": "The diff shows the GalleryItem type extended and a migration module added, but the backend CRUD/read API changes and authorization behavior are not shown in the truncated backend/main.mo excerpt, so it is not verifiable that create/update/read endpoints actually accept/return the new fields and remain admin-only for writes.",
+      "evidence": [
+        "backend/main.mo (truncated; shows updated GalleryItem type but not gallery CRUD/query functions)",
+        "backend/migration.mo (adds migration, but does not prove API surface changes)"
+      ]
+    },
+    {
+      "id": "REQ-121",
+      "requirement": "Update React Query hooks/types in useQueries.ts to read/write the extended GalleryItem fields while keeping existing galleryItems query invalidation behavior.",
+      "reason": "useQueries.ts is heavily truncated and does not include the gallery hooks implementations or the invalidation logic for create/update/delete; only a file summary claims these updates.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts (truncated; does not show gallery hooks or invalidation)",
+        "frontend-file-summaries.txt (summary claims changes, but code evidence is not present in diff excerpt)"
+      ]
+    },
+    {
+      "id": "REQ-122",
+      "requirement": "Enhance GalleryAdminPanel.tsx so admins can view/edit artist name, artwork title, optional description, optional credit link, and toggle Featured; changes persist and reflect after refetch.",
+      "reason": "GalleryAdminPanel.tsx excerpt shows new form fields/state, but the create/edit dialog UI, list rendering of artist/credit link, and save/refetch behavior are not visible in the truncated portion, so full compliance is not verifiable.",
+      "evidence": [
+        "frontend/src/components/admin/panels/GalleryAdminPanel.tsx (truncated; shows new formData fields but not full UI/rendering/persistence)"
+      ]
+    },
+    {
+      "id": "REQ-123",
+      "requirement": "Add a public \"Featured Fan Art\" section/sub-section that displays featured items, hides when empty (or shows clear English empty message), and opens existing lightbox on click.",
+      "reason": "GallerySection.tsx excerpt imports/useGetFeaturedGalleryItems and featuredItems state, but the UI rendering for a \"Featured Fan Art\" section and its empty-state behavior is not shown in the truncated excerpt.",
+      "evidence": [
+        "frontend/src/components/sections/GallerySection.tsx (truncated; shows featured hook usage but not the featured section UI)"
+      ]
+    },
+    {
+      "id": "REQ-124",
+      "requirement": "Add public Gallery sorting/filtering controls for character, clan, and popularity; options populated from backend characters/clans queries; deterministic ordering; must not break existing category tab behavior.",
+      "reason": "GallerySection.tsx excerpt shows state for selectedCharacterId/selectedClanId/sortByPopularity and uses character/clan queries, but the actual UI controls (Selects/toggles), deterministic sorting behavior, and confirmation that existing category-tab behavior is preserved are not visible in the truncated excerpt.",
+      "evidence": [
+        "frontend/src/components/sections/GallerySection.tsx (truncated; shows filter state/mutation but not controls or category-tab interaction)"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Added extra decorative emoji/content in the Donation section (e.g., moon emoji icon, fire emoji in heading, and \"Thank you for your support! 💙\").",
-      "reason": "The request only specifies using the exact user-provided English donation text (verbatim) and styling/animation consistency; it does not ask for additional emoji or extra gratitude lines beyond the provided text.",
+      "description": "Added/modified multiple unrelated site-wide visual/styling and navigation features (donation CTA styles/animations, Contact section routing/nav, hero/about/clans/footer visual overhauls, tailwind token extensions, world-map-hotspot utilities, etc.).",
+      "reason": "The BuildRequest is specifically about gallery submission guidelines, featured curation, metadata, and filtering; these broader styling/routing changes are not requested.",
       "evidence": [
-        "frontend/src/components/sections/DonationSection.tsx"
+        "frontend-file-summaries.txt (mentions frontend/src/index.css, frontend/src/App.tsx, HeaderNav.tsx, HeroSection.tsx, AboutSection.tsx, ClansSection.tsx, Footer.tsx, tailwind.config.js, etc.)"
+      ]
+    },
+    {
+      "description": "Introduced a GalleryUploadDialog component that appears to perform gallery item creation (image drag/drop + metadata fields).",
+      "reason": "The request explicitly lists non-goal: do not implement public fan art submission/upload by non-admin users. While this dialog may be intended for admin use, the diff summary does not show that it is strictly admin-gated; its presence and functionality were not explicitly requested as part of the requirements (REQ-122 only asked to enhance GalleryAdminPanel dialogs).",
+      "evidence": [
+        "frontend/src/components/gallery/GalleryUploadDialog.tsx",
+        "frontend/src/components/sections/GallerySection.tsx (imports GalleryUploadDialog)"
       ]
     }
   ],
-  "confidence": 0.72,
+  "confidence": 0.55,
   "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
-    "frontend/src/components/sections/DonationSection.tsx",
-    "frontend/src/components/sections/HeaderNav.tsx",
+    "frontend/src/components/admin/panels/GalleryAdminPanel.tsx",
+    "frontend/src/components/gallery/GalleryUploadDialog.tsx",
+    "frontend/src/components/sections/GallerySection.tsx",
+    "frontend/src/hooks/useQueries.ts",
     "project_state.json"
   ]
 }

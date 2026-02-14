@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import { NewsPost, UserProfile, UserRole, Episode, Character, Clan, GalleryItem, Script, Visibility } from '../backend';
+import { NewsPost, UserProfile, UserRole, Episode, Character, Clan, GalleryItem, Script, Visibility, FanMailMessage } from '../backend';
 import { Principal } from '@dfinity/principal';
 
 // User Profile Queries
@@ -90,7 +90,6 @@ export function useUpdateProPresentation() {
       return actor.updateProPresentation(content);
     },
     onSuccess: () => {
-      // Invalidate all queries that might display Pro presentation content
       queryClient.invalidateQueries({ queryKey: ['proPresentation'] });
     },
     onError: (error) => {
@@ -394,14 +393,70 @@ export function useGetAllGalleryItems() {
   });
 }
 
+export function useGetFeaturedGalleryItems() {
+  const { actor, isFetching: actorFetching } = useActor();
+
+  return useQuery<GalleryItem[]>({
+    queryKey: ['galleryItems', 'featured'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.filterGalleryItems([], [], false, true);
+    },
+    enabled: !!actor && !actorFetching,
+  });
+}
+
+export function useFilterGalleryItems() {
+  const { actor, isFetching: actorFetching } = useActor();
+
+  return useMutation({
+    mutationFn: async (params: {
+      characterIds: bigint[];
+      clanIds: bigint[];
+      sortByPopularity: boolean;
+      featuredOnly: boolean;
+    }) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.filterGalleryItems(
+        params.characterIds,
+        params.clanIds,
+        params.sortByPopularity,
+        params.featuredOnly
+      );
+    },
+  });
+}
+
 export function useCreateGalleryItem() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: { title: string; imageUrl: string; description: string; creator: string }) => {
+    mutationFn: async (params: {
+      title: string;
+      artistName: string;
+      artworkTitle: string;
+      description: string | null;
+      creditLink: string | null;
+      imageUrl: string;
+      creator: string;
+      featured: boolean;
+      taggedCharacterIds: bigint[];
+      taggedClanIds: bigint[];
+    }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.createGalleryItem(params.title, params.imageUrl, params.description, params.creator);
+      return actor.createGalleryItem(
+        params.title,
+        params.artistName,
+        params.artworkTitle,
+        params.description,
+        params.creditLink,
+        params.imageUrl,
+        params.creator,
+        params.featured,
+        params.taggedCharacterIds,
+        params.taggedClanIds
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['galleryItems'] });
@@ -414,9 +469,33 @@ export function useUpdateGalleryItem() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: { id: bigint; title: string; imageUrl: string; description: string; creator: string }) => {
+    mutationFn: async (params: {
+      id: bigint;
+      title: string;
+      artistName: string;
+      artworkTitle: string;
+      description: string | null;
+      creditLink: string | null;
+      imageUrl: string;
+      creator: string;
+      featured: boolean;
+      taggedCharacterIds: bigint[];
+      taggedClanIds: bigint[];
+    }) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateGalleryItem(params.id, params.title, params.imageUrl, params.description, params.creator);
+      return actor.updateGalleryItem(
+        params.id,
+        params.title,
+        params.artistName,
+        params.artworkTitle,
+        params.description,
+        params.creditLink,
+        params.imageUrl,
+        params.creator,
+        params.featured,
+        params.taggedCharacterIds,
+        params.taggedClanIds
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['galleryItems'] });
@@ -432,6 +511,21 @@ export function useDeleteGalleryItem() {
     mutationFn: async (id: bigint) => {
       if (!actor) throw new Error('Actor not available');
       return actor.deleteGalleryItem(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['galleryItems'] });
+    },
+  });
+}
+
+export function useIncrementGalleryItemViewCount() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: bigint) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.incrementGalleryItemViewCount(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['galleryItems'] });
@@ -561,7 +655,7 @@ export function useDeleteScript() {
 export function useListTeamMembers() {
   const { actor, isFetching: actorFetching } = useActor();
 
-  return useQuery<[Principal, UserRole][]>({
+  return useQuery<Array<[Principal, UserRole]>>({
     queryKey: ['teamMembers'],
     queryFn: async () => {
       if (!actor) return [];
@@ -597,6 +691,46 @@ export function useRevokeRole() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teamMembers'] });
+    },
+  });
+}
+
+// Fan Mail Queries
+export function useGetAllFanMail() {
+  const { actor, isFetching: actorFetching } = useActor();
+
+  return useQuery<FanMailMessage[]>({
+    queryKey: ['fanMail'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getAllFanMail();
+    },
+    enabled: !!actor && !actorFetching,
+  });
+}
+
+export function useSubmitFanMail() {
+  const { actor } = useActor();
+
+  return useMutation({
+    mutationFn: async (params: { name: string; email: string; message: string }) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.submitFanMail(params.name, params.email, params.message);
+    },
+  });
+}
+
+export function useReplyToFanMail() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (params: { id: bigint; reply: string }) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.replyToFanMail(params.id, params.reply);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fanMail'] });
     },
   });
 }

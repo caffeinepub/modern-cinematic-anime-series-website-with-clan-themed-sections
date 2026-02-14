@@ -2,10 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-a-new-public-facing-page-section-with-stable-dom-id-donation-that-displays-the-donation-support-content-for-whispers-of-the-white-moon-using-the-exact-english-text-provided-by-the-user-including-the-cash-app-handle-wotwm-the-section-must-match-the-site-s-existing-cinematic-dark-styling-include-a-prominent-section-title-donation-and-use-the-existing-reveal-on-scroll-reduced-motion-safe-animation-behavior-used-in-other-sections",
-      "featureTitle": "Add a new public-facing page section with stable DOM id \"donation\" that displays the donation/support content for \"Whispers Of The White Moon\" using the exact English text provided by the user (including the Cash App handle \"$WOTWM\"). The section must match the site’s existing cinematic dark styling, include a prominent section title \"Donation\", and use the existing reveal-on-scroll / reduced-motion-safe animation behavior used in other sections.",
+      "featureId": "feature-add-a-public-facing-submission-guidelines-block-to-the-gallery-section-frontend-src-components-sections-gallerysection-tsx-that-displays-the-following-english-bullet-points-exactly-artwork-must-be-appropriate-and-respectful-artwork-must-be-original-or-credited-properly-the-creator-team-may-review-and-approve-submissions-before-posting-submissions-may-be-featured-on-the-website-or-social-media",
+      "featureTitle": "Add a public-facing \"Submission Guidelines\" block to the Gallery section (frontend/src/components/sections/GallerySection.tsx) that displays the following English bullet points exactly:\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media",
       "files": [
-        "frontend/src/components/sections/DonationSection.tsx"
+        "frontend/src/components/sections/GallerySection.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -17,15 +17,15 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-100"
+        "REQ-119"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-the-site-s-primary-navigation-headernav-to-include-a-new-clickable-item-labeled-donation-that-smooth-scrolls-to-the-donation-section-in-both-desktop-and-mobile-menus-without-breaking-existing-scroll-targets",
-      "featureTitle": "Update the site’s primary navigation (HeaderNav) to include a new clickable item labeled \"Donation\" that smooth-scrolls to the \"#donation\" section in both desktop and mobile menus, without breaking existing scroll targets.",
+      "featureId": "feature-update-react-query-hooks-and-types-in-frontend-src-hooks-usequeries-ts-to-support-reading-and-writing-the-extended-galleryitem-fields-added-in-the-backend-including-featured-state-credit-link-and-character-clan-tagging-fields-while-keeping-existing-query-invalidation-behavior-for-the-galleryitems-query",
+      "featureTitle": "Update React Query hooks and types in frontend/src/hooks/useQueries.ts to support reading and writing the extended GalleryItem fields added in the backend, including featured state, credit link, and character/clan tagging fields, while keeping existing query invalidation behavior for the galleryItems query.",
       "files": [
-        "frontend/src/components/sections/HeaderNav.tsx"
+        "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -37,15 +37,15 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-101"
+        "REQ-121"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-insert-the-new-donation-section-into-the-main-site-page-flow-in-frontend-src-app-tsx-so-it-appears-as-part-of-the-public-homepage-content-and-also-in-pro-mode-since-pro-mode-renders-the-normal-public-site-ui-place-it-in-a-sensible-location-near-the-end-of-the-page-e-g-before-the-footer-while-preserving-existing-section-order-and-behavior",
-      "featureTitle": "Insert the new Donation section into the main site page flow in frontend/src/App.tsx so it appears as part of the public homepage content (and also in Pro mode, since Pro mode renders the normal public site UI). Place it in a sensible location near the end of the page (e.g., before the Footer), while preserving existing section order and behavior.",
+      "featureId": "feature-enhance-the-gallery-admin-management-ui-frontend-src-components-admin-panels-galleryadminpanel-tsx-so-admins-can-view-and-edit-fan-art-metadata-for-each-artwork-including-artist-name-or-username-artwork-title-optional-description-optional-credit-or-social-media-link-also-add-an-admin-control-to-mark-unmark-an-artwork-as-featured-so-it-can-appear-in-the-public-featured-fan-art-section",
+      "featureTitle": "Enhance the Gallery admin management UI (frontend/src/components/admin/panels/GalleryAdminPanel.tsx) so admins can view and edit fan art metadata for each artwork, including:\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\nAlso add an admin control to mark/unmark an artwork as \"Featured\" so it can appear in the public \"Featured Fan Art\" section.",
       "files": [
-        "frontend/src/App.tsx"
+        "frontend/src/components/admin/panels/GalleryAdminPanel.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -57,7 +57,48 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-102"
+        "REQ-122"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-new-public-featured-fan-art-section-or-a-clearly-separated-sub-section-within-the-existing-gallery-section-that-highlights-artworks-flagged-as-featured-by-admins-the-featured-display-must-use-the-same-cinematic-styling-language-as-the-rest-of-the-site-and-must-open-the-existing-lightbox-when-an-image-is-clicked",
+      "featureTitle": "Add a new public \"Featured Fan Art\" section (or a clearly separated sub-section within the existing Gallery section) that highlights artworks flagged as featured by admins. The featured display must use the same cinematic styling language as the rest of the site and must open the existing lightbox when an image is clicked.",
+      "files": [
+        "frontend/src/components/sections/GallerySection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-123"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-sorting-and-filtering-controls-for-gallery-artwork-on-the-public-gallery-ui-to-allow-visitors-to-sort-filter-by-character-clan-and-popularity-character-clan-filter-options-must-be-populated-from-backend-characters-clans-queries-when-available-popularity-must-be-based-on-the-backend-defined-popularity-metric-e-g-viewcount-and-the-ui-must-support-sorting-by-popularity-e-g-most-popular",
+      "featureTitle": "Add sorting and filtering controls for gallery artwork on the public Gallery UI to allow visitors to sort/filter by character, clan, and popularity. Character/clan filter options must be populated from backend Characters/Clans queries when available. Popularity must be based on the backend-defined popularity metric (e.g., viewCount) and the UI must support sorting by popularity (e.g., Most Popular).",
+      "files": [
+        "frontend/src/components/sections/GallerySection.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-124"
       ],
       "confidence": "high"
     }

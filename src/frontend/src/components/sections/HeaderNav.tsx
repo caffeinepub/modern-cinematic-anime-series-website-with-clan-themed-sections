@@ -25,7 +25,8 @@ export function HeaderNav() {
     { href: '#episodes', label: 'Episodes' },
     { href: '#gallery', label: 'Gallery' },
     { href: '#news', label: 'News' },
-    { href: '#donation', label: 'Donation' }
+    { href: '#donation', label: 'Donation' },
+    { href: '#contact', label: 'Contact' }
   ];
 
   const scrollToSection = (href: string) => {
@@ -63,16 +64,32 @@ export function HeaderNav() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => scrollToSection(link.href)}
-                className="text-foreground/80 hover:text-primary font-semibold transition-colors duration-300 relative group"
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-              </button>
-            ))}
+            {navLinks.map((link) => {
+              const isDonation = link.href === '#donation';
+              
+              if (isDonation) {
+                return (
+                  <button
+                    key={link.href}
+                    onClick={() => scrollToSection(link.href)}
+                    className="donation-cta-button donation-cta-green px-6 py-2.5 bg-success text-success-foreground font-bold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-glow-lg relative group"
+                  >
+                    {link.label}
+                  </button>
+                );
+              }
+              
+              return (
+                <button
+                  key={link.href}
+                  onClick={() => scrollToSection(link.href)}
+                  className="text-foreground/80 hover:text-primary font-semibold transition-colors duration-300 relative group"
+                >
+                  {link.label}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
+                </button>
+              );
+            })}
             {identity && isAdmin && (
               <button
                 onClick={navigateToAdmin}
@@ -99,15 +116,31 @@ export function HeaderNav() {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 py-4 border-t border-border bg-card/95 backdrop-blur-xl rounded-lg">
             <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="text-foreground/80 hover:text-primary font-semibold transition-colors duration-300 text-left px-4 py-2 hover:bg-primary/10 rounded"
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) => {
+                const isDonation = link.href === '#donation';
+                
+                if (isDonation) {
+                  return (
+                    <button
+                      key={link.href}
+                      onClick={() => scrollToSection(link.href)}
+                      className="donation-cta-button donation-cta-green mx-4 px-6 py-3 bg-success text-success-foreground font-bold rounded-full transition-all duration-300 hover:scale-105 text-center"
+                    >
+                      {link.label}
+                    </button>
+                  );
+                }
+                
+                return (
+                  <button
+                    key={link.href}
+                    onClick={() => scrollToSection(link.href)}
+                    className="text-foreground/80 hover:text-primary font-semibold transition-colors duration-300 text-left px-4 py-2 hover:bg-primary/10 rounded"
+                  >
+                    {link.label}
+                  </button>
+                );
+              })}
               {identity && isAdmin && (
                 <button
                   onClick={navigateToAdmin}

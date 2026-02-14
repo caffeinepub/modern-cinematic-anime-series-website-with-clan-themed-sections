@@ -6,19 +6,20 @@ import Int "mo:core/Int";
 import Array "mo:core/Array";
 import Runtime "mo:core/Runtime";
 import Principal "mo:core/Principal";
+import Nat "mo:core/Nat";
 
 import AccessControl "authorization/access-control";
 import BlobStorage "blob-storage/Storage";
 import MixinStorage "blob-storage/Mixin";
 import MixinAuthorization "authorization/MixinAuthorization";
+import Migration "migration";
 
-
-// Specify the migration function to run on upgrade by the with clause
-
+// Specify migration function to run on upgrade via with clause
+(with migration = Migration.run)
 actor {
   include MixinStorage();
 
-  // Admin system state
+  // Access control state
   let accessControlState = AccessControl.initState();
 
   // User profiles
@@ -36,24 +37,26 @@ actor {
   let clans = List.empty<Clan>();
   var nextClanId = 0;
 
-  // Gallery Items
+  // Gallery Items (now support fan art)
   let galleryItems = List.empty<GalleryItem>();
   var nextGalleryItemId = 0;
-
   let galleryImages = List.empty<BlobStorage.ExternalBlob>();
 
   // News
   let newsPosts = List.empty<NewsPost>();
   var nextNewsPostId = 0;
 
-  // Scripts (new)
+  // Scripts
   let scripts = List.empty<Script>();
   var nextScriptId = 0;
 
-  // ProBlocks persistent store
+  // ProBlocks
   let proBlocks = List.empty<ProBlockData>();
-
   var proPresentation : Text = "";
+
+  // Fan Mail
+  let fanMails = List.empty<FanMailMessage>();
+  var nextFanMailId = 0;
 
   public type UserProfile = {
     name : Text;
@@ -91,7 +94,7 @@ actor {
     role : Text;
     clanId : ?Nat;
     episodes : [Nat];
-    portraitUrl : Text; // New field for character portrait URL
+    portraitUrl : Text;
   };
 
   public type Clan = {
@@ -104,10 +107,18 @@ actor {
   public type GalleryItem = {
     id : Nat;
     title : Text;
+    artistName : Text;
+    artworkTitle : Text;
+    description : ?Text;
+    creditLink : ?Text;
     imageUrl : Text;
-    description : Text;
     creator : Text;
     date : Int;
+    featured : Bool;
+    taggedCharacterIds : [Nat];
+    taggedClanIds : [Nat];
+    popularity : Nat;
+    viewCount : Nat;
   };
 
   public type NewsPost = {
@@ -127,7 +138,6 @@ actor {
     updatedAt : Int;
   };
 
-  // Persistent ProBlocks Store
   type BlockType = {
     #title;
     #text;
@@ -158,6 +168,15 @@ actor {
     updatedAt : Int;
   };
 
+  public type FanMailMessage = {
+    id : Nat;
+    senderName : Text;
+    senderEmail : Text;
+    message : Text;
+    submittedAt : Int;
+    adminReply : ?Text;
+  };
+
   include MixinAuthorization(accessControlState);
 
   // Pro Presentation API
@@ -172,7 +191,7 @@ actor {
     proPresentation := content;
   };
 
-  // Persistent ProBlocks API
+  // ProBlocks API
   public query ({ caller }) func getAllProBlocks() : async [ProBlockData] {
     proBlocks.toArray();
   };
@@ -265,7 +284,7 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Episodes Management (with production progress)
+  // Episodes Management
   public shared ({ caller }) func createEpisode(
     title : Text,
     description : Text,
@@ -550,8 +569,19 @@ actor {
     clans.find(func(cl) { cl.id == id });
   };
 
-  // Gallery Items Management
-  public shared ({ caller }) func createGalleryItem(title : Text, imageUrl : Text, description : Text, creator : Text) : async () {
+  // Gallery Items Management - FAN ART SUPPORT
+  public shared ({ caller }) func createGalleryItem(
+    title : Text,
+    artistName : Text,
+    artworkTitle : Text,
+    description : ?Text,
+    creditLink : ?Text,
+    imageUrl : Text,
+    creator : Text,
+    featured : Bool,
+    taggedCharacterIds : [Nat],
+    taggedClanIds : [Nat],
+  ) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can create gallery items");
     };
@@ -559,17 +589,37 @@ actor {
     let newItem = {
       id = nextGalleryItemId;
       title;
-      imageUrl;
+      artistName;
+      artworkTitle;
       description;
+      creditLink;
+      imageUrl;
       creator;
       date = Time.now();
+      featured;
+      taggedCharacterIds;
+      taggedClanIds;
+      popularity = 0;
+      viewCount = 0;
     };
 
     galleryItems.add(newItem);
     nextGalleryItemId += 1;
   };
 
-  public shared ({ caller }) func updateGalleryItem(id : Nat, title : Text, imageUrl : Text, description : Text, creator : Text) : async () {
+  public shared ({ caller }) func updateGalleryItem(
+    id : Nat,
+    title : Text,
+    artistName : Text,
+    artworkTitle : Text,
+    description : ?Text,
+    creditLink : ?Text,
+    imageUrl : Text,
+    creator : Text,
+    featured : Bool,
+    taggedCharacterIds : [Nat],
+    taggedClanIds : [Nat],
+  ) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can update gallery items");
     };
@@ -580,10 +630,18 @@ actor {
           {
             id;
             title;
-            imageUrl;
+            artistName;
+            artworkTitle;
             description;
+            creditLink;
+            imageUrl;
             creator;
             date = item.date;
+            featured;
+            taggedCharacterIds;
+            taggedClanIds;
+            popularity = item.popularity;
+            viewCount = item.viewCount;
           };
         } else {
           item;
@@ -612,6 +670,24 @@ actor {
 
   public query ({ caller }) func getGalleryImages() : async [BlobStorage.ExternalBlob] {
     galleryImages.toArray();
+  };
+
+  // Increment view count for popularity tracking (public, no auth required)
+  public shared ({ caller }) func incrementGalleryItemViewCount(id : Nat) : async () {
+    galleryItems.mapInPlace(
+      func(item) {
+        if (item.id == id) {
+          let newViewCount = item.viewCount + 1;
+          {
+            item with
+            viewCount = newViewCount;
+            popularity = newViewCount;
+          };
+        } else {
+          item;
+        };
+      }
+    );
   };
 
   // News Management
@@ -675,7 +751,7 @@ actor {
     newsPosts.find(func(post) { post.id == id });
   };
 
-  // Scripts Management (New)
+  // Scripts Management
   public shared ({ caller }) func createScript(title : Text, content : Text, creator : Text) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can create scripts");
@@ -733,7 +809,7 @@ actor {
     scripts.find(func(script) { script.id == id });
   };
 
-  // Team Member Management (New)
+  // Team Member Management
   public query ({ caller }) func listTeamMembers() : async [(Principal, AccessControl.UserRole)] {
     [];
   };
@@ -752,5 +828,94 @@ actor {
     };
 
     AccessControl.assignRole(accessControlState, caller, principal, #guest);
+  };
+
+  // Fan Mail API
+  public shared ({ caller }) func submitFanMail(name : Text, email : Text, message : Text) : async () {
+    let newMail : FanMailMessage = {
+      id = nextFanMailId;
+      senderName = name;
+      senderEmail = email;
+      message;
+      submittedAt = Time.now();
+      adminReply = null;
+    };
+
+    fanMails.add(newMail);
+    nextFanMailId += 1;
+  };
+
+  public query ({ caller }) func getAllFanMail() : async [FanMailMessage] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view fan mail");
+    };
+    fanMails.toArray();
+  };
+
+  public query ({ caller }) func getFanMailById(id : Nat) : async ?FanMailMessage {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view fan mail");
+    };
+    fanMails.find(func(mail) { mail.id == id });
+  };
+
+  public shared ({ caller }) func replyToFanMail(id : Nat, reply : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can reply to fan mail");
+    };
+
+    fanMails.mapInPlace(
+      func(mail) {
+        if (mail.id == id) {
+          {
+            mail with adminReply = ?reply
+          };
+        } else {
+          mail;
+        };
+      }
+    );
+  };
+
+   // Gallery Filtering and Sorting
+  public query ({ caller }) func filterGalleryItems(
+    characterIds : [Nat],
+    clanIds : [Nat],
+    sortByPopularity : Bool,
+    featuredOnly : Bool,
+  ) : async [GalleryItem] {
+    let filtered = galleryItems.filter(func(item) {
+      let matchesCharacters =
+        if (characterIds.size() > 0) {
+          characterIds.findIndex(func(id) { item.taggedCharacterIds.findIndex(func(taggedId) { taggedId == id }) != null }) != null;
+        } else {
+          true;
+        };
+
+      let matchesClans =
+        if (clanIds.size() > 0) {
+          clanIds.findIndex(func(id) { item.taggedClanIds.findIndex(func(taggedId) { taggedId == id }) != null }) != null;
+        } else {
+          true;
+        };
+
+      let matchesFeatured = if (featuredOnly) { item.featured } else { true };
+
+      matchesCharacters and matchesClans and matchesFeatured;
+    });
+
+    let filteredArray = filtered.toArray();
+    let sorted = if (sortByPopularity) {
+      filteredArray.sort(
+        func(a, b) {
+          if (a.popularity > b.popularity) { #less } else if (a.popularity < b.popularity) { #greater } else {
+            #equal;
+          };
+        }
+      );
+    } else {
+      filteredArray;
+    };
+    sorted;
   };
 };

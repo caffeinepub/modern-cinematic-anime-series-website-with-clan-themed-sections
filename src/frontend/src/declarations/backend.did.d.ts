@@ -53,13 +53,29 @@ export interface Episode {
   'runtime' : [] | [bigint],
 }
 export type ExternalBlob = Uint8Array;
+export interface FanMailMessage {
+  'id' : bigint,
+  'adminReply' : [] | [string],
+  'submittedAt' : bigint,
+  'message' : string,
+  'senderName' : string,
+  'senderEmail' : string,
+}
 export interface GalleryItem {
   'id' : bigint,
+  'taggedCharacterIds' : Array<bigint>,
   'title' : string,
   'creator' : string,
+  'featured' : boolean,
+  'creditLink' : [] | [string],
+  'artworkTitle' : string,
   'date' : bigint,
-  'description' : string,
+  'description' : [] | [string],
+  'taggedClanIds' : Array<bigint>,
   'imageUrl' : string,
+  'viewCount' : bigint,
+  'artistName' : string,
+  'popularity' : bigint,
 }
 export interface NewsPost {
   'id' : bigint,
@@ -154,7 +170,18 @@ export interface _SERVICE {
     undefined
   >,
   'createGalleryItem' : ActorMethod<
-    [string, string, string, string],
+    [
+      string,
+      string,
+      string,
+      [] | [string],
+      [] | [string],
+      string,
+      string,
+      boolean,
+      Array<bigint>,
+      Array<bigint>,
+    ],
     undefined
   >,
   'createNewsPost' : ActorMethod<[string, string], undefined>,
@@ -166,9 +193,14 @@ export interface _SERVICE {
   'deleteNewsPost' : ActorMethod<[bigint], undefined>,
   'deleteProBlock' : ActorMethod<[string], undefined>,
   'deleteScript' : ActorMethod<[bigint], undefined>,
+  'filterGalleryItems' : ActorMethod<
+    [Array<bigint>, Array<bigint>, boolean, boolean],
+    Array<GalleryItem>
+  >,
   'getAllCharacters' : ActorMethod<[], Array<Character>>,
   'getAllClans' : ActorMethod<[], Array<Clan>>,
   'getAllEpisodes' : ActorMethod<[], Array<Episode>>,
+  'getAllFanMail' : ActorMethod<[], Array<FanMailMessage>>,
   'getAllGalleryItems' : ActorMethod<[], Array<GalleryItem>>,
   'getAllNewsPosts' : ActorMethod<[], Array<NewsPost>>,
   'getAllProBlocks' : ActorMethod<[], Array<ProBlockData>>,
@@ -178,6 +210,7 @@ export interface _SERVICE {
   'getCharacterById' : ActorMethod<[bigint], [] | [Character]>,
   'getClanById' : ActorMethod<[bigint], [] | [Clan]>,
   'getEpisodeById' : ActorMethod<[bigint], [] | [Episode]>,
+  'getFanMailById' : ActorMethod<[bigint], [] | [FanMailMessage]>,
   'getGalleryImages' : ActorMethod<[], Array<ExternalBlob>>,
   'getGalleryItemById' : ActorMethod<[bigint], [] | [GalleryItem]>,
   'getNewsPostById' : ActorMethod<[bigint], [] | [NewsPost]>,
@@ -186,14 +219,17 @@ export interface _SERVICE {
   'getScriptById' : ActorMethod<[bigint], [] | [Script]>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'grantRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'incrementGalleryItemViewCount' : ActorMethod<[bigint], undefined>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'listTeamMembers' : ActorMethod<[], Array<[Principal, UserRole]>>,
   'removeMemberFromClan' : ActorMethod<[bigint, bigint], undefined>,
   'reorderEpisodes' : ActorMethod<[Array<bigint>], undefined>,
   'reorderProBlocks' : ActorMethod<[Array<string>], undefined>,
+  'replyToFanMail' : ActorMethod<[bigint, string], undefined>,
   'revokeRole' : ActorMethod<[Principal], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'saveProBlock' : ActorMethod<[ProBlockData], undefined>,
+  'submitFanMail' : ActorMethod<[string, string, string], undefined>,
   'updateCharacter' : ActorMethod<
     [bigint, string, string, string, [] | [bigint], Array<bigint>, string],
     undefined
@@ -219,7 +255,19 @@ export interface _SERVICE {
     undefined
   >,
   'updateGalleryItem' : ActorMethod<
-    [bigint, string, string, string, string],
+    [
+      bigint,
+      string,
+      string,
+      string,
+      [] | [string],
+      [] | [string],
+      string,
+      string,
+      boolean,
+      Array<bigint>,
+      Array<bigint>,
+    ],
     undefined
   >,
   'updateNewsPost' : ActorMethod<[bigint, string, string], undefined>,

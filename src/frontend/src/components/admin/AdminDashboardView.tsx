@@ -8,6 +8,7 @@ import { GalleryAdminPanel } from './panels/GalleryAdminPanel';
 import { NewsAdminPanel } from './panels/NewsAdminPanel';
 import { ScriptsAdminPanel } from './panels/ScriptsAdminPanel';
 import { TeamAdminPanel } from './panels/TeamAdminPanel';
+import { FanMailAdminPanel } from './panels/FanMailAdminPanel';
 import { LoginButton } from '../auth/LoginButton';
 import { useIsCallerAdmin } from '../../hooks/useQueries';
 
@@ -57,13 +58,14 @@ export function AdminDashboardView() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="episodes" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 mb-6">
+              <TabsList className="grid w-full grid-cols-4 md:grid-cols-9 mb-6">
                 <TabsTrigger value="episodes">Episodes</TabsTrigger>
                 <TabsTrigger value="characters">Characters</TabsTrigger>
                 <TabsTrigger value="clans">Clans</TabsTrigger>
                 <TabsTrigger value="gallery">Gallery</TabsTrigger>
                 <TabsTrigger value="news">News</TabsTrigger>
                 <TabsTrigger value="scripts">Scripts</TabsTrigger>
+                <TabsTrigger value="fanmail">Fan Mail</TabsTrigger>
                 {isAdmin && <TabsTrigger value="team">Team</TabsTrigger>}
                 <TabsTrigger value="pro" onClick={handleProTabClick}>Pro</TabsTrigger>
               </TabsList>
@@ -90,6 +92,10 @@ export function AdminDashboardView() {
 
               <TabsContent value="scripts" className="space-y-4">
                 <ScriptsAdminPanel />
+              </TabsContent>
+
+              <TabsContent value="fanmail" className="space-y-4">
+                <FanMailAdminPanel />
               </TabsContent>
 
               {isAdmin && (

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 67,
+  "projectStateVersion": 83,
   "summary": "Build a modern anime streaming/promo-style website for \"Whispers Of The White Moon\" with dark cinematic styling, glowing accents, smooth transitions/parallax, content sections (Characters, Episodes, Gallery, News/Updates, Clans), and a secure admin dashboard for the site owner to manage all anime content.",
   "architectural_notes": [
     "Visual direction: anime streaming/promo-site feel with dark theme (navy/black/deep purple) and glowing accents (moon blue, fiery gold).",
@@ -654,6 +654,150 @@
         "REQ-102"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-donation-section-frontend-src-components-sections-donationsection-tsx-so-the-section-uses-the-static-asset-thanks-png-as-the-section-background-image-cover-center-while-keeping-the-existing-donation-content-readable-by-applying-a-dark-gradient-overlay-layer-above-the-image-and-below-the-text-content",
+      "title": "Update the Donation section (frontend/src/components/sections/DonationSection.tsx) so the section uses the static asset \"thanks!.png\" as the section background image (cover/center), while keeping the existing Donation content readable by applying a dark/gradient overlay layer above the image and below the text/content.",
+      "reqIds": [
+        "REQ-104"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-donation-section-ui-frontend-src-components-sections-donationsection-tsx-to-include-the-new-supporter-message-text-immediately-under-the-existing-donation-description-preserving-line-breaks-every-supporter-becomes-part-of-the-whispers-of-the-white-moon-journey-choose-your-tier-and-help-shape-the-story",
+      "title": "Update the Donation section UI (frontend/src/components/sections/DonationSection.tsx) to include the new supporter message text immediately under the existing donation description, preserving line breaks: \"Every supporter becomes part of the Whispers Of The White Moon journey.\nChoose your tier and help shape the story.\"",
+      "reqIds": [
+        "REQ-105"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-rewards-area-under-the-donation-content-still-within-frontend-src-components-sections-donationsection-tsx-that-lists-the-following-donation-tiers-and-benefits-in-english-in-the-exact-order-shown-moon-clan-supporter-1-to-5-official-moon-clan-supporter-title-flame-warrior-supporter-6-to-15-everything-from-moon-clan-tier-quicker-contact-responds-official-fire-clan-supporter-title-water-guardian-supporter-16-to-30-user-name-secretly-added-to-anime-official-water-clan-supporter-title-royal-sun-supporter-31-to-75-everything-from-previous-tiers-user-name-listed-in-episode-credits-supporter-section-added-to-anime-own-character-legendary-balance-supporter-76-everything-from-previous-tiers-special-thank-you-message-from-the-creator-team-chance-to-have-an-important-anime-character-ultimate-supporter-recognition",
+      "title": "Add a \"Rewards\" area under the Donation content (still within frontend/src/components/sections/DonationSection.tsx) that lists the following donation tiers and benefits in English, in the exact order shown:\n\nMoon Clan Supporter — $1 to $5\n- Official Moon Clan Supporter title\n\nFlame Warrior Supporter — $6 to $15\n- Everything from Moon Clan tier\n- Quicker contact responds\n- Official Fire Clan Supporter title\n\nWater Guardian Supporter — $16 to $30\n- User-Name secretly added to Anime\n- Official Water Clan Supporter title\n\nRoyal Sun Supporter — $31 to $75\n- Everything from previous tiers\n- User-Name listed in episode credits (Supporter Section)\n- Added to anime (own Character)\n\nLegendary Balance Supporter — $76+\n- Everything from previous tiers\n- Special thank-you message from the creator team\n- Chance to have an important Anime character\n- Ultimate supporter recognition",
+      "reqIds": [
+        "REQ-106"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-donation-section-styling-frontend-src-components-sections-donationsection-tsx-so-that-all-donation-text-and-all-donation-content-boxes-containers-use-a-light-green-color-theme-including-the-main-donation-content-card-the-cash-app-handle-box-and-each-rewards-tier-card",
+      "title": "Update the Donation section styling (frontend/src/components/sections/DonationSection.tsx) so that all Donation text and all Donation content boxes/containers use a light green color theme, including the main donation content card, the Cash App handle box, and each Rewards tier card.",
+      "reqIds": [
+        "REQ-107"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-headernav-donation-navigation-item-desktop-and-mobile-menus-so-it-visually-stands-out-as-a-primary-cta-make-it-slightly-larger-than-other-nav-items-and-apply-a-subtle-glow-animation-with-a-pulse-effect-that-repeats-every-few-seconds-while-keeping-styling-consistent-with-the-site-s-cinematic-dark-theme",
+      "title": "Update the HeaderNav “Donation” navigation item (desktop and mobile menus) so it visually stands out as a primary CTA: make it slightly larger than other nav items and apply a subtle glow animation with a pulse effect that repeats every few seconds, while keeping styling consistent with the site’s cinematic dark theme.",
+      "reqIds": [
+        "REQ-108"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-adjust-css-animation-utilities-for-the-donation-cta-so-the-pulse-glow-effect-is-performant-and-respects-prefers-reduced-motion-i-e-no-pulsing-glow-animation-when-reduced-motion-is-enabled",
+      "title": "Add/adjust CSS animation utilities for the Donation CTA so the pulse/glow effect is performant and respects prefers-reduced-motion (i.e., no pulsing/glow animation when reduced motion is enabled).",
+      "reqIds": [
+        "REQ-109"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-headernav-donation-cta-button-styling-desktop-and-mobile-so-the-button-itself-is-clearly-green-and-includes-a-visible-black-highlight-accent-while-keeping-the-existing-cinematic-styling-and-the-current-donation-pulse-glow-behavior-and-continuing-to-respect-prefers-reduced-motion",
+      "title": "Update the HeaderNav \"Donation\" CTA button styling (desktop and mobile) so the button itself is clearly green and includes a visible black highlight/accent, while keeping the existing cinematic styling and the current donation pulse/glow behavior (and continuing to respect prefers-reduced-motion).",
+      "reqIds": [
+        "REQ-110"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-public-facing-page-section-component-for-contact-and-render-it-as-part-of-the-homepage-flow-in-both-main-mode-and-pro-mode-the-section-must-have-a-stable-dom-id-of-contact-and-must-match-the-site-s-existing-cinematic-dark-styling-and-reveal-on-scroll-reduced-motion-safe-animation-behavior-used-by-other-sections-e-g-gallery-news-donation",
+      "title": "Create a new public-facing page section component for Contact and render it as part of the homepage flow in both Main mode and Pro mode. The section must have a stable DOM id of \"contact\" and must match the site’s existing cinematic dark styling and reveal-on-scroll / reduced-motion-safe animation behavior used by other sections (e.g., Gallery/News/Donation).",
+      "reqIds": [
+        "REQ-111"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-contact-section-content-with-three-clearly-labeled-sub-sections-1-contact-information-that-includes-fields-labels-for-name-email-and-optional-social-media-links-2-collaboration-inviting-voice-actors-artists-animators-musicians-and-writers-to-contact-the-project-team-and-3-supporter-help-that-instructs-supporters-to-include-username-donation-or-supporter-tier-and-reward-questions-or-requests-and-includes-a-clear-warning-that-the-supporter-help-section-is-only-for-people-who-donated-and-did-not-get-their-reward-also-include-a-small-response-time-note-stating-replies-may-take-24-72-hours-the-contact-section-must-explicitly-ask-visitors-to-include-their-experience-and-skills-when-messaging",
+      "title": "Implement the Contact section content with three clearly labeled sub-sections: (1) \"Contact Information\" that includes fields/labels for Name, Email, and Optional Social Media Links; (2) \"Collaboration\" inviting voice actors, artists, animators, musicians, and writers to contact the project team; and (3) \"Supporter Help\" that instructs supporters to include Username, Donation or supporter tier, and Reward questions or requests, and includes a clear warning that the Supporter Help section is ONLY for people who donated and did not get their reward. Also include a small response-time note stating replies may take 24–72 hours. The Contact section must explicitly ask visitors to include their experience and skills when messaging.",
+      "reqIds": [
+        "REQ-112"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-site-primary-navigation-to-include-a-new-clickable-item-labeled-contact-that-smooth-scrolls-to-the-contact-section-in-both-desktop-and-mobile-menus-without-breaking-existing-scroll-targets-hero-story-characters-clans-episodes-gallery-news-donation",
+      "title": "Update the site primary navigation to include a new clickable item labeled \"Contact\" that smooth-scrolls to the \"#contact\" section in both desktop and mobile menus without breaking existing scroll targets (Hero, Story, Characters, Clans, Episodes, Gallery, News, Donation).",
+      "reqIds": [
+        "REQ-113"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-existing-public-contact-section-frontend-src-components-sections-contactsection-tsx-section-id-contact-to-include-a-new-clearly-labeled-sub-section-titled-fan-mail-that-matches-the-site-s-cinematic-anime-fantasy-styling-soft-glowing-effects-welcoming-atmosphere-and-uses-the-existing-reveal-on-scroll-reduced-motion-safe-animation-behavior-already-used-in-the-contact-section",
+      "title": "Update the existing public Contact section (frontend/src/components/sections/ContactSection.tsx, section id=\"contact\") to include a new clearly labeled sub-section titled \"Fan Mail\" that matches the site’s cinematic anime fantasy styling (soft glowing effects, welcoming atmosphere) and uses the existing reveal-on-scroll / reduced-motion-safe animation behavior already used in the Contact section.",
+      "reqIds": [
+        "REQ-114"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-functional-fan-mail-submission-form-inside-the-contact-section-with-user-editable-inputs-for-1-username-or-name-required-2-message-required-multi-line-textarea-typing-area-and-3-optional-email-or-social-media-optional-include-a-friendly-introduction-encouraging-positive-supportive-community-messages-and-include-a-visible-note-stating-that-respectful-and-positive-messages-may-be-highlighted-or-shared-with-the-creator-team-all-user-facing-text-must-be-in-english",
+      "title": "Implement a functional Fan Mail submission form inside the Contact section with user-editable inputs for (1) \"Username or Name\" (required), (2) \"Message\" (required, multi-line textarea typing area), and (3) \"Optional Email or Social Media\" (optional). Include a friendly introduction encouraging positive/supportive community messages and include a visible note stating that respectful and positive messages may be highlighted or shared with the creator team. All user-facing text must be in English.",
+      "reqIds": [
+        "REQ-115"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-admin-dashboard-ui-to-include-a-new-panel-for-fan-mail-that-is-only-accessible-to-authenticated-admins-the-panel-must-allow-admins-to-1-view-a-list-of-submitted-fan-mail-messages-2-open-view-message-details-including-sender-name-optional-contact-timestamp-and-message-text-and-3-create-or-update-an-admin-response-reply-for-each-message-with-clear-success-error-feedback-implement-required-react-query-hooks-in-frontend-src-hooks-usequeries-ts-to-fetch-messages-and-submit-replies-and-integrate-the-new-panel-into-frontend-src-components-admin-admindashboardview-tsx-as-a-new-tab",
+      "title": "Extend the Admin Dashboard UI to include a new panel for Fan Mail that is only accessible to authenticated admins. The panel must allow admins to (1) view a list of submitted fan mail messages, (2) open/view message details (including sender name, optional contact, timestamp, and message text), and (3) create or update an admin response/reply for each message with clear success/error feedback. Implement required React Query hooks in frontend/src/hooks/useQueries.ts to fetch messages and submit replies, and integrate the new panel into frontend/src/components/admin/AdminDashboardView.tsx as a new tab.",
+      "reqIds": [
+        "REQ-118"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-public-facing-submission-guidelines-block-to-the-gallery-section-frontend-src-components-sections-gallerysection-tsx-that-displays-the-following-english-bullet-points-exactly-artwork-must-be-appropriate-and-respectful-artwork-must-be-original-or-credited-properly-the-creator-team-may-review-and-approve-submissions-before-posting-submissions-may-be-featured-on-the-website-or-social-media",
+      "title": "Add a public-facing \"Submission Guidelines\" block to the Gallery section (frontend/src/components/sections/GallerySection.tsx) that displays the following English bullet points exactly:\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media",
+      "reqIds": [
+        "REQ-119"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-react-query-hooks-and-types-in-frontend-src-hooks-usequeries-ts-to-support-reading-and-writing-the-extended-galleryitem-fields-added-in-the-backend-including-featured-state-credit-link-and-character-clan-tagging-fields-while-keeping-existing-query-invalidation-behavior-for-the-galleryitems-query",
+      "title": "Update React Query hooks and types in frontend/src/hooks/useQueries.ts to support reading and writing the extended GalleryItem fields added in the backend, including featured state, credit link, and character/clan tagging fields, while keeping existing query invalidation behavior for the galleryItems query.",
+      "reqIds": [
+        "REQ-121"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-gallery-admin-management-ui-frontend-src-components-admin-panels-galleryadminpanel-tsx-so-admins-can-view-and-edit-fan-art-metadata-for-each-artwork-including-artist-name-or-username-artwork-title-optional-description-optional-credit-or-social-media-link-also-add-an-admin-control-to-mark-unmark-an-artwork-as-featured-so-it-can-appear-in-the-public-featured-fan-art-section",
+      "title": "Enhance the Gallery admin management UI (frontend/src/components/admin/panels/GalleryAdminPanel.tsx) so admins can view and edit fan art metadata for each artwork, including:\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\nAlso add an admin control to mark/unmark an artwork as \"Featured\" so it can appear in the public \"Featured Fan Art\" section.",
+      "reqIds": [
+        "REQ-122"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-public-featured-fan-art-section-or-a-clearly-separated-sub-section-within-the-existing-gallery-section-that-highlights-artworks-flagged-as-featured-by-admins-the-featured-display-must-use-the-same-cinematic-styling-language-as-the-rest-of-the-site-and-must-open-the-existing-lightbox-when-an-image-is-clicked",
+      "title": "Add a new public \"Featured Fan Art\" section (or a clearly separated sub-section within the existing Gallery section) that highlights artworks flagged as featured by admins. The featured display must use the same cinematic styling language as the rest of the site and must open the existing lightbox when an image is clicked.",
+      "reqIds": [
+        "REQ-123"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-sorting-and-filtering-controls-for-gallery-artwork-on-the-public-gallery-ui-to-allow-visitors-to-sort-filter-by-character-clan-and-popularity-character-clan-filter-options-must-be-populated-from-backend-characters-clans-queries-when-available-popularity-must-be-based-on-the-backend-defined-popularity-metric-e-g-viewcount-and-the-ui-must-support-sorting-by-popularity-e-g-most-popular",
+      "title": "Add sorting and filtering controls for gallery artwork on the public Gallery UI to allow visitors to sort/filter by character, clan, and popularity. Character/clan filter options must be populated from backend Characters/Clans queries when available. Popularity must be based on the backend-defined popularity metric (e.g., viewCount) and the UI must support sorting by popularity (e.g., Most Popular).",
+      "reqIds": [
+        "REQ-124"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -1043,6 +1187,116 @@
       "id": "AR-65",
       "summary": "Add a new \"Donation\" tab/section to the site that displays a support message for \"Whispers Of The White Moon\" and includes Cash App donation instructions (\"Donate Via Cash App\" and \"$WOTWM\").",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-66",
+      "summary": "Update the Donation section styling so the existing image is used as the Donation section background without modifying/replacing the image asset.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-67",
+      "summary": "Add the user-uploaded image file \"thanks!.png\" to the frontend as a static asset (do not modify the image) and ensure it is served from a stable public path (e.g., under frontend/public/assets/).",
+      "reqIds": [
+        "REQ-103"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-68",
+      "summary": "Update the Donation section content to include a short supporter message (\"Every supporter becomes part of the Whispers Of The White Moon journey. Choose your tier and help shape the story.\") and add a \"Rewards\" area listing tiered supporter levels with prices and benefits (Moon Clan $1–$5, Flame Warrior $6–$15, Water Guardian $16–$30, Royal Sun $31–$75, Legendary Balance $76+).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-69",
+      "summary": "Update the Donation section styling so that all Donation text and the surrounding content box/container use a light green color theme (text + box styling).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-70",
+      "summary": "Enhance the site’s Donation/Donate button to “pop” more: make it slightly larger than other buttons and add an eye-catching animation (subtle glow + pulsing effect every few seconds) while keeping it consistent with the cinematic dark theme.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-71",
+      "summary": "Update the HeaderNav \"Donation\" CTA/button styling so the button itself is green and includes a black highlight/accent while keeping consistency with the cinematic dark theme.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-72",
+      "summary": "Add a new public \"Contact\" area/section including Contact Information fields (Email, Name, optional social media links), a response-time note (24–72 hours), a Collaboration invite for voice actors/artists/animators/musicians/writers (asking visitors to include experience/skills), and a Supporter Help subsection that requests Username + donation/supporter tier + reward questions/requests and warns it is ONLY for donors who did not receive their reward.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-73",
+      "summary": "Add a \"Fan Mail\" area within the existing Contact section/tab that includes a friendly intro encouraging positive community interaction, a text entry area, and form fields for Username/Name, Message, and optional Email or Social Media, plus a note that respectful/positive messages may be highlighted or shared with the team; style it with an anime fantasy theme, soft glowing effects, and a welcoming atmosphere.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-74",
+      "summary": "Add backend storage and APIs for Fan Mail submissions so fans can submit messages publicly (no admin required to submit, safe for anonymous users), and allow admins to read messages and post responses/replies to messages (admin-only write access for responses). Ensure Fan Mail data persists across canister upgrades.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-75",
+      "summary": "Add an Admin Dashboard panel to view incoming Fan Mail messages and allow admins to respond to messages (send/store an admin reply), with clear success/error feedback and styling consistent with the dark cinematic admin UI.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-78",
+      "summary": "Add backend storage and APIs for Fan Mail in the existing single Motoko actor (backend/main.mo): allow public/unauthenticated callers to create a new fan mail message (must not trap for anonymous users), allow admins to list/read fan mail messages, and allow admins to post and persist an admin response/reply tied to a specific fan mail message.",
+      "reqIds": [
+        "REQ-116"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-79",
+      "summary": "Ensure Fan Mail data persists across canister upgrades. If introducing new stable state fields for Fan Mail requires a state migration, add a conditional migration implementation that preserves existing canister state while initializing the new Fan Mail fields safely, following the project’s conditional migration policy.",
+      "reqIds": [
+        "REQ-117"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-80",
+      "summary": "Add public-facing Fan Art submission guidelines text (appropriate/respectful, original or properly credited, creator team may review/approve before posting, submissions may be featured on website/social media).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-81",
+      "summary": "Extend the Admin Dashboard to display/manage submitted artwork (Fan Art) with metadata fields: artist name/username, artwork title, optional description, and optional credit/social media link.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-82",
+      "summary": "Add a public \"Featured Fan Art\" section that highlights selected artwork chosen by an Admin (curation/featured flag controlled from the admin side).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-83",
+      "summary": "Add sorting/filtering for artwork by character, clan, or popularity (includes defining how popularity is tracked and exposing the controls in the UI).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-85",
+      "summary": "Extend the backend GalleryItem model and Gallery CRUD APIs in backend/main.mo to support fan art metadata and curation, including at minimum:\n- artistName (artist name or username)\n- artworkTitle (continue to support/align with existing title field if kept)\n- optionalDescription (continue to support/align with existing description field if kept)\n- optionalCreditLink (credit or social media link)\n- featured (boolean controlled by admin)\n- optional taggedCharacterIds (for filtering)\n- optional taggedClanIds or a single optional clanId (for filtering)\n- popularity metric usable for sorting (define and persist a stable value, e.g., viewCount)\nEnsure reads remain public and writes remain admin-only (consistent with existing gallery authorization checks).",
+      "reqIds": [
+        "REQ-120"
+      ],
       "status": "pending"
     }
   ],

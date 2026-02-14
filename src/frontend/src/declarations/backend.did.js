@@ -29,6 +29,22 @@ export const Visibility = IDL.Variant({
   'publicVisibility' : IDL.Null,
   'draft' : IDL.Null,
 });
+export const GalleryItem = IDL.Record({
+  'id' : IDL.Nat,
+  'taggedCharacterIds' : IDL.Vec(IDL.Nat),
+  'title' : IDL.Text,
+  'creator' : IDL.Text,
+  'featured' : IDL.Bool,
+  'creditLink' : IDL.Opt(IDL.Text),
+  'artworkTitle' : IDL.Text,
+  'date' : IDL.Int,
+  'description' : IDL.Opt(IDL.Text),
+  'taggedClanIds' : IDL.Vec(IDL.Nat),
+  'imageUrl' : IDL.Text,
+  'viewCount' : IDL.Nat,
+  'artistName' : IDL.Text,
+  'popularity' : IDL.Nat,
+});
 export const Character = IDL.Record({
   'id' : IDL.Nat,
   'bio' : IDL.Text,
@@ -62,13 +78,13 @@ export const Episode = IDL.Record({
   'editingComplete' : IDL.Bool,
   'runtime' : IDL.Opt(IDL.Nat),
 });
-export const GalleryItem = IDL.Record({
+export const FanMailMessage = IDL.Record({
   'id' : IDL.Nat,
-  'title' : IDL.Text,
-  'creator' : IDL.Text,
-  'date' : IDL.Int,
-  'description' : IDL.Text,
-  'imageUrl' : IDL.Text,
+  'adminReply' : IDL.Opt(IDL.Text),
+  'submittedAt' : IDL.Int,
+  'message' : IDL.Text,
+  'senderName' : IDL.Text,
+  'senderEmail' : IDL.Text,
 });
 export const NewsPost = IDL.Record({
   'id' : IDL.Nat,
@@ -179,7 +195,18 @@ export const idlService = IDL.Service({
       [],
     ),
   'createGalleryItem' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Opt(IDL.Text),
+        IDL.Opt(IDL.Text),
+        IDL.Text,
+        IDL.Text,
+        IDL.Bool,
+        IDL.Vec(IDL.Nat),
+        IDL.Vec(IDL.Nat),
+      ],
       [],
       [],
     ),
@@ -192,9 +219,15 @@ export const idlService = IDL.Service({
   'deleteNewsPost' : IDL.Func([IDL.Nat], [], []),
   'deleteProBlock' : IDL.Func([IDL.Text], [], []),
   'deleteScript' : IDL.Func([IDL.Nat], [], []),
+  'filterGalleryItems' : IDL.Func(
+      [IDL.Vec(IDL.Nat), IDL.Vec(IDL.Nat), IDL.Bool, IDL.Bool],
+      [IDL.Vec(GalleryItem)],
+      ['query'],
+    ),
   'getAllCharacters' : IDL.Func([], [IDL.Vec(Character)], ['query']),
   'getAllClans' : IDL.Func([], [IDL.Vec(Clan)], ['query']),
   'getAllEpisodes' : IDL.Func([], [IDL.Vec(Episode)], ['query']),
+  'getAllFanMail' : IDL.Func([], [IDL.Vec(FanMailMessage)], ['query']),
   'getAllGalleryItems' : IDL.Func([], [IDL.Vec(GalleryItem)], ['query']),
   'getAllNewsPosts' : IDL.Func([], [IDL.Vec(NewsPost)], ['query']),
   'getAllProBlocks' : IDL.Func([], [IDL.Vec(ProBlockData)], ['query']),
@@ -204,6 +237,7 @@ export const idlService = IDL.Service({
   'getCharacterById' : IDL.Func([IDL.Nat], [IDL.Opt(Character)], ['query']),
   'getClanById' : IDL.Func([IDL.Nat], [IDL.Opt(Clan)], ['query']),
   'getEpisodeById' : IDL.Func([IDL.Nat], [IDL.Opt(Episode)], ['query']),
+  'getFanMailById' : IDL.Func([IDL.Nat], [IDL.Opt(FanMailMessage)], ['query']),
   'getGalleryImages' : IDL.Func([], [IDL.Vec(ExternalBlob)], ['query']),
   'getGalleryItemById' : IDL.Func([IDL.Nat], [IDL.Opt(GalleryItem)], ['query']),
   'getNewsPostById' : IDL.Func([IDL.Nat], [IDL.Opt(NewsPost)], ['query']),
@@ -216,6 +250,7 @@ export const idlService = IDL.Service({
       ['query'],
     ),
   'grantRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'incrementGalleryItemViewCount' : IDL.Func([IDL.Nat], [], []),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'listTeamMembers' : IDL.Func(
       [],
@@ -225,9 +260,11 @@ export const idlService = IDL.Service({
   'removeMemberFromClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
   'reorderEpisodes' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
   'reorderProBlocks' : IDL.Func([IDL.Vec(IDL.Text)], [], []),
+  'replyToFanMail' : IDL.Func([IDL.Nat, IDL.Text], [], []),
   'revokeRole' : IDL.Func([IDL.Principal], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'saveProBlock' : IDL.Func([ProBlockData], [], []),
+  'submitFanMail' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
   'updateCharacter' : IDL.Func(
       [
         IDL.Nat,
@@ -263,7 +300,19 @@ export const idlService = IDL.Service({
       [],
     ),
   'updateGalleryItem' : IDL.Func(
-      [IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [
+        IDL.Nat,
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Opt(IDL.Text),
+        IDL.Opt(IDL.Text),
+        IDL.Text,
+        IDL.Text,
+        IDL.Bool,
+        IDL.Vec(IDL.Nat),
+        IDL.Vec(IDL.Nat),
+      ],
       [],
       [],
     ),
@@ -296,6 +345,22 @@ export const idlFactory = ({ IDL }) => {
     'scheduled' : IDL.Null,
     'publicVisibility' : IDL.Null,
     'draft' : IDL.Null,
+  });
+  const GalleryItem = IDL.Record({
+    'id' : IDL.Nat,
+    'taggedCharacterIds' : IDL.Vec(IDL.Nat),
+    'title' : IDL.Text,
+    'creator' : IDL.Text,
+    'featured' : IDL.Bool,
+    'creditLink' : IDL.Opt(IDL.Text),
+    'artworkTitle' : IDL.Text,
+    'date' : IDL.Int,
+    'description' : IDL.Opt(IDL.Text),
+    'taggedClanIds' : IDL.Vec(IDL.Nat),
+    'imageUrl' : IDL.Text,
+    'viewCount' : IDL.Nat,
+    'artistName' : IDL.Text,
+    'popularity' : IDL.Nat,
   });
   const Character = IDL.Record({
     'id' : IDL.Nat,
@@ -330,13 +395,13 @@ export const idlFactory = ({ IDL }) => {
     'editingComplete' : IDL.Bool,
     'runtime' : IDL.Opt(IDL.Nat),
   });
-  const GalleryItem = IDL.Record({
+  const FanMailMessage = IDL.Record({
     'id' : IDL.Nat,
-    'title' : IDL.Text,
-    'creator' : IDL.Text,
-    'date' : IDL.Int,
-    'description' : IDL.Text,
-    'imageUrl' : IDL.Text,
+    'adminReply' : IDL.Opt(IDL.Text),
+    'submittedAt' : IDL.Int,
+    'message' : IDL.Text,
+    'senderName' : IDL.Text,
+    'senderEmail' : IDL.Text,
   });
   const NewsPost = IDL.Record({
     'id' : IDL.Nat,
@@ -447,7 +512,18 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'createGalleryItem' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Opt(IDL.Text),
+          IDL.Opt(IDL.Text),
+          IDL.Text,
+          IDL.Text,
+          IDL.Bool,
+          IDL.Vec(IDL.Nat),
+          IDL.Vec(IDL.Nat),
+        ],
         [],
         [],
       ),
@@ -460,9 +536,15 @@ export const idlFactory = ({ IDL }) => {
     'deleteNewsPost' : IDL.Func([IDL.Nat], [], []),
     'deleteProBlock' : IDL.Func([IDL.Text], [], []),
     'deleteScript' : IDL.Func([IDL.Nat], [], []),
+    'filterGalleryItems' : IDL.Func(
+        [IDL.Vec(IDL.Nat), IDL.Vec(IDL.Nat), IDL.Bool, IDL.Bool],
+        [IDL.Vec(GalleryItem)],
+        ['query'],
+      ),
     'getAllCharacters' : IDL.Func([], [IDL.Vec(Character)], ['query']),
     'getAllClans' : IDL.Func([], [IDL.Vec(Clan)], ['query']),
     'getAllEpisodes' : IDL.Func([], [IDL.Vec(Episode)], ['query']),
+    'getAllFanMail' : IDL.Func([], [IDL.Vec(FanMailMessage)], ['query']),
     'getAllGalleryItems' : IDL.Func([], [IDL.Vec(GalleryItem)], ['query']),
     'getAllNewsPosts' : IDL.Func([], [IDL.Vec(NewsPost)], ['query']),
     'getAllProBlocks' : IDL.Func([], [IDL.Vec(ProBlockData)], ['query']),
@@ -472,6 +554,11 @@ export const idlFactory = ({ IDL }) => {
     'getCharacterById' : IDL.Func([IDL.Nat], [IDL.Opt(Character)], ['query']),
     'getClanById' : IDL.Func([IDL.Nat], [IDL.Opt(Clan)], ['query']),
     'getEpisodeById' : IDL.Func([IDL.Nat], [IDL.Opt(Episode)], ['query']),
+    'getFanMailById' : IDL.Func(
+        [IDL.Nat],
+        [IDL.Opt(FanMailMessage)],
+        ['query'],
+      ),
     'getGalleryImages' : IDL.Func([], [IDL.Vec(ExternalBlob)], ['query']),
     'getGalleryItemById' : IDL.Func(
         [IDL.Nat],
@@ -492,6 +579,7 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'grantRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'incrementGalleryItemViewCount' : IDL.Func([IDL.Nat], [], []),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'listTeamMembers' : IDL.Func(
         [],
@@ -501,9 +589,11 @@ export const idlFactory = ({ IDL }) => {
     'removeMemberFromClan' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
     'reorderEpisodes' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
     'reorderProBlocks' : IDL.Func([IDL.Vec(IDL.Text)], [], []),
+    'replyToFanMail' : IDL.Func([IDL.Nat, IDL.Text], [], []),
     'revokeRole' : IDL.Func([IDL.Principal], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'saveProBlock' : IDL.Func([ProBlockData], [], []),
+    'submitFanMail' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
     'updateCharacter' : IDL.Func(
         [
           IDL.Nat,
@@ -539,7 +629,19 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'updateGalleryItem' : IDL.Func(
-        [IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [
+          IDL.Nat,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Opt(IDL.Text),
+          IDL.Opt(IDL.Text),
+          IDL.Text,
+          IDL.Text,
+          IDL.Bool,
+          IDL.Vec(IDL.Nat),
+          IDL.Vec(IDL.Nat),
+        ],
         [],
         [],
       ),

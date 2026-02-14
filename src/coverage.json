@@ -1,58 +1,100 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-13T18:34:13.484Z",
+  "generatedAt": "2026-02-14T02:40:03.212Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 6,
+    "implemented": 5,
     "items": [
       {
-        "id": "REQ-100",
-        "summary": "Add a new public-facing page section with stable DOM id \"donation\" that displays the donation/support content for \"Whispers Of The White Moon\" using the exact English text provided by the user (including the Cash App handle \"$WOTWM\"). The section must match the site’s existing cinematic dark styling, include a prominent section title \"Donation\", and use the existing reveal-on-scroll / reduced-motion-safe animation behavior used in other sections.",
+        "id": "REQ-119",
+        "summary": "Add a public-facing \"Submission Guidelines\" block to the Gallery section (frontend/src/components/sections/GallerySection.tsx) that displays the following English bullet points exactly:\n- Artwork must be appropriate and respectful\n- Artwork must be original or credited properly\n- The creator team may review and approve submissions before posting\n- Submissions may be featured on the website or social media",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/sections/DonationSection.tsx"
+          "frontend/src/components/sections/GallerySection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/sections/DonationSection.tsx"
+          "frontend/src/components/sections/GallerySection.tsx"
         ]
       },
       {
-        "id": "REQ-101",
-        "summary": "Update the site’s primary navigation (HeaderNav) to include a new clickable item labeled \"Donation\" that smooth-scrolls to the \"#donation\" section in both desktop and mobile menus, without breaking existing scroll targets.",
+        "id": "REQ-120",
+        "summary": "Extend the backend GalleryItem model and Gallery CRUD APIs in backend/main.mo to support fan art metadata and curation, including at minimum:\n- artistName (artist name or username)\n- artworkTitle (continue to support/align with existing title field if kept)\n- optionalDescription (continue to support/align with existing description field if kept)\n- optionalCreditLink (credit or social media link)\n- featured (boolean controlled by admin)\n- optional taggedCharacterIds (for filtering)\n- optional taggedClanIds or a single optional clanId (for filtering)\n- popularity metric usable for sorting (define and persist a stable value, e.g., viewCount)\nEnsure reads remain public and writes remain admin-only (consistent with existing gallery authorization checks).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-121",
+        "summary": "Update React Query hooks and types in frontend/src/hooks/useQueries.ts to support reading and writing the extended GalleryItem fields added in the backend, including featured state, credit link, and character/clan tagging fields, while keeping existing query invalidation behavior for the galleryItems query.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/sections/HeaderNav.tsx"
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/backend.d.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/sections/HeaderNav.tsx"
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/backend.d.ts"
         ]
       },
       {
-        "id": "REQ-102",
-        "summary": "Insert the new Donation section into the main site page flow in frontend/src/App.tsx so it appears as part of the public homepage content (and also in Pro mode, since Pro mode renders the normal public site UI). Place it in a sensible location near the end of the page (e.g., before the Footer), while preserving existing section order and behavior.",
+        "id": "REQ-122",
+        "summary": "Enhance the Gallery admin management UI (frontend/src/components/admin/panels/GalleryAdminPanel.tsx) so admins can view and edit fan art metadata for each artwork, including:\n- Artist name or username\n- Artwork title\n- Optional description\n- Optional credit or social media link\nAlso add an admin control to mark/unmark an artwork as \"Featured\" so it can appear in the public \"Featured Fan Art\" section.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx"
+          "frontend/src/components/admin/panels/GalleryAdminPanel.tsx",
+          "frontend/src/utils/adminContentAdapters.ts"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx"
+          "frontend/src/components/admin/panels/GalleryAdminPanel.tsx"
+        ]
+      },
+      {
+        "id": "REQ-123",
+        "summary": "Add a new public \"Featured Fan Art\" section (or a clearly separated sub-section within the existing Gallery section) that highlights artworks flagged as featured by admins. The featured display must use the same cinematic styling language as the rest of the site and must open the existing lightbox when an image is clicked.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/sections/GallerySection.tsx",
+          "frontend/src/components/gallery/GalleryGrid.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/sections/GallerySection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-124",
+        "summary": "Add sorting and filtering controls for gallery artwork on the public Gallery UI to allow visitors to sort/filter by character, clan, and popularity. Character/clan filter options must be populated from backend Characters/Clans queries when available. Popularity must be based on the backend-defined popularity metric (e.g., viewCount) and the UI must support sorting by popularity (e.g., Most Popular).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/components/sections/GallerySection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/components/sections/GallerySection.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/components/sections/DonationSection.tsx",
-    "frontend/src/components/sections/HeaderNav.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/admin/panels/GalleryAdminPanel.tsx",
+    "frontend/src/components/gallery/GalleryUploadDialog.tsx",
+    "frontend/src/components/sections/GallerySection.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useQueries.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
