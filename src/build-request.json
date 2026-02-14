@@ -1,143 +1,145 @@
 {
   "kind": "build_request",
-  "title": "Add Collaboration & Supporter Help submission forms with admin viewing",
+  "title": "Add Clan Personality Quiz, Power System Database, and Hidden Unlockable Lore/Artwork",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Add a Collaboration contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
+      "text": "Add an interactive \"Clan Personality Quiz\" experience for the Whispers Of The White Moon website with 8–12 multiple-choice personality questions where each answer secretly adds points to specific clans, and show a results screen that reveals the user’s clan and a visually styled results card users can screenshot or share.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-1"
+          "msg-quiz-1",
+          "msg-yes-1"
         ],
         "quotes": [
-          "in the collaberation contact tab and the Supporter Help contact tab, allow all people to be able to type stuff using Name\nYour Name\nEmail\nyour.email@example.com\nOptional Social Media Links\nTwitter, Instagram, Discord, etc.",
-          "yes....let them submit and alow admins to see it in the admin panel",
-          "1"
+          "Create an interactive \"Clan Personality Quiz\" for the Whispers Of The White Moon website.",
+          "The quiz must include: • 8–12 personality questions • Multiple choice answers • Each answer secretly adds points to specific clans • A results screen revealing the user's clan • A short personality description for each clan • A visually styled results card users can screenshot or share",
+          "Use fantasy anime styling and glowing UI elements.",
+          "User message: \"yes\""
         ]
       },
       "acceptanceCriteria": [
-        "In `frontend/src/components/sections/ContactSection.tsx`, the existing static “Collaboration” card includes an interactive form (not just display text).",
-        "The Collaboration form includes inputs for Name, Email, Optional Social Media Links, and a multiline Message field, plus a Submit button.",
-        "Form validation prevents submitting when required fields are missing (at minimum: Name and Message, consistent with `FanMailForm`).",
-        "On successful submit, the form resets and a success alert is shown; on failure, an error alert is shown.",
-        "Form is usable for unauthenticated visitors (no Internet Identity login required)."
+        "Quiz contains between 8 and 12 questions, each with multiple-choice answers.",
+        "Selecting an answer updates an internal score map (not displayed during the quiz) that influences the final clan result.",
+        "On completion, a results screen shows the winning clan name and its personality description, plus a dedicated results card UI optimized for screenshotting.",
+        "Results screen provides at least one easy sharing/saving affordance (e.g., \"Copy text\" and/or \"Download card\" and/or clear screenshot guidance) without requiring external integrations.",
+        "UI uses fantasy-anime styling with glowing elements consistent with the site’s existing aesthetic."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Add a Supporter Help contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
+      "text": "Include the provided clan result descriptions in the quiz results for Moon Clan, Fire Clan, Water Clan, Sun Clan, Earth Clan, Wind Clan, Lightning Clan, and the secret rare Balance Clan result, and ensure Balance Clan is rare relative to other results.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-1"
+          "msg-quiz-1"
         ],
         "quotes": [
-          "in the collaberation contact tab and the Supporter Help contact tab, allow all people to be able to type stuff using Name\nYour Name\nEmail\nyour.email@example.com\nOptional Social Media Links\nTwitter, Instagram, Discord, etc.",
-          "yes....let them submit and alow admins to see it in the admin panel",
-          "1"
+          "Add the following clan result descriptions:\n\nMoon Clan\nPersonality: Calm, observant, emotionally strong, loyal to balance and hidden truth.\n\nFire Clan\nPersonality: Passionate, brave, aggressive, natural leaders and fearless fighters.\n\nWater Clan\nPersonality: Adaptive, intelligent, emotionally deep, strategic and patient.\n\nSun Clan\nPersonality: Charismatic, confident, inspiring, protective and honorable.\n\nEarth Clan\nPersonality: Strong-willed, dependable, grounded, protective of family and tradition.\n\nWind Clan\nPersonality: Free-spirited, creative, unpredictable, fast thinkers and explorers.\n\nLightning Clan\nPersonality: Energetic, bold, sharp-minded, quick decision makers, thrives under pressure.\n\nBalance Clan (Secret Rare Result)\nPersonality: Extremely rare individuals capable of understanding all clans and maintaining harmony between them.",
+          "Balance Clan is a legendary state believed to be achievable only by individuals who embody traits from every clan."
         ]
       },
       "acceptanceCriteria": [
-        "In `frontend/src/components/sections/ContactSection.tsx`, the existing static “Supporter Help” card includes an interactive form (not just instructions text).",
-        "The Supporter Help form includes inputs for Name, Email, Optional Social Media Links, and a multiline Message field, plus a Submit button.",
-        "Form validation prevents submitting when required fields are missing (at minimum: Name and Message, consistent with `FanMailForm`).",
-        "On successful submit, the form resets and a success alert is shown; on failure, an error alert is shown.",
-        "The existing destructive warning (“ONLY for supporters…”) remains visible above the form."
+        "Each of the 7 standard clans displays the exact personality description text provided by the user on the results screen when that clan is the outcome.",
+        "Balance Clan exists as a possible outcome and is visibly labeled as secret/rare in the results UI.",
+        "The scoring logic makes Balance Clan meaningfully rarer than standard clans (e.g., requires a balanced high score across multiple clans or a narrow scoring condition)."
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Implement backend storage and APIs for Collaboration form submissions, including an admin-only method to list all submissions.",
-      "target": "backend",
+      "text": "Create a \"Power System Database\" section/page that explains abilities in the anime, including: power types, ability rules and limits, forbidden techniques, and character ability lists.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-1"
+          "msg-powerdb-1"
         ],
         "quotes": [
-          "let them submit and alow admins to see it in the admin panel"
+          "Create a Power System Database explaining abilities in the anime.\n\nInclude:\n- Power types\n- Ability rules and limits\n- Forbidden techniques\n- Character ability lists"
         ]
       },
       "acceptanceCriteria": [
-        "In `backend/main.mo`, define a new public type for Collaboration submissions that stores: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp.",
-        "In `backend/main.mo`, store Collaboration submissions in backend state with an auto-incrementing id (pattern consistent with existing `fanMails` + `nextFanMailId`).",
-        "Expose a public shared method for any visitor to submit a Collaboration entry (no admin restriction).",
-        "Expose a public query method to retrieve all Collaboration submissions that is restricted to admins (trap with an Unauthorized message for non-admins).",
-        "Returned list is stable in ordering or explicitly sorted on the frontend (either is acceptable, but must be consistent and documented in code)."
+        "A dedicated UI section/page presents the power system information with clear headings for power types, rules/limits, forbidden techniques, and character ability lists.",
+        "Character ability lists are browsable (e.g., list + details view, or filter/search), and each character entry shows their relevant abilities/powers in readable form.",
+        "All user-facing text in this feature is in English."
       ]
     },
     {
       "id": "REQ-4",
-      "text": "Implement backend storage and APIs for Supporter Help form submissions, including an admin-only method to list all submissions.",
-      "target": "backend",
+      "text": "Add hidden unlockable lore and artwork that users can discover by exploring the website, including secret pages, hidden character info, bonus artwork, and lore fragments.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-1"
+          "msg-secrets-1"
         ],
         "quotes": [
-          "let them submit and alow admins to see it in the admin panel"
+          "Add hidden unlockable lore or artwork that users can discover by exploring the website.\n\nInclude:\n- Secret pages\n- Hidden character info\n- Bonus artwork\n- Lore fragments"
         ]
       },
       "acceptanceCriteria": [
-        "In `backend/main.mo`, define a new public type for Supporter Help submissions that stores: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp.",
-        "In `backend/main.mo`, store Supporter Help submissions in backend state with an auto-incrementing id.",
-        "Expose a public shared method for any visitor to submit a Supporter Help entry (no admin restriction).",
-        "Expose a public query method to retrieve all Supporter Help submissions that is restricted to admins (trap with an Unauthorized message for non-admins)."
+        "At least one secret page exists that is not directly listed in the main navigation and can be reached only via an in-site discovery mechanic (e.g., hidden hotspot, hidden click target, or unlock condition).",
+        "At least one piece of hidden character information can be unlocked and viewed after discovery/unlock.",
+        "At least one bonus artwork asset is included and gated behind discovery/unlock.",
+        "At least several lore fragments exist and are discoverable via exploration, with a UI that indicates which fragments are found vs. missing (client-side persistence acceptable)."
       ]
     },
     {
       "id": "REQ-5",
-      "text": "Add React Query hooks for submitting and admin-fetching Collaboration and Supporter Help submissions, wired to the new backend actor methods.",
+      "text": "Integrate navigation entry points for the new \"Clan Personality Quiz\" and \"Power System Database\" into the existing site experience without breaking the current hash-based view handling for #admin and #pro.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-1"
+          "msg-quiz-1",
+          "msg-powerdb-1"
         ],
         "quotes": [
-          "let them submit and alow admins to see it in the admin panel"
+          "Create an interactive \"Clan Personality Quiz\" for the Whispers Of The White Moon website.",
+          "Create a Power System Database explaining abilities in the anime."
         ]
       },
       "acceptanceCriteria": [
-        "In `frontend/src/hooks/useQueries.ts`, add mutations for submitting Collaboration and Supporter Help forms.",
-        "In `frontend/src/hooks/useQueries.ts`, add admin queries for fetching all Collaboration submissions and all Supporter Help submissions.",
-        "Hooks follow the existing patterns used by `useSubmitFanMail` and `useGetAllFanMail` (React Query keys, actor availability checks, invalidation if needed).",
-        "All hooks use English user-facing error messaging consistent with existing UI (e.g., “Failed to send…”)."
+        "Users can reach the quiz and power system database from the main site UI in a way that does not interfere with existing main/admin/pro modes.",
+        "#admin and #pro continue to work as before (no regressions in switching views)."
       ]
     },
     {
       "id": "REQ-6",
-      "text": "Add admin dashboard tabs/panels so admins can view Collaboration and Supporter Help submissions in the admin panel.",
+      "text": "Add generated static bonus artwork assets to the frontend and display them in the unlockable content experiences as part of the hidden lore/artwork system.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-1"
+          "msg-secrets-1"
         ],
         "quotes": [
-          "alow admins to see it in the admin panel"
+          "Include:\n- Bonus artwork"
         ]
       },
       "acceptanceCriteria": [
-        "In `frontend/src/components/admin/AdminDashboardView.tsx`, add new TabsTrigger entries for Collaboration and Supporter Help (alongside existing Fan Mail tab).",
-        "Create new admin panels (new files under `frontend/src/components/admin/panels/`) to list Collaboration submissions and Supporter Help submissions.",
-        "Each panel shows a count of submissions and a scrollable list similar to `FanMailAdminPanel` (read-only is sufficient).",
-        "Clicking an item opens a dialog (or equivalent detail view) showing submitted Name, Email, Optional Social Media Links, Message, and submitted date/time.",
-        "Panels display loading skeletons and an error alert if the query fails, consistent with `FanMailAdminPanel`."
+        "All newly generated images are stored under frontend/public/assets/generated and are referenced directly by the frontend (not served through the backend).",
+        "At least one unlockable experience displays the generated bonus artwork once unlocked.",
+        "Images load correctly in production build and are responsive (no overflow/cutoff on common screen sizes)."
       ]
     }
   ],
   "constraints": [
-    "Do not edit any files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, or `frontend/src/components/ui` (compose existing UI components instead).",
-    "Backend must remain a single Motoko actor in `backend/main.mo` (no additional backend services).",
-    "Use English for all user-facing text added or changed."
+    "Use English for any user-facing text.",
+    "Do not edit files under frontend/immutablePaths (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui). Compose with existing UI components instead.",
+    "Respect the existing hash-based routing behavior that switches views for #admin and #pro (do not break admin/pro access).",
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo); only add backend migration code if upgrading existing stable state is required."
   ],
   "nonGoals": [
-    "Do not add third-party authentication providers; only Internet Identity remains supported for admin access.",
-    "Do not implement outbound email, SMS, push notifications, or external integrations for contacting users.",
-    "Do not add admin reply functionality for Collaboration or Supporter Help unless explicitly requested later."
+    "Adding third-party authentication beyond Internet Identity.",
+    "Adding real-time features (websockets/chat) or external databases.",
+    "Building an admin CMS for managing quiz questions, lore fragments, or power system entries (unless separately requested).",
+    "Integrating social media APIs for sharing; sharing can be implemented via client-side copy/download patterns."
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Moonlit shrine illustration with glowing runes (bonus-art-moon-shrine.dim_1600x900.png)",
+      "Ancient forbidden technique scroll illustration, warm parchment with arcane ink (bonus-art-forbidden-scroll.dim_1600x900.png)",
+      "Mystic clan constellation map illustration on dark sky, subtle nebula glow (bonus-art-constellation-map.dim_1600x900.png)",
+      "Ethereal character silhouette portrait with luminous aura, neutral background (bonus-art-silhouette-portrait.dim_1200x1500.png)"
+    ],
     "edits": []
   }
 }

@@ -1,43 +1,57 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Project to add functional Collaboration and Supporter Help contact forms (Name, Email, Optional Social links, Message, Submit) with backend storage and an admin panel tab to view submissions; current build/deploy attempts have failed so the update is not visible yet.",
-  "architectural_notes": [
-    "Collaboration and Supporter Help forms should persist submissions to backend and be viewable in admin panel (similar to existing Fan Mail flow)."
-  ],
+  "summary": "Website project for \"Whispers Of The White Moon\" featuring an anime-style power system database with hidden unlockable lore/artwork and an interactive clan personality quiz.",
+  "architectural_notes": [],
   "known_issues": [
-    "Collaboration/Supporter Help forms not visible because UI changes were not successfully added/deployed.",
-    "Build/deploy failed with error: 'Our AI couldn't handle that request'."
+    "AI build/implementation repeatedly failed to process the requested features (power system DB and clan quiz)."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Moonlit shrine illustration with glowing runes (bonus-art-moon-shrine.dim_1600x900.png)\n- Ancient forbidden technique scroll illustration, warm parchment with arcane ink (bonus-art-forbidden-scroll.dim_1600x900.png)\n- Mystic clan constellation map illustration on dark sky, subtle nebula glow (bonus-art-constellation-map.dim_1600x900.png)\n- Ethereal character silhouette portrait with luminous aura, neutral background (bonus-art-silhouette-portrait.dim_1200x1500.png)",
   "existing_features": [
     {
-      "id": "feature-add-a-collaboration-contact-form-to-the-contact-page-that-allows-any-visitor-to-type-and-submit-name-email-optional-social-media-links-and-a-message",
-      "title": "Add a Collaboration contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
+      "id": "feature-add-an-interactive-clan-personality-quiz-experience-for-the-whispers-of-the-white-moon-website-with-8-12-multiple-choice-personality-questions-where-each-answer-secretly-adds-points-to-specific-clans-and-show-a-results-screen-that-reveals-the-user-s-clan-and-a-visually-styled-results-card-users-can-screenshot-or-share",
+      "title": "Add an interactive \"Clan Personality Quiz\" experience for the Whispers Of The White Moon website with 8–12 multiple-choice personality questions where each answer secretly adds points to specific clans, and show a results screen that reveals the user’s clan and a visually styled results card users can screenshot or share.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-a-supporter-help-contact-form-to-the-contact-page-that-allows-any-visitor-to-type-and-submit-name-email-optional-social-media-links-and-a-message",
-      "title": "Add a Supporter Help contact form to the Contact page that allows any visitor to type and submit: Name, Email, Optional Social Media Links, and a Message.",
+      "id": "feature-include-the-provided-clan-result-descriptions-in-the-quiz-results-for-moon-clan-fire-clan-water-clan-sun-clan-earth-clan-wind-clan-lightning-clan-and-the-secret-rare-balance-clan-result-and-ensure-balance-clan-is-rare-relative-to-other-results",
+      "title": "Include the provided clan result descriptions in the quiz results for Moon Clan, Fire Clan, Water Clan, Sun Clan, Earth Clan, Wind Clan, Lightning Clan, and the secret rare Balance Clan result, and ensure Balance Clan is rare relative to other results.",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-react-query-hooks-for-submitting-and-admin-fetching-collaboration-and-supporter-help-submissions-wired-to-the-new-backend-actor-methods",
-      "title": "Add React Query hooks for submitting and admin-fetching Collaboration and Supporter Help submissions, wired to the new backend actor methods.",
+      "id": "feature-create-a-power-system-database-section-page-that-explains-abilities-in-the-anime-including-power-types-ability-rules-and-limits-forbidden-techniques-and-character-ability-lists",
+      "title": "Create a \"Power System Database\" section/page that explains abilities in the anime, including: power types, ability rules and limits, forbidden techniques, and character ability lists.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-hidden-unlockable-lore-and-artwork-that-users-can-discover-by-exploring-the-website-including-secret-pages-hidden-character-info-bonus-artwork-and-lore-fragments",
+      "title": "Add hidden unlockable lore and artwork that users can discover by exploring the website, including secret pages, hidden character info, bonus artwork, and lore fragments.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-navigation-entry-points-for-the-new-clan-personality-quiz-and-power-system-database-into-the-existing-site-experience-without-breaking-the-current-hash-based-view-handling-for-admin-and-pro",
+      "title": "Integrate navigation entry points for the new \"Clan Personality Quiz\" and \"Power System Database\" into the existing site experience without breaking the current hash-based view handling for #admin and #pro.",
       "reqIds": [
         "REQ-5"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-admin-dashboard-tabs-panels-so-admins-can-view-collaboration-and-supporter-help-submissions-in-the-admin-panel",
-      "title": "Add admin dashboard tabs/panels so admins can view Collaboration and Supporter Help submissions in the admin panel.",
+      "id": "feature-add-generated-static-bonus-artwork-assets-to-the-frontend-and-display-them-in-the-unlockable-content-experiences-as-part-of-the-hidden-lore-artwork-system",
+      "title": "Add generated static bonus artwork assets to the frontend and display them in the unlockable content experiences as part of the hidden lore/artwork system.",
       "reqIds": [
         "REQ-6"
       ],
@@ -47,40 +61,24 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Add Collaboration contact form with fields (Name, Email, Optional Social Links, Message) + Submit and backend storage",
+      "summary": "Create a Power System Database explaining abilities (power types, rules/limits, forbidden techniques, character ability lists).",
       "reqIds": [],
       "status": "pending"
     },
     {
       "id": "AR-2",
-      "summary": "Add Supporter Help contact form with fields (Name, Email, Optional Social Links, Message) + Submit and backend storage",
+      "summary": "Add hidden unlockable lore/artwork discoverable via exploration (secret pages, hidden character info, bonus artwork, lore fragments).",
       "reqIds": [],
       "status": "pending"
     },
     {
       "id": "AR-3",
-      "summary": "Add admin panel tab(s) to view Collaboration and Supporter Help form submissions",
+      "summary": "Build an interactive \"Clan Personality Quiz\" (8–12 questions, point-based clan scoring, results screen with shareable styled card, anime glowing UI, includes Moon/Fire/Water/Sun/Earth/Wind/Lightning/Secret Balance clan descriptions).",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-6",
-      "summary": "Implement backend storage and APIs for Collaboration form submissions, including an admin-only method to list all submissions.",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-7",
-      "summary": "Implement backend storage and APIs for Supporter Help form submissions, including an admin-only method to list all submissions.",
-      "reqIds": [
-        "REQ-4"
-      ],
       "status": "pending"
     }
   ],
-  "projectName": "Add Collaboration & Supporter Help submission forms with admin viewing",
+  "projectName": "Whispers Of The White Moon",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

@@ -25,6 +25,8 @@ export function HeaderNav() {
     { href: '#episodes', label: 'Episodes' },
     { href: '#gallery', label: 'Gallery' },
     { href: '#news', label: 'News' },
+    { href: '#quiz', label: 'Quiz' },
+    { href: '#powers', label: 'Powers' },
     { href: '#donation', label: 'Donation' },
     { href: '#contact', label: 'Contact' }
   ];

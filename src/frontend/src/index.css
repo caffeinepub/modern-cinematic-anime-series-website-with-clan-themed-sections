@@ -13,70 +13,199 @@
     --card-foreground: oklch(15% 0.02 240);
     --popover: oklch(100% 0 0);
     --popover-foreground: oklch(15% 0.02 240);
-    --primary: oklch(55% 0.25 240);
-    --primary-foreground: oklch(98% 0.01 240);
+    --primary: oklch(55% 0.22 250);
+    --primary-foreground: oklch(98% 0.01 250);
     --secondary: oklch(92% 0.02 240);
     --secondary-foreground: oklch(15% 0.02 240);
-    --muted: oklch(92% 0.02 240);
+    --muted: oklch(94% 0.02 240);
     --muted-foreground: oklch(45% 0.02 240);
-    --accent: oklch(65% 0.22 200);
-    --accent-foreground: oklch(98% 0.01 240);
+    --accent: oklch(65% 0.20 300);
+    --accent-foreground: oklch(98% 0.01 300);
     --destructive: oklch(55% 0.22 25);
-    --destructive-foreground: oklch(98% 0.01 240);
+    --destructive-foreground: oklch(98% 0.01 25);
+    --success: oklch(60% 0.18 145);
+    --success-foreground: oklch(98% 0.01 145);
+    --warning: oklch(70% 0.18 85);
+    --warning-foreground: oklch(15% 0.02 85);
     --border: oklch(88% 0.02 240);
     --input: oklch(88% 0.02 240);
-    --ring: oklch(55% 0.25 240);
-    --success: oklch(60% 0.18 145);
-    --warning: oklch(70% 0.18 85);
+    --ring: oklch(55% 0.22 250);
     --radius: 0.5rem;
+
+    /* Clan Colors */
+    --clan-moon: 65% 0.15 250;
+    --clan-sun: 75% 0.20 85;
+    --clan-fire: 60% 0.25 25;
+    --clan-water: 60% 0.18 230;
+    --clan-lightning: 70% 0.22 280;
+    --clan-earth: 55% 0.15 120;
+    --clan-balance: 70% 0.18 320;
   }
 
   .dark {
     /* OKLCH Color System - Dark Mode */
-    --background: oklch(12% 0.02 240);
+    --background: oklch(15% 0.02 240);
     --foreground: oklch(95% 0.01 240);
-    --card: oklch(15% 0.02 240);
+    --card: oklch(18% 0.02 240);
     --card-foreground: oklch(95% 0.01 240);
-    --popover: oklch(15% 0.02 240);
+    --popover: oklch(18% 0.02 240);
     --popover-foreground: oklch(95% 0.01 240);
-    --primary: oklch(65% 0.25 240);
-    --primary-foreground: oklch(12% 0.02 240);
-    --secondary: oklch(22% 0.02 240);
+    --primary: oklch(65% 0.22 250);
+    --primary-foreground: oklch(15% 0.02 250);
+    --secondary: oklch(25% 0.02 240);
     --secondary-foreground: oklch(95% 0.01 240);
-    --muted: oklch(22% 0.02 240);
+    --muted: oklch(25% 0.02 240);
     --muted-foreground: oklch(65% 0.02 240);
-    --accent: oklch(70% 0.22 200);
-    --accent-foreground: oklch(12% 0.02 240);
-    --destructive: oklch(55% 0.22 25);
-    --destructive-foreground: oklch(95% 0.01 240);
-    --border: oklch(25% 0.02 240);
-    --input: oklch(25% 0.02 240);
-    --ring: oklch(65% 0.25 240);
-    --success: oklch(60% 0.18 145);
-    --warning: oklch(70% 0.18 85);
-  }
-}
+    --accent: oklch(70% 0.20 300);
+    --accent-foreground: oklch(15% 0.02 300);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(98% 0.01 25);
+    --success: oklch(65% 0.18 145);
+    --success-foreground: oklch(15% 0.02 145);
+    --warning: oklch(75% 0.18 85);
+    --warning-foreground: oklch(15% 0.02 85);
+    --border: oklch(28% 0.02 240);
+    --input: oklch(28% 0.02 240);
+    --ring: oklch(65% 0.22 250);
 
-@layer base {
+    /* Clan Colors - Dark Mode */
+    --clan-moon: 70% 0.18 250;
+    --clan-sun: 80% 0.22 85;
+    --clan-fire: 65% 0.28 25;
+    --clan-water: 65% 0.20 230;
+    --clan-lightning: 75% 0.24 280;
+    --clan-earth: 60% 0.18 120;
+    --clan-balance: 75% 0.20 320;
+  }
+
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Cinzel', serif;
   }
 }
 
 @layer utilities {
-  /* Fade-up animation */
-  .animate-fade-up {
-    animation: fade-up 0.8s ease-out forwards;
+  /* Glow Effects */
+  .shadow-glow {
+    box-shadow: 0 0 20px oklch(var(--primary) / 0.3);
   }
 
-  @keyframes fade-up {
+  .shadow-glow-sm {
+    box-shadow: 0 0 10px oklch(var(--primary) / 0.2);
+  }
+
+  .shadow-glow-md {
+    box-shadow: 0 0 30px oklch(var(--primary) / 0.4);
+  }
+
+  .shadow-glow-lg {
+    box-shadow: 0 0 40px oklch(var(--primary) / 0.5);
+  }
+
+  .shadow-glow-xl {
+    box-shadow: 0 0 60px oklch(var(--primary) / 0.6);
+  }
+
+  .shadow-inner-glow {
+    box-shadow: inset 0 0 20px oklch(var(--primary) / 0.2);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px oklch(var(--primary) / 0.5);
+  }
+
+  /* Clan-specific glows */
+  .glow-moon {
+    box-shadow: 0 0 30px oklch(var(--clan-moon) / 0.5);
+  }
+
+  .glow-sun {
+    box-shadow: 0 0 30px oklch(var(--clan-sun) / 0.5);
+  }
+
+  .glow-fire {
+    box-shadow: 0 0 30px oklch(var(--clan-fire) / 0.5);
+  }
+
+  .glow-water {
+    box-shadow: 0 0 30px oklch(var(--clan-water) / 0.5);
+  }
+
+  .glow-lightning {
+    box-shadow: 0 0 30px oklch(var(--clan-lightning) / 0.5);
+  }
+
+  .glow-earth {
+    box-shadow: 0 0 30px oklch(var(--clan-earth) / 0.5);
+  }
+
+  .glow-balance {
+    box-shadow: 0 0 30px oklch(var(--clan-balance) / 0.5);
+  }
+
+  /* Gradient Utilities */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  .bg-gradient-conic {
+    background: conic-gradient(from 0deg, var(--tw-gradient-stops));
+  }
+
+  /* World Map Hotspot Utilities */
+  .hotspot-glow {
+    filter: drop-shadow(0 0 8px oklch(var(--primary) / 0.6));
+  }
+
+  .hotspot-glow-hover {
+    filter: drop-shadow(0 0 12px oklch(var(--primary) / 0.8));
+  }
+
+  /* Donation CTA Styling */
+  .donation-cta-button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .donation-cta-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .donation-cta-button:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .donation-cta-green {
+    background: oklch(var(--success));
+    color: oklch(var(--success-foreground));
+  }
+
+  .donation-cta-green:hover {
+    background: oklch(calc(var(--success) * 0.9));
+  }
+}
+
+@layer components {
+  /* Animation Keyframes */
+  @keyframes fade-in-up {
     from {
       opacity: 0;
       transform: translateY(30px);
@@ -87,67 +216,57 @@
     }
   }
 
-  /* Text glow effect */
-  .text-glow {
-    text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
-  }
-
-  /* World map hotspot utilities */
-  .world-map-hotspot {
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .world-map-hotspot:hover,
-  .world-map-hotspot:focus {
-    filter: brightness(1.3) drop-shadow(0 0 8px currentColor);
-  }
-
-  .world-map-hotspot:focus {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
-  }
-
-  /* Donation CTA pulse animation */
-  @keyframes donation-cta-pulse {
+  @keyframes pulse-glow {
     0%, 100% {
-      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+      opacity: 1;
+      filter: drop-shadow(0 0 8px oklch(var(--primary) / 0.5));
     }
     50% {
-      box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+      opacity: 0.8;
+      filter: drop-shadow(0 0 16px oklch(var(--primary) / 0.8));
     }
   }
 
-  .donation-cta-pulse {
-    animation: donation-cta-pulse 4s ease-in-out infinite;
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
   }
 
-  /* Donation CTA green styling */
-  .donation-cta-green {
-    background: linear-gradient(135deg, rgb(34, 197, 94) 0%, rgb(22, 163, 74) 100%);
-    border: 2px solid rgb(34, 197, 94);
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
   }
 
-  .donation-cta-green:hover {
-    background: linear-gradient(135deg, rgb(22, 163, 74) 0%, rgb(21, 128, 61) 100%);
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
   }
 
-  /* Respect reduced motion preferences */
+  .animate-shimmer {
+    animation: shimmer 3s linear infinite;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(var(--primary) / 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 1000px 100%;
+  }
+
+  /* Reduced Motion Support */
   @media (prefers-reduced-motion: reduce) {
-    .animate-fade-up {
-      animation: none;
-      opacity: 1;
-      transform: none;
-    }
-    
-    .donation-cta-pulse {
+    .animate-fade-in-up,
+    .animate-pulse-glow,
+    .animate-shimmer {
       animation: none;
     }
 
-    .world-map-hotspot {
-      transition: none;
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }

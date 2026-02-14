@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -7,8 +8,10 @@ import {
   DialogClose,
 } from '../ui/dialog';
 import { WorldMapLocation } from '../../data/worldMapLocations';
-import { X, MapPin } from 'lucide-react';
+import { X, MapPin, Sparkles } from 'lucide-react';
 import { Button } from '../ui/button';
+import { markFragmentFound, markVaultDiscovered } from '../secrets/secretProgress';
+import { toast } from 'sonner';
 
 interface WorldMapLoreDialogProps {
   location: WorldMapLocation | null;
@@ -17,7 +20,29 @@ interface WorldMapLoreDialogProps {
 }
 
 export function WorldMapLoreDialog({ location, open, onOpenChange }: WorldMapLoreDialogProps) {
+  useEffect(() => {
+    if (open && location) {
+      // Check if this location unlocks a secret
+      if (location.name === 'Whispering Sea') {
+        markFragmentFound('fragment1');
+        markVaultDiscovered();
+        toast.success('🔓 Secret discovered! Check the vault.', {
+          description: 'You found a lore fragment. Navigate to #vault to view your discoveries.',
+          duration: 5000
+        });
+      }
+    }
+  }, [open, location]);
+
   if (!location) return null;
+
+  const handleSecretClick = () => {
+    markFragmentFound('fragment2');
+    toast.success('🔓 Hidden secret unlocked!', {
+      description: 'A new lore fragment has been added to your vault.',
+      duration: 5000
+    });
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -60,6 +85,21 @@ export function WorldMapLoreDialog({ location, open, onOpenChange }: WorldMapLor
                 {location.loreText}
               </p>
             </div>
+            
+            {/* Hidden discovery mechanic */}
+            {location.name === 'Frozen Tides' && (
+              <div className="pt-4 border-t border-border/50">
+                <button
+                  onClick={handleSecretClick}
+                  className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <Sparkles className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:animate-pulse-glow" />
+                  <span className="opacity-70 group-hover:opacity-100">
+                    Something glimmers in the ice...
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
         </DialogDescription>
       </DialogContent>

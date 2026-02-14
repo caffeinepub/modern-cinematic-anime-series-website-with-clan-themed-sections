@@ -67,6 +67,28 @@ export function Footer() {
                   Clans
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => {
+                    const element = document.getElementById('quiz');
+                    if (element) element.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="hover:text-primary transition-colors duration-300"
+                >
+                  Clan Quiz
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    const element = document.getElementById('powers');
+                    if (element) element.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="hover:text-primary transition-colors duration-300"
+                >
+                  Power System
+                </button>
+              </li>
             </ul>
           </div>
 

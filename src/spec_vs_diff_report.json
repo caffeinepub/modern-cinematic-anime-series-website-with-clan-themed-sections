@@ -1,95 +1,49 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T17:36:21.420Z",
-  "summary": "Diff adds new Collaboration/Supporter Help forms, new admin panels and dashboard tabs, and adds new backend state/types and React Query hooks. However, several required fields and backend type/API details do not match the BuildRequest, and multiple unrelated UI/feature changes were introduced.",
+  "generatedAt": "2026-02-14T20:04:38.881Z",
+  "summary": "Diff implements major parts of the Clan Personality Quiz (scoring, questions, results card, copy-to-clipboard sharing), adds a Power System Database section (tabs + searchable character abilities), integrates Quiz/Powers navigation, and introduces a Secret Vault view with localStorage-based progress and lore fragments. However, evidence for unlockable character info/artwork gating and inclusion of the required generated image assets under frontend/public/assets/generated is missing from the diff summary.",
   "missing_requirements": [
     {
-      "id": "REQ-1",
-      "requirement": "Collaboration form must collect Name, Email, Optional Social Media Links, and Message (no other required/unrequested fields).",
-      "reason": "The added CollaborationForm component shows state for a `company` field rather than an optional social media links field; the diff does not provide evidence of a social links input being implemented.",
-      "evidence": [
-        "frontend/src/components/sections/CollaborationForm.tsx"
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "requirement": "Supporter Help form must collect Name, Email, Optional Social Media Links, and Message, and the destructive warning remains visible above the form.",
-      "reason": "The added SupporterHelpForm component includes `company` plus submits `subject`, `product`, and `serial` fields; the diff provides no evidence of an Optional Social Media Links input, and the required destructive warning text is not shown in the truncated SupporterHelpForm snippet.",
-      "evidence": [
-        "frontend/src/components/sections/SupporterHelpForm.tsx"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "requirement": "Backend type for Collaboration submissions must store: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp; and expose public submit + admin-only query list API (Unauthorized trap for non-admins).",
-      "reason": "The backend type shown is `CollaborationRequest` with fields `name`, `company`, `email`, `message`, and `timestamp`, which does not match the required field names/shape (missing senderName/senderEmail/socialLinks/submittedAt). The diff snippet also does not show the required public submit method or the admin-only query method and its Unauthorized trapping.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    },
-    {
       "id": "REQ-4",
-      "requirement": "Backend type for Supporter Help submissions must store: id, senderName, senderEmail, socialLinks, message, and submittedAt timestamp; and expose public submit + admin-only query list API (Unauthorized trap for non-admins).",
-      "reason": "The backend type shown is `SupportRequest` with extra fields (`company`, `subject`, `product`, `serial`) and uses `name`/`email`/`timestamp` instead of the required senderName/senderEmail/socialLinks/submittedAt fields. The diff snippet also does not show the required public submit method or the admin-only query method and its Unauthorized trapping.",
+      "requirement": "Add hidden unlockable lore and artwork including hidden character info and bonus artwork gated behind discovery/unlock, plus several discoverable lore fragments with found vs missing UI.",
+      "reason": "Lore fragments and a vault UI are present, and at least one discovery mechanic marks fragments found, but the diff provides no evidence that hidden character info and bonus artwork are actually unlockable/gated via discovery (only fragment unlocking is shown). The vault component is truncated, so gating/lock logic for characters/artwork and found-vs-missing indicators cannot be confirmed.",
       "evidence": [
-        "backend/main.mo"
+        "frontend/src/components/secrets/secretProgress.ts",
+        "frontend/src/components/secrets/SecretVaultSection.tsx",
+        "frontend/src/components/sections/WorldMapLoreDialog.tsx",
+        "frontend/src/data/secretLore.ts"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Add generated static bonus artwork assets under frontend/public/assets/generated and display them in unlockable content once unlocked.",
+      "reason": "The code references four generated artwork paths under /assets/generated, but the diff summary does not show any new image files added under frontend/public/assets/generated. Without those assets being added, the requirement to include the generated images and have them load in production cannot be verified.",
+      "evidence": [
+        "frontend/src/data/secretLore.ts"
       ]
     }
   ],
-  "hallucinated_features": [
-    {
-      "description": "Added/used a 'company' field in Collaboration and Supporter Help submissions and forms.",
-      "reason": "BuildRequest did not ask for a Company field; it required Optional Social Media Links instead.",
-      "evidence": [
-        "frontend/src/components/sections/CollaborationForm.tsx",
-        "frontend/src/components/sections/SupporterHelpForm.tsx",
-        "backend/main.mo"
-      ]
-    },
-    {
-      "description": "Supporter Help submission includes subject/product/serial fields and hardcoded values ('Supporter Help Request', 'Donation Reward', '').",
-      "reason": "BuildRequest only requested Name, Email, Optional Social Media Links, and Message.",
-      "evidence": [
-        "frontend/src/components/sections/SupporterHelpForm.tsx",
-        "backend/main.mo"
-      ]
-    },
-    {
-      "description": "Artist profile dialog enhancements (badges/leaderboard/lightbox-related changes).",
-      "reason": "Not requested; BuildRequest is focused on contact forms and admin viewing of those submissions.",
-      "evidence": [
-        "frontend/src/components/gallery/ArtistProfileDialog.tsx"
-      ]
-    },
-    {
-      "description": "Gallery section behavior changes (filters, sorting by popularity, admin delete/view count hooks usage, additional UI tabs/controls).",
-      "reason": "Not requested by the BuildRequest.",
-      "evidence": [
-        "frontend/src/components/sections/GallerySection.tsx"
-      ]
-    },
-    {
-      "description": "Broad site-wide styling/UX changes (anime aesthetic, dramatic hero/about/clans/footer changes, tailwind config extensions, navigation changes, routing layout changes).",
-      "reason": "Not requested; scope was adding two forms and admin viewing.",
-      "evidence": [
-        "frontend-file-summaries.txt"
-      ]
-    }
-  ],
-  "confidence": 0.72,
+  "hallucinated_features": [],
+  "confidence": 0.68,
   "changed_files": [
-    "backend/main.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/components/admin/AdminDashboardView.tsx",
-    "frontend/src/components/admin/panels/CollaborationAdminPanel.tsx",
-    "frontend/src/components/admin/panels/SupporterHelpAdminPanel.tsx",
-    "frontend/src/components/gallery/ArtistProfileDialog.tsx",
-    "frontend/src/components/sections/CollaborationForm.tsx",
-    "frontend/src/components/sections/ContactSection.tsx",
-    "frontend/src/components/sections/GallerySection.tsx",
-    "frontend/src/components/sections/SupporterHelpForm.tsx",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/App.tsx",
+    "frontend/src/components/quiz/ResultsCard.tsx",
+    "frontend/src/components/quiz/quizScoring.ts",
+    "frontend/src/components/quiz/shareUtils.ts",
+    "frontend/src/components/secrets/SecretVaultSection.tsx",
+    "frontend/src/components/secrets/secretProgress.ts",
+    "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
+    "frontend/src/components/sections/Footer.tsx",
+    "frontend/src/components/sections/HeaderNav.tsx",
+    "frontend/src/components/sections/PowerSystemDatabaseSection.tsx",
+    "frontend/src/components/sections/WorldMapLoreDialog.tsx",
+    "frontend/src/data/clanQuizQuestions.ts",
+    "frontend/src/data/clanQuizResults.ts",
+    "frontend/src/data/powerSystemDatabase.ts",
+    "frontend/src/data/secretLore.ts",
+    "frontend/src/index.css",
     "project_state.json"
   ]
 }
