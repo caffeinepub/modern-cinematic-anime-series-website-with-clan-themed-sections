@@ -1,48 +1,91 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T20:04:38.881Z",
-  "summary": "Diff implements major parts of the Clan Personality Quiz (scoring, questions, results card, copy-to-clipboard sharing), adds a Power System Database section (tabs + searchable character abilities), integrates Quiz/Powers navigation, and introduces a Secret Vault view with localStorage-based progress and lore fragments. However, evidence for unlockable character info/artwork gating and inclusion of the required generated image assets under frontend/public/assets/generated is missing from the diff summary.",
-  "missing_requirements": [
+  "generatedAt": "2026-02-15T16:24:04.669Z",
+  "summary": "REQ-1 and REQ-2 appear implemented: a reusable GlowingGlassPanel wrapper was added and applied to About feature cards, NewsPostCard, and NewPostForm; global CSS was updated to support a \"glowing glass panel\" style. However, the diff summary indicates many additional unrelated UI/feature changes (routing/views, new sections, data/lore updates, nav/footer/hero redesign, new/expanded hooks) that were not requested and violate the stated non-goals/scope.",
+  "missing_requirements": [],
+  "hallucinated_features": [
     {
-      "id": "REQ-4",
-      "requirement": "Add hidden unlockable lore and artwork including hidden character info and bonus artwork gated behind discovery/unlock, plus several discoverable lore fragments with found vs missing UI.",
-      "reason": "Lore fragments and a vault UI are present, and at least one discovery mechanic marks fragments found, but the diff provides no evidence that hidden character info and bonus artwork are actually unlockable/gated via discovery (only fragment unlocking is shown). The vault component is truncated, so gating/lock logic for characters/artwork and found-vs-missing indicators cannot be confirmed.",
+      "description": "Changed App routing/views and added/duplicated sections (ClanPersonalityQuizSection, CharacterAffinityMatcherSection) in main and pro views.",
+      "reason": "BuildRequest explicitly limits scope to card panel styling and lists adding new app features/sections as a non-goal.",
       "evidence": [
-        "frontend/src/components/secrets/secretProgress.ts",
-        "frontend/src/components/secrets/SecretVaultSection.tsx",
-        "frontend/src/components/sections/WorldMapLoreDialog.tsx",
-        "frontend/src/data/secretLore.ts"
+        "frontend-file-summaries.txt (frontend/src/App.tsx)"
       ]
     },
     {
-      "id": "REQ-6",
-      "requirement": "Add generated static bonus artwork assets under frontend/public/assets/generated and display them in unlockable content once unlocked.",
-      "reason": "The code references four generated artwork paths under /assets/generated, but the diff summary does not show any new image files added under frontend/public/assets/generated. Without those assets being added, the requirement to include the generated images and have them load in production cannot be verified.",
+      "description": "Updated clans data/lore and added/changed clan definitions and descriptions (including Balance Clan lore update).",
+      "reason": "Not requested; non-goals include no new app features/content changes beyond styling.",
       "evidence": [
-        "frontend/src/data/secretLore.ts"
+        "frontend-file-summaries.txt (frontend/src/data/clans.ts)"
+      ]
+    },
+    {
+      "description": "Header navigation changes: admin link behavior, Donation CTA, and added Quiz/Character Match navigation items with smooth-scroll in desktop/mobile menus.",
+      "reason": "Non-goals include changing routing behavior; also beyond card panel styling scope.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/components/sections/HeaderNav.tsx)"
+      ]
+    },
+    {
+      "description": "Major HeroSection redesign (new background image, particles, parallax, cinematic typography, enhanced CTAs).",
+      "reason": "Not requested; exceeds 'card panel styling' scope and mentions new animations/background effects beyond what's needed for card glow/glass styling.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/components/sections/HeroSection.tsx)"
+      ]
+    },
+    {
+      "description": "ClansSection behavioral changes: loads from backend with fallback to static data, merges styling, and integrates WorldMapSection.",
+      "reason": "Not requested; implies new data flow/feature behavior, which is out of scope.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/components/sections/ClansSection.tsx)"
+      ]
+    },
+    {
+      "description": "Footer content/links updates (brand text, quick links including quiz/match, social icons hover glow, attribution with UTM tracking, reveal animation).",
+      "reason": "Not requested; also risks changing user-facing copy, which is prohibited under REQ-2 AC.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/components/sections/Footer.tsx)"
+      ]
+    },
+    {
+      "description": "ClanCard and ClanBadge redesigns (new hover glow effects, animated gradients, rotating ring, pulsing dot indicator with reduced-motion handling).",
+      "reason": "Not requested; outside specified target panels (About feature cards, NewsPostCard, NewPostForm).",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/components/clans/ClanCard.tsx)",
+        "frontend-file-summaries.txt (frontend/src/components/clans/ClanBadge.tsx)"
+      ]
+    },
+    {
+      "description": "Added/modified reduced-motion and scroll-reveal hooks behavior (performance/rootMargin/one-time reveal, reduced-motion auto-disable).",
+      "reason": "Not requested as part of card panel styling; introduces broader animation behavior changes.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/hooks/usePrefersReducedMotion.ts)",
+        "frontend-file-summaries.txt (frontend/src/hooks/useRevealOnScroll.ts)"
+      ]
+    },
+    {
+      "description": "Large expansion of React Query hooks for many backend operations (artist leaderboard/profile, gallery filtering, collaborations, support requests, etc.).",
+      "reason": "BuildRequest says no backend changes are required and scope is styling; this is substantial new/changed feature/data layer code.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/hooks/useQueries.ts)"
+      ]
+    },
+    {
+      "description": "Tailwind configuration changes beyond card panel styling (extended glow shadow presets).",
+      "reason": "Not explicitly requested; may be acceptable to support styling, but summary suggests broader visual system changes.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/tailwind.config.js)"
       ]
     }
   ],
-  "hallucinated_features": [],
-  "confidence": 0.68,
+  "confidence": 0.74,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
-    "frontend/src/components/quiz/ResultsCard.tsx",
-    "frontend/src/components/quiz/quizScoring.ts",
-    "frontend/src/components/quiz/shareUtils.ts",
-    "frontend/src/components/secrets/SecretVaultSection.tsx",
-    "frontend/src/components/secrets/secretProgress.ts",
-    "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
-    "frontend/src/components/sections/Footer.tsx",
-    "frontend/src/components/sections/HeaderNav.tsx",
-    "frontend/src/components/sections/PowerSystemDatabaseSection.tsx",
-    "frontend/src/components/sections/WorldMapLoreDialog.tsx",
-    "frontend/src/data/clanQuizQuestions.ts",
-    "frontend/src/data/clanQuizResults.ts",
-    "frontend/src/data/powerSystemDatabase.ts",
-    "frontend/src/data/secretLore.ts",
+    "frontend/src/components/common/GlowingGlassPanel.tsx",
+    "frontend/src/components/news/NewPostForm.tsx",
+    "frontend/src/components/news/NewsPostCard.tsx",
+    "frontend/src/components/sections/AboutSection.tsx",
+    "frontend/src/components/sections/NewsUpdatesSection.tsx",
     "frontend/src/index.css",
     "project_state.json"
   ]

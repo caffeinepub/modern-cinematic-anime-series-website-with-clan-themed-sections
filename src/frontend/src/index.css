@@ -6,40 +6,40 @@
 
 @layer base {
   :root {
-    /* OKLCH Color System - Light Mode */
-    --background: oklch(98% 0.01 240);
-    --foreground: oklch(15% 0.02 240);
+    /* OKLCH Color System - Light Mode - Brighter Surfaces */
+    --background: oklch(99% 0.005 60);
+    --foreground: oklch(18% 0.02 240);
     --card: oklch(100% 0 0);
-    --card-foreground: oklch(15% 0.02 240);
+    --card-foreground: oklch(18% 0.02 240);
     --popover: oklch(100% 0 0);
-    --popover-foreground: oklch(15% 0.02 240);
-    --primary: oklch(55% 0.22 250);
-    --primary-foreground: oklch(98% 0.01 250);
-    --secondary: oklch(92% 0.02 240);
-    --secondary-foreground: oklch(15% 0.02 240);
-    --muted: oklch(94% 0.02 240);
-    --muted-foreground: oklch(45% 0.02 240);
-    --accent: oklch(65% 0.20 300);
-    --accent-foreground: oklch(98% 0.01 300);
+    --popover-foreground: oklch(18% 0.02 240);
+    --primary: oklch(62% 0.20 45);
+    --primary-foreground: oklch(99% 0.005 45);
+    --secondary: oklch(96% 0.01 60);
+    --secondary-foreground: oklch(18% 0.02 240);
+    --muted: oklch(97% 0.01 60);
+    --muted-foreground: oklch(48% 0.02 240);
+    --accent: oklch(68% 0.18 340);
+    --accent-foreground: oklch(99% 0.005 340);
     --destructive: oklch(55% 0.22 25);
     --destructive-foreground: oklch(98% 0.01 25);
     --success: oklch(60% 0.18 145);
     --success-foreground: oklch(98% 0.01 145);
     --warning: oklch(70% 0.18 85);
     --warning-foreground: oklch(15% 0.02 85);
-    --border: oklch(88% 0.02 240);
-    --input: oklch(88% 0.02 240);
-    --ring: oklch(55% 0.22 250);
+    --border: oklch(92% 0.01 60);
+    --input: oklch(92% 0.01 60);
+    --ring: oklch(62% 0.20 45);
     --radius: 0.5rem;
 
-    /* Clan Colors */
-    --clan-moon: 65% 0.15 250;
-    --clan-sun: 75% 0.20 85;
-    --clan-fire: 60% 0.25 25;
-    --clan-water: 60% 0.18 230;
-    --clan-lightning: 70% 0.22 280;
-    --clan-earth: 55% 0.15 120;
-    --clan-balance: 70% 0.18 320;
+    /* Clan Colors - Brighter Sunrise Palette */
+    --clan-moon: 68% 0.16 250;
+    --clan-sun: 78% 0.22 60;
+    --clan-fire: 65% 0.24 30;
+    --clan-water: 65% 0.18 230;
+    --clan-lightning: 72% 0.20 280;
+    --clan-earth: 60% 0.16 120;
+    --clan-balance: 72% 0.18 340;
   }
 
   .dark {
@@ -93,62 +93,62 @@
 }
 
 @layer utilities {
-  /* Glow Effects */
+  /* Glow Effects - Lighter/Airier */
   .shadow-glow {
-    box-shadow: 0 0 20px oklch(var(--primary) / 0.3);
+    box-shadow: 0 0 20px oklch(var(--primary) / 0.25);
   }
 
   .shadow-glow-sm {
-    box-shadow: 0 0 10px oklch(var(--primary) / 0.2);
+    box-shadow: 0 0 10px oklch(var(--primary) / 0.15);
   }
 
   .shadow-glow-md {
-    box-shadow: 0 0 30px oklch(var(--primary) / 0.4);
+    box-shadow: 0 0 30px oklch(var(--primary) / 0.3);
   }
 
   .shadow-glow-lg {
-    box-shadow: 0 0 40px oklch(var(--primary) / 0.5);
+    box-shadow: 0 0 40px oklch(var(--primary) / 0.35);
   }
 
   .shadow-glow-xl {
-    box-shadow: 0 0 60px oklch(var(--primary) / 0.6);
+    box-shadow: 0 0 60px oklch(var(--primary) / 0.4);
   }
 
   .shadow-inner-glow {
-    box-shadow: inset 0 0 20px oklch(var(--primary) / 0.2);
+    box-shadow: inset 0 0 20px oklch(var(--primary) / 0.15);
   }
 
   .text-glow {
-    text-shadow: 0 0 20px oklch(var(--primary) / 0.5);
+    text-shadow: 0 0 20px oklch(var(--primary) / 0.35);
   }
 
-  /* Clan-specific glows */
+  /* Clan-specific glows - Lighter */
   .glow-moon {
-    box-shadow: 0 0 30px oklch(var(--clan-moon) / 0.5);
+    box-shadow: 0 0 30px oklch(var(--clan-moon) / 0.4);
   }
 
   .glow-sun {
-    box-shadow: 0 0 30px oklch(var(--clan-sun) / 0.5);
+    box-shadow: 0 0 30px oklch(var(--clan-sun) / 0.4);
   }
 
   .glow-fire {
-    box-shadow: 0 0 30px oklch(var(--clan-fire) / 0.5);
+    box-shadow: 0 0 30px oklch(var(--clan-fire) / 0.4);
   }
 
   .glow-water {
-    box-shadow: 0 0 30px oklch(var(--clan-water) / 0.5);
+    box-shadow: 0 0 30px oklch(var(--clan-water) / 0.4);
   }
 
   .glow-lightning {
-    box-shadow: 0 0 30px oklch(var(--clan-lightning) / 0.5);
+    box-shadow: 0 0 30px oklch(var(--clan-lightning) / 0.4);
   }
 
   .glow-earth {
-    box-shadow: 0 0 30px oklch(var(--clan-earth) / 0.5);
+    box-shadow: 0 0 30px oklch(var(--clan-earth) / 0.4);
   }
 
   .glow-balance {
-    box-shadow: 0 0 30px oklch(var(--clan-balance) / 0.5);
+    box-shadow: 0 0 30px oklch(var(--clan-balance) / 0.4);
   }
 
   /* Gradient Utilities */
@@ -160,13 +160,27 @@
     background: conic-gradient(from 0deg, var(--tw-gradient-stops));
   }
 
-  /* World Map Hotspot Utilities */
+  /* World Map Hotspot Utilities - Lighter */
   .hotspot-glow {
-    filter: drop-shadow(0 0 8px oklch(var(--primary) / 0.6));
+    filter: drop-shadow(0 0 8px oklch(var(--primary) / 0.5));
   }
 
   .hotspot-glow-hover {
-    filter: drop-shadow(0 0 12px oklch(var(--primary) / 0.8));
+    filter: drop-shadow(0 0 12px oklch(var(--primary) / 0.7));
+  }
+
+  /* Vignette - Lighter Overlay */
+  .vignette::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 50%,
+      oklch(var(--background) / 0.3) 100%
+    );
+    pointer-events: none;
   }
 
   /* Donation CTA Styling */
@@ -201,6 +215,79 @@
   .donation-cta-green:hover {
     background: oklch(calc(var(--success) * 0.9));
   }
+
+  /* Destiny Reveal Effects for Affinity Quiz */
+  .destiny-reveal-card {
+    position: relative;
+  }
+
+  .destiny-reveal-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      45deg,
+      oklch(var(--primary) / 0.5),
+      oklch(var(--accent) / 0.5),
+      oklch(var(--primary) / 0.5)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: destiny-shimmer 3s linear infinite;
+  }
+
+  @keyframes destiny-shimmer {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Glowing Glass Panel Utility */
+  .glowing-glass-panel {
+    position: relative;
+    background: oklch(var(--card) / 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px oklch(var(--foreground) / 0.08);
+  }
+
+  .glowing-glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary) / 0.4),
+      oklch(var(--accent) / 0.3),
+      oklch(var(--primary) / 0.4)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .glowing-glass-panel:hover::before {
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary) / 0.6),
+      oklch(var(--accent) / 0.5),
+      oklch(var(--primary) / 0.6)
+    );
+  }
 }
 
 @layer components {
@@ -219,11 +306,11 @@
   @keyframes pulse-glow {
     0%, 100% {
       opacity: 1;
-      filter: drop-shadow(0 0 8px oklch(var(--primary) / 0.5));
+      filter: drop-shadow(0 0 8px oklch(var(--primary) / 0.4));
     }
     50% {
       opacity: 0.8;
-      filter: drop-shadow(0 0 16px oklch(var(--primary) / 0.8));
+      filter: drop-shadow(0 0 16px oklch(var(--primary) / 0.6));
     }
   }
 
@@ -259,7 +346,9 @@
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-in-up,
     .animate-pulse-glow,
-    .animate-shimmer {
+    .animate-shimmer,
+    .destiny-reveal-card::before,
+    .glowing-glass-panel::before {
       animation: none;
     }
 

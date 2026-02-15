@@ -44,27 +44,27 @@ export function HeroSection() {
       {/* Animated particles */}
       <div ref={particlesRef} className="absolute inset-0 pointer-events-none" />
 
-      {/* Background Image with Parallax */}
+      {/* Background Image with Parallax - New Bright Hero */}
       <div
         ref={parallaxRef}
         className="absolute inset-0 bg-cover bg-center bg-no-repeat will-change-transform"
         style={{
-          backgroundImage: 'url(/assets/generated/hero-bg.dim_1920x1080.png)',
+          backgroundImage: 'url(/assets/generated/hero-bg-bright.dim_1920x1080.png)',
           top: '-15%',
           height: '130%',
-          filter: 'brightness(0.7) contrast(1.1)'
+          filter: 'brightness(1.1) contrast(1.05)'
         }}
       />
 
-      {/* Layered gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
+      {/* Layered gradient overlays - Lighter for brighter appearance */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/20 to-background/80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-transparent to-background/30" />
       
-      {/* Radial glow effects */}
-      <div className="absolute inset-0 gradient-radial opacity-50" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+      {/* Radial glow effects - Reduced opacity for brightness */}
+      <div className="absolute inset-0 gradient-radial opacity-30" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/8 rounded-full blur-3xl" />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-32 text-center">
@@ -109,30 +109,25 @@ export function HeroSection() {
               className={`group relative px-10 py-5 bg-accent text-accent-foreground rounded-lg font-bold text-lg overflow-hidden transition-all duration-300 hover:scale-105 ${
                 !prefersReducedMotion ? 'shadow-glow-accent-lg hover:shadow-glow-accent-xl' : ''
               }`}
-              onClick={() => {
-                const element = document.getElementById('clans');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }}
             >
               <span className="relative z-10 flex items-center gap-3">
                 <Sparkles className="w-6 h-6" />
                 Explore Clans
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-accent via-accent/80 to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className={`absolute inset-0 bg-gradient-to-r from-accent via-accent/80 to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!prefersReducedMotion ? 'animate-shimmer' : ''}`} 
+                   style={{ backgroundSize: '200% 100%' }} />
             </button>
-          </div>
-
-          {/* Scroll indicator */}
-          <div className={`mt-20 ${!prefersReducedMotion ? 'animate-float' : ''}`}>
-            <div className="w-6 h-10 border-2 border-primary/50 rounded-full mx-auto relative">
-              <div className={`w-1.5 h-3 bg-primary rounded-full absolute left-1/2 top-2 -translate-x-1/2 ${!prefersReducedMotion ? 'animate-bounce' : ''}`} />
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom dramatic fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-foreground/70">
+        <span className="text-sm font-medium tracking-wider uppercase">Scroll to Explore</span>
+        <div className={`w-6 h-10 border-2 border-foreground/30 rounded-full flex items-start justify-center p-2 ${!prefersReducedMotion ? 'animate-bounce' : ''}`}>
+          <div className="w-1.5 h-1.5 bg-foreground/50 rounded-full" />
+        </div>
+      </div>
     </section>
   );
 }

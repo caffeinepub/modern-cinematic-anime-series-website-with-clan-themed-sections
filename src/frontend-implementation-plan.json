@@ -1,198 +1,61 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Clan Quiz, Power System Database, and Unlockable Secrets (Frontend)",
+  "title": "Glassmorphism glowing card panel styling and rollout",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Implement an interactive 8–12 question Clan Personality Quiz with hidden scoring and a shareable results card styled with fantasy-anime glowing UI.",
+      "summary": "Add a reusable glowing glass panel styling API (glass + glow + rounded + shadow) aligned with Tailwind theme tokens.",
       "acceptanceCriteria": [
-        "Quiz contains between 8 and 12 questions, each with multiple-choice answers.",
-        "Selecting an answer updates an internal score map (not displayed during the quiz) that influences the final clan result.",
-        "On completion, a results screen shows the winning clan name and its personality description, plus a dedicated results card UI optimized for screenshotting.",
-        "Results screen provides at least one easy sharing/saving affordance (e.g., \"Copy text\" and/or \"Download card\" and/or clear screenshot guidance) without requiring external integrations.",
-        "UI uses fantasy-anime styling with glowing elements consistent with the site’s existing aesthetic."
+        "A reusable styling API exists (e.g., a shared class and/or wrapper component) that can be applied consistently to multiple text panels/cards.",
+        "The panel surface is visibly semi-transparent with a backdrop blur (glass effect).",
+        "The panel has rounded corners and a subtle shadow at rest.",
+        "The panel shows a soft glowing border (not a hard solid outline) that is visible on both light and dark themes.",
+        "The style respects existing Tailwind tokens (e.g., card/background/border/primary/accent) so it stays consistent with the site theme."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
-          "operation": "create",
-          "description": "Create the quiz section UI (question flow, progress, answer selection, results view) and the styled results card; use shadcn-ui components (e.g., Card/Button/Progress/Dialog as appropriate) to ensure consistent UI. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/data/clanQuizQuestions.ts",
-          "operation": "create",
-          "description": "Add 8–12 English multiple-choice quiz questions and answer options, including hidden per-clan point mappings per answer."
-        },
-        {
-          "path": "frontend/src/components/quiz/quizScoring.ts",
-          "operation": "create",
-          "description": "Implement client-side scoring helpers (score accumulation, tie-break rules, result selection) without displaying internal scores during the quiz."
-        },
-        {
-          "path": "frontend/src/components/quiz/ResultsCard.tsx",
-          "operation": "create",
-          "description": "Create a dedicated results card component optimized for screenshotting (fixed layout, high contrast, glow accents, clan sigil support) and expose a ref/structure suitable for download/capture helpers; use shadcn-ui primitives where helpful. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/quiz/shareUtils.ts",
-          "operation": "create",
-          "description": "Add simple client-side sharing affordances (e.g., copy-to-clipboard result text and/or download card as image using an in-browser capture approach) with graceful fallback instructions when unsupported."
-        },
-        {
           "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Add/extend reusable fantasy-anime glow utility classes used by the quiz flow and results card (no changes to immutable UI component files)."
+          "description": "Define a reusable glowing glass panel style (e.g., a `.glowing-glass-panel` utility/class) using existing theme tokens (card/background/border/primary/accent). Include semi-transparent surface + backdrop blur, rounded corners, subtle resting shadow, and a soft glow border implemented via a pseudo-element (so it’s not a hard outline) that remains visible in light and dark themes."
+        },
+        {
+          "path": "frontend/src/components/common/GlowingGlassPanel.tsx",
+          "operation": "create",
+          "description": "Create a small wrapper component that applies the shared glowing glass panel class and accepts `className`/children so it can be composed across text sections/cards without modifying shadcn/ui components."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Show exact clan personality descriptions for 7 standard clans plus a secret rare Balance Clan outcome, with scoring that makes Balance meaningfully rarer.",
+      "summary": "Apply the glowing glass panel style to About feature cards, News post cards, and the News Create New Post form (and align loading placeholders) without changing copy or behavior.",
       "acceptanceCriteria": [
-        "Each of the 7 standard clans displays the exact personality description text provided by the user on the results screen when that clan is the outcome.",
-        "Balance Clan exists as a possible outcome and is visibly labeled as secret/rare in the results UI.",
-        "The scoring logic makes Balance Clan meaningfully rarer than standard clans (e.g., requires a balanced high score across multiple clans or a narrow scoring condition)."
+        "About section feature cards use the new glowing glass panel style while keeping their existing layout and animations.",
+        "NewsPostCard uses the new glowing glass panel style (including transparency, glow border, rounded corners, shadow).",
+        "NewPostForm uses the new glowing glass panel style (including transparency, glow border, rounded corners, shadow).",
+        "No user-facing copy is changed as part of applying the new styling.",
+        "Visual changes are limited to presentation (no changes to backend data flow or feature behavior)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/data/clanQuizResults.ts",
-          "operation": "create",
-          "description": "Define the result model for Moon, Fire, Water, Sun, Earth, Wind, Lightning, and Balance clans, embedding the exact user-provided personality description strings and a 'secret/rare' flag for Balance."
-        },
-        {
-          "path": "frontend/src/components/quiz/quizScoring.ts",
+          "path": "frontend/src/components/sections/AboutSection.tsx",
           "operation": "modify",
-          "description": "Update result selection logic to include Balance Clan as a rare outcome (e.g., only when multiple clan scores are high and tightly balanced) and ensure the UI can label it as secret/rare."
+          "description": "Replace the one-off feature card container styling with the reusable glowing glass panel API (prefer using `GlowingGlassPanel` or the shared class), preserving existing structure, hover effects, and reveal animations."
         },
         {
-          "path": "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
+          "path": "frontend/src/components/news/NewsPostCard.tsx",
           "operation": "modify",
-          "description": "Wire the results data (exact descriptions) into the results screen and clearly label Balance Clan as secret/rare in the results UI; use shadcn-ui components as needed. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Add a Power System Database page/section with clear headings and browsable character ability lists (English-only).",
-      "acceptanceCriteria": [
-        "A dedicated UI section/page presents the power system information with clear headings for power types, rules/limits, forbidden techniques, and character ability lists.",
-        "Character ability lists are browsable (e.g., list + details view, or filter/search), and each character entry shows their relevant abilities/powers in readable form.",
-        "All user-facing text in this feature is in English."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/sections/PowerSystemDatabaseSection.tsx",
-          "operation": "create",
-          "description": "Create the Power System Database section UI with headings for power types, rules/limits, forbidden techniques, and a browsable character ability list (e.g., list with searchable/filterable details); use shadcn-ui components (Accordion/Tabs/Input/Card/Dialog, as appropriate) for readability and structure. Verify the component's usage instructions before implementing."
+          "description": "Update the news post card container to use the reusable glowing glass panel styling (or `GlowingGlassPanel`) while keeping all existing layout, data formatting, and text intact."
         },
         {
-          "path": "frontend/src/data/powerSystemDatabase.ts",
-          "operation": "create",
-          "description": "Add English static content for power types, rules/limits, forbidden techniques, and a normalized character-to-abilities dataset suitable for browsing."
-        },
-        {
-          "path": "frontend/src/data/characters.ts",
+          "path": "frontend/src/components/news/NewPostForm.tsx",
           "operation": "modify",
-          "description": "Optionally extend/align existing character entries with any additional fields needed by the Power System Database (without changing existing public-facing character copy away from English)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Add discoverable hidden unlockable lore/artwork via in-site exploration, including an unlisted secret page, unlockable character info, bonus artwork, and lore fragments with found/missing UI and client-side persistence.",
-      "acceptanceCriteria": [
-        "At least one secret page exists that is not directly listed in the main navigation and can be reached only via an in-site discovery mechanic (e.g., hidden hotspot, hidden click target, or unlock condition).",
-        "At least one piece of hidden character information can be unlocked and viewed after discovery/unlock.",
-        "At least one bonus artwork asset is included and gated behind discovery/unlock.",
-        "At least several lore fragments exist and are discoverable via exploration, with a UI that indicates which fragments are found vs. missing (client-side persistence acceptable)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/secrets/secretProgress.ts",
-          "operation": "create",
-          "description": "Implement client-side persistence utilities (e.g., localStorage) for discovered lore fragments, unlocked character info, and artwork unlock state; include helpers to mark found/missing and reset/debug locally."
+          "description": "Update the Create New Post form container to use the reusable glowing glass panel styling (or `GlowingGlassPanel`) without altering form validation, submission behavior, or any user-facing copy."
         },
         {
-          "path": "frontend/src/data/secretLore.ts",
-          "operation": "create",
-          "description": "Define several English lore fragments (id, title, body) plus at least one hidden character info entry and unlock conditions/keys that can be triggered via exploration."
-        },
-        {
-          "path": "frontend/src/components/secrets/SecretVaultSection.tsx",
-          "operation": "create",
-          "description": "Create the secret page/section UI (unlisted) that shows: found vs missing lore fragments, an unlockable character info panel, and a gated bonus artwork gallery area; use shadcn-ui components for lists, badges, dialogs, and layout. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/sections/WorldMapLoreDialog.tsx",
+          "path": "frontend/src/components/sections/NewsUpdatesSection.tsx",
           "operation": "modify",
-          "description": "Add at least one subtle in-site discovery mechanic inside the existing lore dialog (e.g., a hidden click target, keyword interaction, or multi-step unlock hint) that marks a lore fragment as found and can reveal a clue to the secret page; use shadcn-ui components already present in the dialog composition. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire the secret page into the main experience without listing it in the main navigation: render the SecretVaultSection when the user reaches a specific non-admin/non-pro hash (e.g., a secret hash) and ensure the existing #admin and #pro behavior remains unchanged."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Add navigation entry points to the Quiz and Power System Database without breaking existing hash-based #admin and #pro view handling.",
-      "acceptanceCriteria": [
-        "Users can reach the quiz and power system database from the main site UI in a way that does not interfere with existing main/admin/pro modes.",
-        "#admin and #pro continue to work as before (no regressions in switching views)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Mount the new ClanPersonalityQuizSection and PowerSystemDatabaseSection into the main view layout (as additional in-page sections) and ensure their section ids can be scrolled to via existing smooth scroll behavior, while preserving the current #admin/#pro switching logic."
-        },
-        {
-          "path": "frontend/src/components/sections/HeaderNav.tsx",
-          "operation": "modify",
-          "description": "Add main-site navigation entry points for the Quiz and Power System Database (e.g., new in-page links that scroll to the new sections) without adding/altering any behavior for #admin or #pro."
-        },
-        {
-          "path": "frontend/src/components/sections/Footer.tsx",
-          "operation": "modify",
-          "description": "Add additional quick links (or extend existing quick links) so users can reach the quiz and power database from the main UI while keeping the secret page unlisted."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Add generated static bonus artwork assets under frontend/public/assets/generated and display at least one within the unlockable secret experience responsively.",
-      "acceptanceCriteria": [
-        "All newly generated images are stored under frontend/public/assets/generated and are referenced directly by the frontend (not served through the backend).",
-        "At least one unlockable experience displays the generated bonus artwork once unlocked.",
-        "Images load correctly in production build and are responsive (no overflow/cutoff on common screen sizes)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/bonus-art-moon-shrine.dim_1600x900.png",
-          "operation": "create",
-          "description": "Add generated bonus artwork asset: Moonlit shrine illustration with glowing runes (bonus-art-moon-shrine.dim_1600x900.png)."
-        },
-        {
-          "path": "frontend/public/assets/generated/bonus-art-forbidden-scroll.dim_1600x900.png",
-          "operation": "create",
-          "description": "Add generated bonus artwork asset: Ancient forbidden technique scroll illustration, warm parchment with arcane ink (bonus-art-forbidden-scroll.dim_1600x900.png)."
-        },
-        {
-          "path": "frontend/public/assets/generated/bonus-art-constellation-map.dim_1600x900.png",
-          "operation": "create",
-          "description": "Add generated bonus artwork asset: Mystic clan constellation map illustration on dark sky, subtle nebula glow (bonus-art-constellation-map.dim_1600x900.png)."
-        },
-        {
-          "path": "frontend/public/assets/generated/bonus-art-silhouette-portrait.dim_1200x1500.png",
-          "operation": "create",
-          "description": "Add generated bonus artwork asset: Ethereal character silhouette portrait with luminous aura, neutral background (bonus-art-silhouette-portrait.dim_1200x1500.png)."
-        },
-        {
-          "path": "frontend/src/components/secrets/SecretVaultSection.tsx",
-          "operation": "modify",
-          "description": "Reference and render the generated assets (frontend/public/assets/generated/bonus-art-moon-shrine.dim_1600x900.png, frontend/public/assets/generated/bonus-art-forbidden-scroll.dim_1600x900.png, frontend/public/assets/generated/bonus-art-constellation-map.dim_1600x900.png, frontend/public/assets/generated/bonus-art-silhouette-portrait.dim_1200x1500.png) behind an unlock condition, ensuring responsive layout (no overflow) using existing Tailwind utilities and shadcn-ui layout primitives where helpful. Verify the component's usage instructions before implementing."
+          "description": "Align the loading skeleton placeholder card wrappers with the same glowing glass panel styling so loading and loaded states share the consistent glass/glow look, without changing any copy or logic."
         }
       ]
     }

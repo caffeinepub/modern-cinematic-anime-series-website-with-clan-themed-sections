@@ -5,6 +5,7 @@ import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
 import { Alert, AlertDescription } from '../ui/alert';
 import { Loader2, AlertCircle } from 'lucide-react';
+import { GlowingGlassPanel } from '../common/GlowingGlassPanel';
 
 interface NewPostFormProps {
   onSubmit: (title: string, content: string) => Promise<void>;
@@ -41,51 +42,53 @@ export function NewPostForm({ onSubmit, isSubmitting, error }: NewPostFormProps)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4">
-      <h3 className="text-xl font-bold text-foreground mb-4">Create New Post</h3>
+    <GlowingGlassPanel className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <h3 className="text-xl font-bold text-foreground mb-4">Create New Post</h3>
 
-      {(validationError || error) && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{validationError || error}</AlertDescription>
-        </Alert>
-      )}
-
-      <div className="space-y-2">
-        <Label htmlFor="title">Title</Label>
-        <Input
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter post title..."
-          disabled={isSubmitting}
-          className="bg-background"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="content">Content</Label>
-        <Textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Write your update or announcement..."
-          rows={6}
-          disabled={isSubmitting}
-          className="bg-background resize-none"
-        />
-      </div>
-
-      <Button type="submit" disabled={isSubmitting} className="w-full gap-2">
-        {isSubmitting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Publishing...
-          </>
-        ) : (
-          'Publish Post'
+        {(validationError || error) && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{validationError || error}</AlertDescription>
+          </Alert>
         )}
-      </Button>
-    </form>
+
+        <div className="space-y-2">
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter post title..."
+            disabled={isSubmitting}
+            className="bg-background"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="content">Content</Label>
+          <Textarea
+            id="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Write your update or announcement..."
+            rows={6}
+            disabled={isSubmitting}
+            className="bg-background resize-none"
+          />
+        </div>
+
+        <Button type="submit" disabled={isSubmitting} className="w-full gap-2">
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Publishing...
+            </>
+          ) : (
+            'Publish Post'
+          )}
+        </Button>
+      </form>
+    </GlowingGlassPanel>
   );
 }

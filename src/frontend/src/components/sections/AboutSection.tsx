@@ -1,6 +1,7 @@
 import { Swords, Shield, Zap } from 'lucide-react';
 import { useRevealOnScroll } from '../../hooks/useRevealOnScroll';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
+import { GlowingGlassPanel } from '../common/GlowingGlassPanel';
 
 export function AboutSection() {
   const { ref: sectionRef, isVisible } = useRevealOnScroll();
@@ -56,11 +57,11 @@ export function AboutSection() {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <div
+              <GlowingGlassPanel
                 key={feature.title}
-                className={`group relative bg-card/50 backdrop-blur-sm border-2 border-border rounded-2xl p-10 hover:border-primary/60 transition-all duration-500 ${
+                className={`group p-10 transition-all duration-500 ${
                   !prefersReducedMotion && cardsVisible ? 'animate-fade-scale' : cardsVisible ? 'opacity-100' : 'opacity-0'
-                } ${!prefersReducedMotion ? 'hover:shadow-glow-lg' : ''}`}
+                } ${!prefersReducedMotion ? 'hover:shadow-glow-lg hover:scale-105' : ''}`}
                 style={{
                   animationDelay: !prefersReducedMotion ? `${index * 0.2}s` : '0s'
                 }}
@@ -84,7 +85,7 @@ export function AboutSection() {
 
                 {/* Bottom accent line */}
                 <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 ${!prefersReducedMotion ? 'group-hover:h-2' : ''}`} />
-              </div>
+              </GlowingGlassPanel>
             );
           })}
         </div>

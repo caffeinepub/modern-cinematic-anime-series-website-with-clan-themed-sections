@@ -10,6 +10,7 @@ import { NewsUpdatesSection } from './components/sections/NewsUpdatesSection';
 import { DonationSection } from './components/sections/DonationSection';
 import { ContactSection } from './components/sections/ContactSection';
 import { ClanPersonalityQuizSection } from './components/sections/ClanPersonalityQuizSection';
+import { CharacterAffinityMatcherSection } from './components/sections/CharacterAffinityMatcherSection';
 import { PowerSystemDatabaseSection } from './components/sections/PowerSystemDatabaseSection';
 import { SecretVaultSection } from './components/secrets/SecretVaultSection';
 import { Footer } from './components/sections/Footer';
@@ -64,6 +65,7 @@ function App() {
             <GallerySection />
             <NewsUpdatesSection />
             <ClanPersonalityQuizSection />
+            <CharacterAffinityMatcherSection />
             <PowerSystemDatabaseSection />
             <DonationSection />
             <ContactSection />
@@ -99,6 +101,7 @@ function App() {
         <GallerySection />
         <NewsUpdatesSection />
         <ClanPersonalityQuizSection />
+        <CharacterAffinityMatcherSection />
         <PowerSystemDatabaseSection />
         <DonationSection />
         <ContactSection />

@@ -1,116 +1,43 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T20:04:38.885Z",
+  "generatedAt": "2026-02-15T16:24:04.672Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 6,
-    "implemented": 6,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Add an interactive \"Clan Personality Quiz\" experience for the Whispers Of The White Moon website with 8–12 multiple-choice personality questions where each answer secretly adds points to specific clans, and show a results screen that reveals the user’s clan and a visually styled results card users can screenshot or share.",
+        "summary": "Create a reusable “glowing glass card panel” style (glass effect) that matches the requested card design: slight transparency, soft glowing border, rounded corners, and subtle shadow.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
-          "frontend/src/data/clanQuizQuestions.ts",
-          "frontend/src/components/quiz/quizScoring.ts",
-          "frontend/src/components/quiz/ResultsCard.tsx",
-          "frontend/src/components/quiz/shareUtils.ts",
-          "frontend/src/index.css"
+          "frontend/src/index.css",
+          "frontend/src/components/common/GlowingGlassPanel.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
-          "frontend/src/data/clanQuizQuestions.ts",
-          "frontend/src/components/quiz/quizScoring.ts",
-          "frontend/src/components/quiz/ResultsCard.tsx",
-          "frontend/src/components/quiz/shareUtils.ts",
-          "frontend/src/index.css"
+          "frontend/src/index.css",
+          "frontend/src/components/common/GlowingGlassPanel.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Include the provided clan result descriptions in the quiz results for Moon Clan, Fire Clan, Water Clan, Sun Clan, Earth Clan, Wind Clan, Lightning Clan, and the secret rare Balance Clan result, and ensure Balance Clan is rare relative to other results.",
+        "summary": "Apply the new glowing glass card panel style to text-focused sections and cards across the main site (at minimum: About section feature cards, News post cards, and the News “Create New Post” form), replacing any one-off card styling so these panels share the same glass/glow look.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/data/clanQuizResults.ts",
-          "frontend/src/components/quiz/quizScoring.ts",
-          "frontend/src/components/sections/ClanPersonalityQuizSection.tsx"
+          "frontend/src/components/sections/AboutSection.tsx",
+          "frontend/src/components/news/NewsPostCard.tsx",
+          "frontend/src/components/news/NewPostForm.tsx",
+          "frontend/src/components/sections/NewsUpdatesSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/data/clanQuizResults.ts",
-          "frontend/src/components/quiz/quizScoring.ts",
-          "frontend/src/components/sections/ClanPersonalityQuizSection.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Create a \"Power System Database\" section/page that explains abilities in the anime, including: power types, ability rules and limits, forbidden techniques, and character ability lists.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/sections/PowerSystemDatabaseSection.tsx",
-          "frontend/src/data/powerSystemDatabase.ts",
-          "frontend/src/data/characters.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/sections/PowerSystemDatabaseSection.tsx",
-          "frontend/src/data/powerSystemDatabase.ts"
-        ]
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Add hidden unlockable lore and artwork that users can discover by exploring the website, including secret pages, hidden character info, bonus artwork, and lore fragments.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/secrets/secretProgress.ts",
-          "frontend/src/data/secretLore.ts",
-          "frontend/src/components/secrets/SecretVaultSection.tsx",
-          "frontend/src/components/sections/WorldMapLoreDialog.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/secrets/secretProgress.ts",
-          "frontend/src/data/secretLore.ts",
-          "frontend/src/components/secrets/SecretVaultSection.tsx",
-          "frontend/src/components/sections/WorldMapLoreDialog.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-5",
-        "summary": "Integrate navigation entry points for the new \"Clan Personality Quiz\" and \"Power System Database\" into the existing site experience without breaking the current hash-based view handling for #admin and #pro.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/sections/HeaderNav.tsx",
-          "frontend/src/components/sections/Footer.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/sections/HeaderNav.tsx",
-          "frontend/src/components/sections/Footer.tsx"
-        ]
-      },
-      {
-        "id": "REQ-6",
-        "summary": "Add generated static bonus artwork assets to the frontend and display them in the unlockable content experiences as part of the hidden lore/artwork system.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/public/assets/generated/bonus-art-moon-shrine.dim_1600x900.png",
-          "frontend/public/assets/generated/bonus-art-forbidden-scroll.dim_1600x900.png",
-          "frontend/public/assets/generated/bonus-art-constellation-map.dim_1600x900.png",
-          "frontend/public/assets/generated/bonus-art-silhouette-portrait.dim_1200x1500.png",
-          "frontend/src/components/secrets/SecretVaultSection.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/public/assets/generated/bonus-art-moon-shrine.dim_1600x900.png",
-          "frontend/public/assets/generated/bonus-art-forbidden-scroll.dim_1600x900.png",
-          "frontend/public/assets/generated/bonus-art-constellation-map.dim_1600x900.png",
-          "frontend/public/assets/generated/bonus-art-silhouette-portrait.dim_1200x1500.png",
-          "frontend/src/components/secrets/SecretVaultSection.tsx"
+          "frontend/src/components/sections/AboutSection.tsx",
+          "frontend/src/components/news/NewsPostCard.tsx",
+          "frontend/src/components/news/NewPostForm.tsx",
+          "frontend/src/components/sections/NewsUpdatesSection.tsx"
         ]
       }
     ]
@@ -120,25 +47,11 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/bonus-art-constellation-map.dim_1600x900.png",
-    "frontend/public/assets/generated/bonus-art-forbidden-scroll.dim_1600x900.png",
-    "frontend/public/assets/generated/bonus-art-moon-shrine.dim_1600x900.png",
-    "frontend/public/assets/generated/bonus-art-silhouette-portrait.dim_1200x1500.png",
-    "frontend/src/App.tsx",
-    "frontend/src/components/quiz/ResultsCard.tsx",
-    "frontend/src/components/quiz/quizScoring.ts",
-    "frontend/src/components/quiz/shareUtils.ts",
-    "frontend/src/components/secrets/SecretVaultSection.tsx",
-    "frontend/src/components/secrets/secretProgress.ts",
-    "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
-    "frontend/src/components/sections/Footer.tsx",
-    "frontend/src/components/sections/HeaderNav.tsx",
-    "frontend/src/components/sections/PowerSystemDatabaseSection.tsx",
-    "frontend/src/components/sections/WorldMapLoreDialog.tsx",
-    "frontend/src/data/clanQuizQuestions.ts",
-    "frontend/src/data/clanQuizResults.ts",
-    "frontend/src/data/powerSystemDatabase.ts",
-    "frontend/src/data/secretLore.ts",
+    "frontend/src/components/common/GlowingGlassPanel.tsx",
+    "frontend/src/components/news/NewPostForm.tsx",
+    "frontend/src/components/news/NewsPostCard.tsx",
+    "frontend/src/components/sections/AboutSection.tsx",
+    "frontend/src/components/sections/NewsUpdatesSection.tsx",
     "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",

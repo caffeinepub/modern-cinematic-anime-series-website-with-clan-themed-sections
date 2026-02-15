@@ -81,14 +81,14 @@ export default {
             },
             boxShadow: {
                 xs: '0 1px 2px 0 rgba(0,0,0,0.05)',
-                glow: '0 0 24px oklch(var(--primary) / 0.5), 0 0 48px oklch(var(--primary) / 0.25)',
-                'glow-lg': '0 0 40px oklch(var(--primary) / 0.6), 0 0 80px oklch(var(--primary) / 0.3)',
-                'glow-xl': '0 0 60px oklch(var(--primary) / 0.7), 0 0 120px oklch(var(--primary) / 0.35)',
-                'glow-accent': '0 0 24px oklch(var(--accent) / 0.5), 0 0 48px oklch(var(--accent) / 0.25)',
-                'glow-accent-lg': '0 0 40px oklch(var(--accent) / 0.6), 0 0 80px oklch(var(--accent) / 0.3)',
-                'glow-accent-xl': '0 0 60px oklch(var(--accent) / 0.7), 0 0 120px oklch(var(--accent) / 0.35)',
-                'inner-glow': 'inset 0 0 20px oklch(var(--primary) / 0.3)',
-                'inner-glow-accent': 'inset 0 0 20px oklch(var(--accent) / 0.3)'
+                glow: '0 0 24px oklch(var(--primary) / 0.35), 0 0 48px oklch(var(--primary) / 0.18)',
+                'glow-lg': '0 0 40px oklch(var(--primary) / 0.4), 0 0 80px oklch(var(--primary) / 0.2)',
+                'glow-xl': '0 0 60px oklch(var(--primary) / 0.45), 0 0 120px oklch(var(--primary) / 0.22)',
+                'glow-accent': '0 0 24px oklch(var(--accent) / 0.35), 0 0 48px oklch(var(--accent) / 0.18)',
+                'glow-accent-lg': '0 0 40px oklch(var(--accent) / 0.4), 0 0 80px oklch(var(--accent) / 0.2)',
+                'glow-accent-xl': '0 0 60px oklch(var(--accent) / 0.45), 0 0 120px oklch(var(--accent) / 0.22)',
+                'inner-glow': 'inset 0 0 20px oklch(var(--primary) / 0.2)',
+                'inner-glow-accent': 'inset 0 0 20px oklch(var(--accent) / 0.2)'
             },
             keyframes: {
                 'accordion-down': {

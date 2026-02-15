@@ -26,6 +26,7 @@ export function HeaderNav() {
     { href: '#gallery', label: 'Gallery' },
     { href: '#news', label: 'News' },
     { href: '#quiz', label: 'Quiz' },
+    { href: '#affinity', label: 'Character Match' },
     { href: '#powers', label: 'Powers' },
     { href: '#donation', label: 'Donation' },
     { href: '#contact', label: 'Contact' }

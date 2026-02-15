@@ -2,14 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-an-interactive-clan-personality-quiz-experience-for-the-whispers-of-the-white-moon-website-with-8-12-multiple-choice-personality-questions-where-each-answer-secretly-adds-points-to-specific-clans-and-show-a-results-screen-that-reveals-the-user-s-clan-and-a-visually-styled-results-card-users-can-screenshot-or-share",
-      "featureTitle": "Add an interactive \"Clan Personality Quiz\" experience for the Whispers Of The White Moon website with 8–12 multiple-choice personality questions where each answer secretly adds points to specific clans, and show a results screen that reveals the user’s clan and a visually styled results card users can screenshot or share.",
+      "featureId": "feature-create-a-reusable-glowing-glass-card-panel-style-glass-effect-that-matches-the-requested-card-design-slight-transparency-soft-glowing-border-rounded-corners-and-subtle-shadow",
+      "featureTitle": "Create a reusable “glowing glass card panel” style (glass effect) that matches the requested card design: slight transparency, soft glowing border, rounded corners, and subtle shadow.",
       "files": [
-        "frontend/src/components/quiz/ResultsCard.tsx",
-        "frontend/src/components/quiz/quizScoring.ts",
-        "frontend/src/components/quiz/shareUtils.ts",
-        "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
-        "frontend/src/data/clanQuizQuestions.ts",
+        "frontend/src/components/common/GlowingGlassPanel.tsx",
         "frontend/src/index.css"
       ],
       "components": [
@@ -27,12 +23,13 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-include-the-provided-clan-result-descriptions-in-the-quiz-results-for-moon-clan-fire-clan-water-clan-sun-clan-earth-clan-wind-clan-lightning-clan-and-the-secret-rare-balance-clan-result-and-ensure-balance-clan-is-rare-relative-to-other-results",
-      "featureTitle": "Include the provided clan result descriptions in the quiz results for Moon Clan, Fire Clan, Water Clan, Sun Clan, Earth Clan, Wind Clan, Lightning Clan, and the secret rare Balance Clan result, and ensure Balance Clan is rare relative to other results.",
+      "featureId": "feature-apply-the-new-glowing-glass-card-panel-style-to-text-focused-sections-and-cards-across-the-main-site-at-minimum-about-section-feature-cards-news-post-cards-and-the-news-create-new-post-form-replacing-any-one-off-card-styling-so-these-panels-share-the-same-glass-glow-look",
+      "featureTitle": "Apply the new glowing glass card panel style to text-focused sections and cards across the main site (at minimum: About section feature cards, News post cards, and the News “Create New Post” form), replacing any one-off card styling so these panels share the same glass/glow look.",
       "files": [
-        "frontend/src/components/quiz/quizScoring.ts",
-        "frontend/src/components/sections/ClanPersonalityQuizSection.tsx",
-        "frontend/src/data/clanQuizResults.ts"
+        "frontend/src/components/news/NewPostForm.tsx",
+        "frontend/src/components/news/NewsPostCard.tsx",
+        "frontend/src/components/sections/AboutSection.tsx",
+        "frontend/src/components/sections/NewsUpdatesSection.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -45,93 +42,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-a-power-system-database-section-page-that-explains-abilities-in-the-anime-including-power-types-ability-rules-and-limits-forbidden-techniques-and-character-ability-lists",
-      "featureTitle": "Create a \"Power System Database\" section/page that explains abilities in the anime, including: power types, ability rules and limits, forbidden techniques, and character ability lists.",
-      "files": [
-        "frontend/src/components/sections/PowerSystemDatabaseSection.tsx",
-        "frontend/src/data/powerSystemDatabase.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-hidden-unlockable-lore-and-artwork-that-users-can-discover-by-exploring-the-website-including-secret-pages-hidden-character-info-bonus-artwork-and-lore-fragments",
-      "featureTitle": "Add hidden unlockable lore and artwork that users can discover by exploring the website, including secret pages, hidden character info, bonus artwork, and lore fragments.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/secrets/SecretVaultSection.tsx",
-        "frontend/src/components/secrets/secretProgress.ts",
-        "frontend/src/components/sections/WorldMapLoreDialog.tsx",
-        "frontend/src/data/secretLore.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-integrate-navigation-entry-points-for-the-new-clan-personality-quiz-and-power-system-database-into-the-existing-site-experience-without-breaking-the-current-hash-based-view-handling-for-admin-and-pro",
-      "featureTitle": "Integrate navigation entry points for the new \"Clan Personality Quiz\" and \"Power System Database\" into the existing site experience without breaking the current hash-based view handling for #admin and #pro.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/sections/Footer.tsx",
-        "frontend/src/components/sections/HeaderNav.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-generated-static-bonus-artwork-assets-to-the-frontend-and-display-them-in-the-unlockable-content-experiences-as-part-of-the-hidden-lore-artwork-system",
-      "featureTitle": "Add generated static bonus artwork assets to the frontend and display them in the unlockable content experiences as part of the hidden lore/artwork system.",
-      "files": [
-        "frontend/src/components/secrets/SecretVaultSection.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-6"
       ],
       "confidence": "high"
     }

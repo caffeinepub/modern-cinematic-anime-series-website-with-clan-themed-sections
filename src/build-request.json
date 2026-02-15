@@ -1,145 +1,71 @@
 {
   "kind": "build_request",
-  "title": "Add Clan Personality Quiz, Power System Database, and Hidden Unlockable Lore/Artwork",
+  "title": "Add glassmorphism glowing card panels for text sections",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Add an interactive \"Clan Personality Quiz\" experience for the Whispers Of The White Moon website with 8–12 multiple-choice personality questions where each answer secretly adds points to specific clans, and show a results screen that reveals the user’s clan and a visually styled results card users can screenshot or share.",
+      "text": "Create a reusable “glowing glass card panel” style (glass effect) that matches the requested card design: slight transparency, soft glowing border, rounded corners, and subtle shadow.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-quiz-1",
-          "msg-yes-1"
+          "msg-1"
         ],
         "quotes": [
-          "Create an interactive \"Clan Personality Quiz\" for the Whispers Of The White Moon website.",
-          "The quiz must include: • 8–12 personality questions • Multiple choice answers • Each answer secretly adds points to specific clans • A results screen revealing the user's clan • A short personality description for each clan • A visually styled results card users can screenshot or share",
-          "Use fantasy anime styling and glowing UI elements.",
-          "User message: \"yes\""
+          "Create glowing card panels for text sections.\n\nCard Design:\n• Slight transparency (glass effect)\n• Soft glowing border\n• Rounded corners\n• Subtle shadow"
         ]
       },
       "acceptanceCriteria": [
-        "Quiz contains between 8 and 12 questions, each with multiple-choice answers.",
-        "Selecting an answer updates an internal score map (not displayed during the quiz) that influences the final clan result.",
-        "On completion, a results screen shows the winning clan name and its personality description, plus a dedicated results card UI optimized for screenshotting.",
-        "Results screen provides at least one easy sharing/saving affordance (e.g., \"Copy text\" and/or \"Download card\" and/or clear screenshot guidance) without requiring external integrations.",
-        "UI uses fantasy-anime styling with glowing elements consistent with the site’s existing aesthetic."
+        "A reusable styling API exists (e.g., a shared class and/or wrapper component) that can be applied consistently to multiple text panels/cards.",
+        "The panel surface is visibly semi-transparent with a backdrop blur (glass effect).",
+        "The panel has rounded corners and a subtle shadow at rest.",
+        "The panel shows a soft glowing border (not a hard solid outline) that is visible on both light and dark themes.",
+        "The style respects existing Tailwind tokens (e.g., card/background/border/primary/accent) so it stays consistent with the site theme."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Include the provided clan result descriptions in the quiz results for Moon Clan, Fire Clan, Water Clan, Sun Clan, Earth Clan, Wind Clan, Lightning Clan, and the secret rare Balance Clan result, and ensure Balance Clan is rare relative to other results.",
+      "text": "Apply the new glowing glass card panel style to text-focused sections and cards across the main site (at minimum: About section feature cards, News post cards, and the News “Create New Post” form), replacing any one-off card styling so these panels share the same glass/glow look.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-quiz-1"
+          "msg-1"
         ],
         "quotes": [
-          "Add the following clan result descriptions:\n\nMoon Clan\nPersonality: Calm, observant, emotionally strong, loyal to balance and hidden truth.\n\nFire Clan\nPersonality: Passionate, brave, aggressive, natural leaders and fearless fighters.\n\nWater Clan\nPersonality: Adaptive, intelligent, emotionally deep, strategic and patient.\n\nSun Clan\nPersonality: Charismatic, confident, inspiring, protective and honorable.\n\nEarth Clan\nPersonality: Strong-willed, dependable, grounded, protective of family and tradition.\n\nWind Clan\nPersonality: Free-spirited, creative, unpredictable, fast thinkers and explorers.\n\nLightning Clan\nPersonality: Energetic, bold, sharp-minded, quick decision makers, thrives under pressure.\n\nBalance Clan (Secret Rare Result)\nPersonality: Extremely rare individuals capable of understanding all clans and maintaining harmony between them.",
-          "Balance Clan is a legendary state believed to be achievable only by individuals who embody traits from every clan."
+          "Create glowing card panels for text sections."
         ]
       },
       "acceptanceCriteria": [
-        "Each of the 7 standard clans displays the exact personality description text provided by the user on the results screen when that clan is the outcome.",
-        "Balance Clan exists as a possible outcome and is visibly labeled as secret/rare in the results UI.",
-        "The scoring logic makes Balance Clan meaningfully rarer than standard clans (e.g., requires a balanced high score across multiple clans or a narrow scoring condition)."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Create a \"Power System Database\" section/page that explains abilities in the anime, including: power types, ability rules and limits, forbidden techniques, and character ability lists.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-powerdb-1"
-        ],
-        "quotes": [
-          "Create a Power System Database explaining abilities in the anime.\n\nInclude:\n- Power types\n- Ability rules and limits\n- Forbidden techniques\n- Character ability lists"
-        ]
-      },
-      "acceptanceCriteria": [
-        "A dedicated UI section/page presents the power system information with clear headings for power types, rules/limits, forbidden techniques, and character ability lists.",
-        "Character ability lists are browsable (e.g., list + details view, or filter/search), and each character entry shows their relevant abilities/powers in readable form.",
-        "All user-facing text in this feature is in English."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Add hidden unlockable lore and artwork that users can discover by exploring the website, including secret pages, hidden character info, bonus artwork, and lore fragments.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-secrets-1"
-        ],
-        "quotes": [
-          "Add hidden unlockable lore or artwork that users can discover by exploring the website.\n\nInclude:\n- Secret pages\n- Hidden character info\n- Bonus artwork\n- Lore fragments"
-        ]
-      },
-      "acceptanceCriteria": [
-        "At least one secret page exists that is not directly listed in the main navigation and can be reached only via an in-site discovery mechanic (e.g., hidden hotspot, hidden click target, or unlock condition).",
-        "At least one piece of hidden character information can be unlocked and viewed after discovery/unlock.",
-        "At least one bonus artwork asset is included and gated behind discovery/unlock.",
-        "At least several lore fragments exist and are discoverable via exploration, with a UI that indicates which fragments are found vs. missing (client-side persistence acceptable)."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Integrate navigation entry points for the new \"Clan Personality Quiz\" and \"Power System Database\" into the existing site experience without breaking the current hash-based view handling for #admin and #pro.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-quiz-1",
-          "msg-powerdb-1"
-        ],
-        "quotes": [
-          "Create an interactive \"Clan Personality Quiz\" for the Whispers Of The White Moon website.",
-          "Create a Power System Database explaining abilities in the anime."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Users can reach the quiz and power system database from the main site UI in a way that does not interfere with existing main/admin/pro modes.",
-        "#admin and #pro continue to work as before (no regressions in switching views)."
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Add generated static bonus artwork assets to the frontend and display them in the unlockable content experiences as part of the hidden lore/artwork system.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-secrets-1"
-        ],
-        "quotes": [
-          "Include:\n- Bonus artwork"
-        ]
-      },
-      "acceptanceCriteria": [
-        "All newly generated images are stored under frontend/public/assets/generated and are referenced directly by the frontend (not served through the backend).",
-        "At least one unlockable experience displays the generated bonus artwork once unlocked.",
-        "Images load correctly in production build and are responsive (no overflow/cutoff on common screen sizes)."
+        "About section feature cards use the new glowing glass panel style while keeping their existing layout and animations.",
+        "NewsPostCard uses the new glowing glass panel style (including transparency, glow border, rounded corners, shadow).",
+        "NewPostForm uses the new glowing glass panel style (including transparency, glow border, rounded corners, shadow).",
+        "No user-facing copy is changed as part of applying the new styling.",
+        "Visual changes are limited to presentation (no changes to backend data flow or feature behavior)."
       ]
     }
   ],
   "constraints": [
-    "Use English for any user-facing text.",
-    "Do not edit files under frontend/immutablePaths (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui). Compose with existing UI components instead.",
-    "Respect the existing hash-based routing behavior that switches views for #admin and #pro (do not break admin/pro access).",
-    "Backend must remain a single Motoko actor (all logic in backend/main.mo); only add backend migration code if upgrading existing stable state is required."
+    "Do not edit files under frontend/src/components/ui (shadcn components); compose them instead.",
+    "Do not edit frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, or frontend/src/main.tsx.",
+    "Backend remains single-actor; no backend changes are required for this request."
   ],
   "nonGoals": [
-    "Adding third-party authentication beyond Internet Identity.",
-    "Adding real-time features (websockets/chat) or external databases.",
-    "Building an admin CMS for managing quiz questions, lore fragments, or power system entries (unless separately requested).",
-    "Integrating social media APIs for sharing; sharing can be implemented via client-side copy/download patterns."
+    "Adding new content sections or new app features beyond the card panel styling.",
+    "Changing authentication, admin/pro/secret routing behavior, or backend schemas.",
+    "Implementing new animations beyond what is needed for the card’s glow/glass styling."
   ],
   "imageRequirements": {
-    "required": [
-      "Moonlit shrine illustration with glowing runes (bonus-art-moon-shrine.dim_1600x900.png)",
-      "Ancient forbidden technique scroll illustration, warm parchment with arcane ink (bonus-art-forbidden-scroll.dim_1600x900.png)",
-      "Mystic clan constellation map illustration on dark sky, subtle nebula glow (bonus-art-constellation-map.dim_1600x900.png)",
-      "Ethereal character silhouette portrait with luminous aura, neutral background (bonus-art-silhouette-portrait.dim_1200x1500.png)"
-    ],
+    "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

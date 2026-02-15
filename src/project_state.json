@@ -1,59 +1,24 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Website project for \"Whispers Of The White Moon\" featuring an anime-style power system database with hidden unlockable lore/artwork and an interactive clan personality quiz.",
+  "summary": "Build a redesigned site with immersive animated background layers (floating symbols, particle effects, parallax, glowing haze) and glassmorphism-style glowing card panels for text sections.",
   "architectural_notes": [],
-  "known_issues": [
-    "AI build/implementation repeatedly failed to process the requested features (power system DB and clan quiz)."
-  ],
+  "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Moonlit shrine illustration with glowing runes (bonus-art-moon-shrine.dim_1600x900.png)\n- Ancient forbidden technique scroll illustration, warm parchment with arcane ink (bonus-art-forbidden-scroll.dim_1600x900.png)\n- Mystic clan constellation map illustration on dark sky, subtle nebula glow (bonus-art-constellation-map.dim_1600x900.png)\n- Ethereal character silhouette portrait with luminous aura, neutral background (bonus-art-silhouette-portrait.dim_1200x1500.png)",
   "existing_features": [
     {
-      "id": "feature-add-an-interactive-clan-personality-quiz-experience-for-the-whispers-of-the-white-moon-website-with-8-12-multiple-choice-personality-questions-where-each-answer-secretly-adds-points-to-specific-clans-and-show-a-results-screen-that-reveals-the-user-s-clan-and-a-visually-styled-results-card-users-can-screenshot-or-share",
-      "title": "Add an interactive \"Clan Personality Quiz\" experience for the Whispers Of The White Moon website with 8–12 multiple-choice personality questions where each answer secretly adds points to specific clans, and show a results screen that reveals the user’s clan and a visually styled results card users can screenshot or share.",
+      "id": "feature-create-a-reusable-glowing-glass-card-panel-style-glass-effect-that-matches-the-requested-card-design-slight-transparency-soft-glowing-border-rounded-corners-and-subtle-shadow",
+      "title": "Create a reusable “glowing glass card panel” style (glass effect) that matches the requested card design: slight transparency, soft glowing border, rounded corners, and subtle shadow.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-include-the-provided-clan-result-descriptions-in-the-quiz-results-for-moon-clan-fire-clan-water-clan-sun-clan-earth-clan-wind-clan-lightning-clan-and-the-secret-rare-balance-clan-result-and-ensure-balance-clan-is-rare-relative-to-other-results",
-      "title": "Include the provided clan result descriptions in the quiz results for Moon Clan, Fire Clan, Water Clan, Sun Clan, Earth Clan, Wind Clan, Lightning Clan, and the secret rare Balance Clan result, and ensure Balance Clan is rare relative to other results.",
+      "id": "feature-apply-the-new-glowing-glass-card-panel-style-to-text-focused-sections-and-cards-across-the-main-site-at-minimum-about-section-feature-cards-news-post-cards-and-the-news-create-new-post-form-replacing-any-one-off-card-styling-so-these-panels-share-the-same-glass-glow-look",
+      "title": "Apply the new glowing glass card panel style to text-focused sections and cards across the main site (at minimum: About section feature cards, News post cards, and the News “Create New Post” form), replacing any one-off card styling so these panels share the same glass/glow look.",
       "reqIds": [
         "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-power-system-database-section-page-that-explains-abilities-in-the-anime-including-power-types-ability-rules-and-limits-forbidden-techniques-and-character-ability-lists",
-      "title": "Create a \"Power System Database\" section/page that explains abilities in the anime, including: power types, ability rules and limits, forbidden techniques, and character ability lists.",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-hidden-unlockable-lore-and-artwork-that-users-can-discover-by-exploring-the-website-including-secret-pages-hidden-character-info-bonus-artwork-and-lore-fragments",
-      "title": "Add hidden unlockable lore and artwork that users can discover by exploring the website, including secret pages, hidden character info, bonus artwork, and lore fragments.",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-integrate-navigation-entry-points-for-the-new-clan-personality-quiz-and-power-system-database-into-the-existing-site-experience-without-breaking-the-current-hash-based-view-handling-for-admin-and-pro",
-      "title": "Integrate navigation entry points for the new \"Clan Personality Quiz\" and \"Power System Database\" into the existing site experience without breaking the current hash-based view handling for #admin and #pro.",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-generated-static-bonus-artwork-assets-to-the-frontend-and-display-them-in-the-unlockable-content-experiences-as-part-of-the-hidden-lore-artwork-system",
-      "title": "Add generated static bonus artwork assets to the frontend and display them in the unlockable content experiences as part of the hidden lore/artwork system.",
-      "reqIds": [
-        "REQ-6"
       ],
       "version": 1
     }
@@ -61,24 +26,18 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Create a Power System Database explaining abilities (power types, rules/limits, forbidden techniques, character ability lists).",
+      "summary": "Add global animated background layers: floating clan symbols, particle effects, subtle parallax on scroll, and soft glowing haze.",
       "reqIds": [],
       "status": "pending"
     },
     {
       "id": "AR-2",
-      "summary": "Add hidden unlockable lore/artwork discoverable via exploration (secret pages, hidden character info, bonus artwork, lore fragments).",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Build an interactive \"Clan Personality Quiz\" (8–12 questions, point-based clan scoring, results screen with shareable styled card, anime glowing UI, includes Moon/Fire/Water/Sun/Earth/Wind/Lightning/Secret Balance clan descriptions).",
+      "summary": "Create glowing card panels for text sections with glass effect (slight transparency), soft glowing border, rounded corners, and subtle shadow.",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Whispers Of The White Moon",
+  "projectName": "Add glassmorphism glowing card panels for text sections",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

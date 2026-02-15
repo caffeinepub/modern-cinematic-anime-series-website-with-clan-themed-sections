@@ -1,5 +1,6 @@
 import { NewsPost } from '../../backend';
 import { Calendar } from 'lucide-react';
+import { GlowingGlassPanel } from '../common/GlowingGlassPanel';
 
 interface NewsPostCardProps {
   post: NewsPost;
@@ -18,20 +19,22 @@ export function NewsPostCard({ post }: NewsPostCardProps) {
   };
 
   return (
-    <article className="bg-card border border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-300 hover:glow-sm">
-      <div className="flex items-start justify-between gap-4 mb-4">
-        <h3 className="text-2xl font-bold text-foreground">{post.title}</h3>
-        <span className="text-xs text-muted-foreground bg-muted px-3 py-1 rounded-full whitespace-nowrap">
-          {post.author}
-        </span>
-      </div>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-        <Calendar className="h-4 w-4" />
-        <time dateTime={new Date(Number(post.timestamp) / 1000000).toISOString()}>
-          {formatDate(post.timestamp)}
-        </time>
-      </div>
-      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{post.content}</p>
-    </article>
+    <GlowingGlassPanel className="p-6 transition-all duration-300 hover:shadow-glow-md">
+      <article>
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <h3 className="text-2xl font-bold text-foreground">{post.title}</h3>
+          <span className="text-xs text-muted-foreground bg-muted px-3 py-1 rounded-full whitespace-nowrap">
+            {post.author}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+          <Calendar className="h-4 w-4" />
+          <time dateTime={new Date(Number(post.timestamp) / 1000000).toISOString()}>
+            {formatDate(post.timestamp)}
+          </time>
+        </div>
+        <p className="text-foreground leading-relaxed whitespace-pre-wrap">{post.content}</p>
+      </article>
+    </GlowingGlassPanel>
   );
 }

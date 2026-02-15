@@ -13,11 +13,12 @@ import { NewPostForm } from '../news/NewPostForm';
 import { LoginButton } from '../auth/LoginButton';
 import { Skeleton } from '../ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
-import { AlertCircle, Newspaper } from 'lucide-react';
+import { AlertCircle, Newspaper, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
+import { GlowingGlassPanel } from '../common/GlowingGlassPanel';
 
 export function NewsUpdatesSection() {
   const { ref, isVisible } = useRevealOnScroll();
@@ -35,24 +36,25 @@ export function NewsUpdatesSection() {
   const createPostMutation = useCreateNewsPost();
 
   const [profileName, setProfileName] = useState('');
-  const [profileError, setProfileError] = useState('');
+  const [showProfileSetup, setShowProfileSetup] = useState(false);
 
-  const showProfileSetup = isAuthenticated && !profileLoading && profileFetched && userProfile === null;
+  // Show profile setup modal when user is authenticated but has no profile
+  const shouldShowProfileSetup = isAuthenticated && !profileLoading && profileFetched && userProfile === null;
 
-  const handleProfileSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setProfileError('');
+  // Open modal when conditions are met
+  if (shouldShowProfileSetup && !showProfileSetup) {
+    setShowProfileSetup(true);
+  }
 
-    if (!profileName.trim()) {
-      setProfileError('Name is required');
-      return;
-    }
+  const handleProfileSave = async () => {
+    if (!profileName.trim()) return;
 
     try {
       await saveProfileMutation.mutateAsync({ name: profileName.trim() });
+      setShowProfileSetup(false);
       setProfileName('');
-    } catch (err: any) {
-      setProfileError(err.message || 'Failed to save profile');
+    } catch (error) {
+      console.error('Failed to save profile:', error);
     }
   };
 
@@ -60,63 +62,42 @@ export function NewsUpdatesSection() {
     await createPostMutation.mutateAsync({ title, content });
   };
 
-  const sortedPosts = posts ? [...posts].sort((a, b) => Number(b.timestamp - a.timestamp)) : [];
+  const sortedPosts = posts
+    ? [...posts].sort((a, b) => Number(b.timestamp - a.timestamp))
+    : [];
 
   return (
-    <section
-      id="news"
-      ref={ref}
-      className={`py-24 px-4 bg-gradient-to-b from-background via-background/95 to-background ${
-        isVisible ? 'animate-fade-up' : 'opacity-0'
-      }`}
-    >
-      <div className="container mx-auto max-w-4xl">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-              News
-            </span>
-          </h2>
-          <LoginButton />
+    <section id="news" className="relative py-32 md:py-40 bg-gradient-to-b from-background to-card/20">
+      <div className="container mx-auto px-4">
+        <div
+          ref={ref}
+          className={`text-center mb-16 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <Newspaper className="w-12 h-12 text-primary" />
+            <h2 className="text-5xl md:text-6xl font-black">
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                News
+              </span>
+            </h2>
+          </div>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Stay updated with the latest announcements and developments
+          </p>
         </div>
-        <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto mb-12">
-          Stay up to date with the latest announcements, episode releases, and behind-the-scenes content.
-        </p>
 
-        {/* Profile Setup Modal */}
-        <Dialog open={showProfileSetup} onOpenChange={() => {}}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Welcome!</DialogTitle>
-              <DialogDescription>Please enter your name to continue.</DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleProfileSubmit} className="space-y-4">
-              {profileError && (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{profileError}</AlertDescription>
-                </Alert>
-              )}
-              <div className="space-y-2">
-                <Label htmlFor="profile-name">Name</Label>
-                <Input
-                  id="profile-name"
-                  value={profileName}
-                  onChange={(e) => setProfileName(e.target.value)}
-                  placeholder="Enter your name..."
-                  disabled={saveProfileMutation.isPending}
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={saveProfileMutation.isPending}>
-                {saveProfileMutation.isPending ? 'Saving...' : 'Continue'}
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Login Button */}
+          {!isAuthenticated && (
+            <div className="flex justify-center">
+              <LoginButton />
+            </div>
+          )}
 
-        <div className="space-y-8">
-          {/* Creator Post Form */}
-          {isAuthenticated && !adminLoading && isAdmin && (
+          {/* Admin Post Creation Form */}
+          {isAuthenticated && isAdmin && (
             <NewPostForm
               onSubmit={handleCreatePost}
               isSubmitting={createPostMutation.isPending}
@@ -124,18 +105,23 @@ export function NewsUpdatesSection() {
             />
           )}
 
-          {/* Posts Feed */}
-          {postsLoading ? (
+          {/* Loading State */}
+          {postsLoading && (
             <div className="space-y-6">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4">
-                  <Skeleton className="h-8 w-3/4" />
-                  <Skeleton className="h-4 w-1/4" />
-                  <Skeleton className="h-20 w-full" />
-                </div>
+                <GlowingGlassPanel key={i} className="p-6">
+                  <div className="space-y-4">
+                    <Skeleton className="h-8 w-3/4" />
+                    <Skeleton className="h-4 w-1/4" />
+                    <Skeleton className="h-24 w-full" />
+                  </div>
+                </GlowingGlassPanel>
               ))}
             </div>
-          ) : postsError ? (
+          )}
+
+          {/* Error State */}
+          {postsError && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
@@ -143,23 +129,66 @@ export function NewsUpdatesSection() {
                 Failed to load news posts. Please try again later.
               </AlertDescription>
             </Alert>
-          ) : sortedPosts.length === 0 ? (
-            <div className="text-center py-12">
-              <Newspaper className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">No posts yet</h3>
-              <p className="text-muted-foreground">
-                Check back soon for updates and announcements!
-              </p>
-            </div>
-          ) : (
+          )}
+
+          {/* News Posts */}
+          {!postsLoading && !postsError && sortedPosts.length > 0 && (
             <div className="space-y-6">
               {sortedPosts.map((post) => (
                 <NewsPostCard key={post.id.toString()} post={post} />
               ))}
             </div>
           )}
+
+          {/* Empty State */}
+          {!postsLoading && !postsError && sortedPosts.length === 0 && (
+            <GlowingGlassPanel className="p-12 text-center">
+              <Newspaper className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <p className="text-xl text-muted-foreground">
+                No news posts yet. Check back soon for updates!
+              </p>
+            </GlowingGlassPanel>
+          )}
         </div>
       </div>
+
+      {/* Profile Setup Modal */}
+      <Dialog open={showProfileSetup} onOpenChange={setShowProfileSetup}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Welcome! Set up your profile</DialogTitle>
+            <DialogDescription>
+              Please enter your name to continue. This will be displayed with your posts.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="profile-name">Your Name</Label>
+              <Input
+                id="profile-name"
+                value={profileName}
+                onChange={(e) => setProfileName(e.target.value)}
+                placeholder="Enter your name..."
+                disabled={saveProfileMutation.isPending}
+              />
+            </div>
+            <Button
+              onClick={handleProfileSave}
+              disabled={!profileName.trim() || saveProfileMutation.isPending}
+              className="w-full"
+            >
+              {saveProfileMutation.isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Saving...
+                </>
+              ) : (
+                'Save Profile'
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

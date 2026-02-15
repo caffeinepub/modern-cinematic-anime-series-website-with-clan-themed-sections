@@ -1,14 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Expand the Whispers Of The White Moon website with a clan personality quiz, a power system reference database, and discoverable hidden lore/artwork content.
+**Goal:** Introduce a reusable glassmorphism “glowing glass card panel” style and apply it consistently to key text-focused panels across the site.
 
 **Planned changes:**
-- Add an interactive “Clan Personality Quiz” (8–12 multiple-choice questions) that secretly scores answers toward clans and ends with a results screen.
-- Implement quiz results for Moon, Fire, Water, Sun, Earth, Wind, Lightning, plus a rare/secret Balance Clan outcome, each showing the provided personality description text and a styled results card suitable for screenshotting/sharing.
-- Add a “Power System Database” page/section with headings for power types, rules/limits, forbidden techniques, and browsable character ability lists.
-- Add hidden unlockable content features (secret page(s), hidden character info, lore fragments with found/missing tracking, and unlock-gated bonus artwork).
-- Integrate navigation entry points to the Quiz and Power System Database without breaking existing hash-based handling for #admin and #pro.
-- Add generated static bonus artwork assets under `frontend/public/assets/generated` and surface them within the unlockable content experience(s).
+- Create a reusable styling API (shared class and/or wrapper component) for a semi-transparent, backdrop-blurred glass panel with rounded corners, subtle shadow, and a soft glowing border that works in both light and dark themes.
+- Apply the new glowing glass panel style to existing text panels/cards (at minimum: About section feature cards, News post cards, and the News “Create New Post” form) while keeping layout, animations, and copy unchanged.
 
-**User-visible outcome:** Users can take a clan quiz and receive a shareable results card, browse a power system database of abilities and character powers, and discover hidden pages/lore/artwork through exploration—while existing #admin and #pro access continues to work.
+**User-visible outcome:** Text-focused cards and forms across the site (including About and News) share a consistent glassy, softly glowing card appearance without changing app behavior.
