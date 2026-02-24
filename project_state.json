@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Remove the SignupModal component file at frontend/src/components/auth/SignupModal.tsx",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Remove signup storage utilities from frontend/src/utils/signupStorage.ts",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Remove password hashing utilities from frontend/src/utils/passwordHash.ts",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Remove UserProfile type and all user registration/authentication methods from backend/main.mo",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Remove UserProfile and related authentication types from backend/migration.mo",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Remove account setup functionality",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

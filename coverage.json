@@ -1,0 +1,67 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-23T14:12:23.387Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 5,
+    "implemented": 0,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Remove the SignupModal component file at frontend/src/components/auth/SignupModal.tsx",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/components/auth/SignupModal.tsx"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Remove signup storage utilities from frontend/src/utils/signupStorage.ts",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/utils/signupStorage.ts"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Remove password hashing utilities from frontend/src/utils/passwordHash.ts",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/utils/passwordHash.ts"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Remove UserProfile type and all user registration/authentication methods from backend/main.mo",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Remove UserProfile and related authentication types from backend/migration.mo",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

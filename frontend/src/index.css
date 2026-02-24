@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode - Sunrise/Fantasy palette with brighter surfaces */
+    --background: 92% 0.02 264;
+    --foreground: 20% 0.02 264;
+    --card: 95% 0.015 264;
+    --card-foreground: 20% 0.02 264;
+    --popover: 95% 0.015 264;
+    --popover-foreground: 20% 0.02 264;
+    --primary: 55% 0.18 264;
+    --primary-foreground: 98% 0.01 264;
+    --secondary: 85% 0.03 264;
+    --secondary-foreground: 20% 0.02 264;
+    --muted: 88% 0.02 264;
+    --muted-foreground: 45% 0.02 264;
+    --accent: 70% 0.15 330;
+    --accent-foreground: 98% 0.01 264;
+    --destructive: 55% 0.20 25;
+    --destructive-foreground: 98% 0.01 264;
+    --success: 65% 0.15 145;
+    --success-foreground: 98% 0.01 264;
+    --border: 82% 0.03 264;
+    --input: 82% 0.03 264;
+    --ring: 55% 0.18 264;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark mode - Deep night with moon blue accents */
+    --background: 15% 0.02 264;
+    --foreground: 92% 0.02 264;
+    --card: 18% 0.02 264;
+    --card-foreground: 92% 0.02 264;
+    --popover: 18% 0.02 264;
+    --popover-foreground: 92% 0.02 264;
+    --primary: 70% 0.15 220;
+    --primary-foreground: 15% 0.02 264;
+    --secondary: 25% 0.03 264;
+    --secondary-foreground: 92% 0.02 264;
+    --muted: 22% 0.02 264;
+    --muted-foreground: 65% 0.02 264;
+    --accent: 75% 0.18 330;
+    --accent-foreground: 15% 0.02 264;
+    --destructive: 60% 0.22 25;
+    --destructive-foreground: 92% 0.02 264;
+    --success: 60% 0.18 145;
+    --success-foreground: 92% 0.02 264;
+    --border: 25% 0.03 264;
+    --input: 25% 0.03 264;
+    --ring: 70% 0.15 220;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 20px oklch(var(--primary) / 0.4);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 15px oklch(var(--primary) / 0.15);
+  }
+
+  .shadow-glow-lg {
+    box-shadow: 0 0 30px oklch(var(--primary) / 0.2);
+  }
+
+  .shadow-glow-xl {
+    box-shadow: 0 0 50px oklch(var(--primary) / 0.25);
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      filter: brightness(1) drop-shadow(0 0 8px oklch(var(--primary) / 0.3));
+    }
+    50% {
+      filter: brightness(1.2) drop-shadow(0 0 16px oklch(var(--primary) / 0.5));
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .glowing-glass-panel {
+    background: oklch(var(--card) / 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px oklch(0% 0 0 / 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glowing-glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, 
+      oklch(var(--primary) / 0.3), 
+      oklch(var(--accent) / 0.2)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .destiny-reveal-card {
+    animation: destiny-reveal 1.5s ease-out;
+  }
+
+  @keyframes destiny-reveal {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) rotateY(90deg);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.05) rotateY(0deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotateY(0deg);
+    }
+  }
+
+  .donation-cta-button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .donation-cta-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .donation-cta-button:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .donation-cta-green {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  }
+
+  .donation-cta-green:hover {
+    box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-glow,
+  .animate-float,
+  .destiny-reveal-card {
+    animation: none !important;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

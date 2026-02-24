@@ -1,0 +1,109 @@
+{
+  "kind": "build_request",
+  "title": "Remove account setup functionality",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Remove the SignupModal component file at frontend/src/components/auth/SignupModal.tsx",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "remmove the account set-up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "SignupModal.tsx file is deleted from the frontend codebase",
+        "No references to SignupModal remain in any frontend component"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Remove signup storage utilities from frontend/src/utils/signupStorage.ts",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "remmove the account set-up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "signupStorage.ts file is deleted or emptied",
+        "No signup data is persisted to localStorage or sessionStorage"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Remove password hashing utilities from frontend/src/utils/passwordHash.ts",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "remmove the account set-up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "passwordHash.ts file is deleted or emptied",
+        "No password hashing logic remains in the frontend"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Remove UserProfile type and all user registration/authentication methods from backend/main.mo",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "remmove the account set-up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "UserProfile type definition is removed from main.mo",
+        "All user registration functions are removed from the backend actor",
+        "All password authentication methods are removed from the backend actor",
+        "User profile storage (Maps/Lists) is removed from backend state"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Remove UserProfile and related authentication types from backend/migration.mo",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "remmove the account set-up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "UserProfile type is removed from OldActor and NewActor definitions",
+        "User registration request types are removed from migration module",
+        "Migration logic does not reference user profiles or authentication data"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not remove Internet Identity authentication (LoginButton component must remain functional)",
+    "Preserve admin access control functionality",
+    "Keep the single-actor backend architecture intact"
+  ],
+  "nonGoals": [
+    "Removing Internet Identity login/logout functionality",
+    "Removing admin authorization logic",
+    "Changing the core application structure or other features"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

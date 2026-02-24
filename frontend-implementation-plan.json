@@ -1,0 +1,52 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Remove account setup functionality",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Remove the SignupModal component file",
+      "acceptanceCriteria": [
+        "SignupModal.tsx file is deleted from the frontend codebase",
+        "No references to SignupModal remain in any frontend component"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/SignupModal.tsx",
+          "operation": "delete",
+          "description": "Delete the SignupModal component file as it is no longer needed for the application flow"
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Remove signup storage utilities",
+      "acceptanceCriteria": [
+        "signupStorage.ts file is deleted or emptied",
+        "No signup data is persisted to localStorage or sessionStorage"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/signupStorage.ts",
+          "operation": "delete",
+          "description": "Delete the signupStorage utility file that handles persisting signup data to local storage"
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Remove password hashing utilities",
+      "acceptanceCriteria": [
+        "passwordHash.ts file is deleted or emptied",
+        "No password hashing logic remains in the frontend"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/passwordHash.ts",
+          "operation": "delete",
+          "description": "Delete the passwordHash utility file that handles client-side password hashing"
+        }
+      ]
+    }
+  ]
+}
